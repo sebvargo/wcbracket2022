@@ -11,6 +11,8 @@ matplotlib = "*"
 ipykernel = "*"
 flask-wtf = "*"
 flask-migrate = "*"
+flask-login = "*"
+email-validator = "*"
 
 [dev-packages]
 
