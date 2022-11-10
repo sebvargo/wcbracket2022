@@ -10,6 +10,7 @@ flask-sqlalchemy = "*"
 matplotlib = "*"
 ipykernel = "*"
 flask-wtf = "*"
+flask-migrate = "*"
 
 [dev-packages]
 
