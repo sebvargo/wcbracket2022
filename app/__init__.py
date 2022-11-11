@@ -18,4 +18,4 @@ login.login_view = 'login'
 migrate = Migrate(app, db)
 app.app_context().push()
 
-from app import routes, models
+from app import routes, models, errors
