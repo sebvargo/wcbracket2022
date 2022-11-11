@@ -15,6 +15,7 @@ flask-login = "*"
 email-validator = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
+openpyxl = "*"
 
 [dev-packages]
 

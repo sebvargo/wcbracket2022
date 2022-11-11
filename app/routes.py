@@ -2,8 +2,10 @@ from app import app, db
 from flask import render_template, redirect, flash, url_for, request
 from app.models import User
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm
+from app.forms import LoginForm, RegistrationForm, QuinielaForm
 from werkzeug.urls import url_parse
+from werkzeug.utils import secure_filename
+import pandas as pd
 
 @app.route('/')
 @login_required
@@ -29,6 +31,16 @@ def login():
         return redirect(next_page)
         
     return render_template('login.html', title = 'Login', form = form)
+
+@app.route('/upload', methods = ['GET', 'POST'])
+@login_required
+def upload():
+    form = QuinielaForm()
+    if form.validate_on_submit():
+        f = form.file.data
+        df = pd.read_excel('matches.xlsx')
+        flash(df['team2'].values[0])
+    return render_template('upload.html', title = 'Upload Quiniela', form = form)
 
 @app.route('/logout')
 def logout():
