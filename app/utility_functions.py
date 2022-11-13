@@ -9,10 +9,9 @@ def read_group_stage_bracket(xlsx_file, stage = 'group'):
     df = df.loc[df['stage'] == stage]
     
     # check if user has predictions in db, if so delete existing predictions
-    current_user = User.query.filter_by(username = 'meme').first()
     if Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').first() is not None:
         Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').delete()
-        
+    print(f'{current_user.user_id}, {current_user.username}')
     # add predictions to database
     for match_id, team1, team2, goals1, goals2, stage in zip(df['match_id'], df['team1'], df['team2'], df['team1_prediction'], df['team2_prediction'], df['stage']):
         g = Prediction(game_id = match_id, team1 = team1, team2 = team2, goals1 = goals1, goals2 = goals2, user_id = current_user.user_id, stage = stage)
@@ -20,10 +19,12 @@ def read_group_stage_bracket(xlsx_file, stage = 'group'):
         db.session.add(g)
     try:
         db.session.commit()
+        print(f'Added predictions successfully for {current_user.user_id}-{current_user.username}.')
         return 'Added predictions successfully.'
     
     except:
         db.session.rollback()
+        print('Could not add predictions, please try again.')
         return 'Could not add predictions, please try again.'
     
     
