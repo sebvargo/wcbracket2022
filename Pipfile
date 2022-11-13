@@ -16,6 +16,7 @@ email-validator = "*"
 gunicorn = "*"
 psycopg2-binary = "*"
 openpyxl = "*"
+flask-session = "*"
 
 [dev-packages]
 
