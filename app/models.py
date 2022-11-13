@@ -41,13 +41,14 @@ class Game(db.Model):
         return f'<{self.stage} stage game on {self.utc_time} | {self.game_id}: {self.team1} v. {self.team2}>'
     
 class Prediction(db.Model):
-    pred_id = db.Column(db.String(5), primary_key = True)
+    pred_id = db.Column(db.Integer, primary_key = True)
     game_id = db.Column(db.Integer, index=True)
     team1 = db.Column(db.String(3))
     team2 = db.Column(db.String(3))
     goals1 = db.Column(db.Integer)
     goals2 = db.Column(db.Integer)
     winner = db.Column(db.Integer)
+    stage = db.Column(db.String(16))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     
     def __repr__(self) -> str:

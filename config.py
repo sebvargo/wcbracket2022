@@ -5,6 +5,7 @@ class Config(object):
     try:
         SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
     except:
+        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
         if SQLALCHEMY_DATABASE_URI is None:
             SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
         else:

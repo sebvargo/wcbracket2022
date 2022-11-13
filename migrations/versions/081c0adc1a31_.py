@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: e1d773b45d16
+Revision ID: 081c0adc1a31
 Revises: 
-Create Date: 2022-11-11 15:18:45.892705
+Create Date: 2022-11-12 17:51:09.617341
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'e1d773b45d16'
+revision = '081c0adc1a31'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -41,13 +41,14 @@ def upgrade():
     op.create_index(op.f('ix_user_email'), 'user', ['email'], unique=True)
     op.create_index(op.f('ix_user_username'), 'user', ['username'], unique=True)
     op.create_table('prediction',
-    sa.Column('pred_id', sa.String(length=5), nullable=False),
+    sa.Column('pred_id', sa.Integer(), nullable=False),
     sa.Column('game_id', sa.Integer(), nullable=True),
     sa.Column('team1', sa.String(length=3), nullable=True),
     sa.Column('team2', sa.String(length=3), nullable=True),
     sa.Column('goals1', sa.Integer(), nullable=True),
     sa.Column('goals2', sa.Integer(), nullable=True),
     sa.Column('winner', sa.Integer(), nullable=True),
+    sa.Column('stage', sa.String(length=16), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['user_id'], ['user.user_id'], ),
     sa.PrimaryKeyConstraint('pred_id')
