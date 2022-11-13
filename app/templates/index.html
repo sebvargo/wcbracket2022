@@ -1,8 +1,44 @@
-{% extends 'base.html' %}
+
+
+
+{% extends "base.html" %}
 
 {% block content %}
 
-    <h1>Hola, {{ current_user.username }}!</h1>
+
+<h1>Hola, {{ current_user.username }}! </h1>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Partido</th>
+        <th scope="col">Equipo 1</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+        <th scope="col">Equipo 2</th>
+        <th scope="col">Resultado</th>
+      </tr>
+    </thead>
+    <tbody>
+        Group Stage
+        {% for p in group_stage_predictions %}
+            <tr>
+                <th scope="row">{{ p.game_id }}</th>
+                <td>{{ p.team1 }}</td>
+                <td>{{ p.goals1 }}</td>
+                <td> - </td>
+                <td>{{ p.goals2 }}</td>
+                <td>{{ p.team2 }}</td>
+                <td></td>
+            </tr>
+        {% endfor %}
+     
+    </tbody>
+  </table>
+
+
+
 
 {% endblock content %}
 

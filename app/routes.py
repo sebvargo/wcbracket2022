@@ -1,6 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request
-from app.models import User
+from app.models import User, Prediction
+from app.utility_functions import read_group_stage_bracket
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm
 from werkzeug.urls import url_parse
@@ -10,7 +11,8 @@ import pandas as pd
 @app.route('/')
 @login_required
 def index():
-    return render_template('index.html', title = 'Home')
+    group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').all()
+    return render_template('index.html', group_stage_predictions = group_stage_predictions)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -36,16 +38,20 @@ def login():
 @login_required
 def upload():
     form = QuinielaForm()
+    
     if form.validate_on_submit():
         f = form.file.data
-        df = pd.read_excel('matches.xlsx')
-        flash(df['team2'].values[0])
+        read_group_stage_bracket(f)
+        return redirect(url_for('index'))
+        
+    
+        
     return render_template('upload.html', title = 'Upload Quiniela', form = form)
 
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
