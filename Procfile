@@ -1,1 +1,1 @@
-web: flask db upgrade; gunicorn  --preload --workers=5 --threads=10 --worker-class=gthread main:app
+web: flask db upgrade; gunicorn  --preload --workers=5 --threads=10 --worker-class=gthread quiniela:app
