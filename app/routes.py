@@ -11,8 +11,9 @@ import pandas as pd
 @app.route('/')
 @login_required
 def index():
+    user = f'{current_user.username} - id: {current_user.user_id}'
     group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').all()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions)
+    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
