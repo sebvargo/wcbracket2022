@@ -4,9 +4,9 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you will never guess'
     SESSION_PERMANENT =  False
     SESSION_TYPE = 'filesystem'
-    DATABASE_USER = os.environ["DB_USER"]  # e.g. 'my-database-user'
-    DATABASE_PASSWORD = os.environ["DB_PASS"]  # e.g. 'my-database-password'
-    DATABASE_NAME = os.environ["DB_NAME"]  # e.g. 'my-database'
+    DATABASE_USER = os.environ["DATABASE_USER"]  # e.g. 'my-database-user'
+    DATABASE_PASSWORD = os.environ["DATABASE_PASSWORD"]  # e.g. 'my-database-password'
+    DATABASE_NAME = os.environ["DATABASE_NAME"]  # e.g. 'my-database'
     INSTANCE_UNIX_SOCKET = os.environ["INSTANCE_UNIX_SOCKET"]  # e.g. '/cloudsql/project:region:instance'
 
     try:
