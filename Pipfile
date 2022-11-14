@@ -18,6 +18,8 @@ psycopg2-binary = "*"
 openpyxl = "*"
 flask-session = "*"
 psycopg2 = "*"
+greenlet = "*"
+futures = "*"
 
 [dev-packages]
 

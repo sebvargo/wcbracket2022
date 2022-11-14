@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "c14cc42b4b947ba3de1e95864834793d692d1ac6bc3904cb4b2e34dfcc283122"
+            "sha256": "8f09989f046970267f70c114f40a3da91abbcb2b60425bcbcb1c6ade588b4c2a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -272,6 +272,14 @@
             "markers": "python_version >= '3.7'",
             "version": "==4.38.0"
         },
+        "futures": {
+            "hashes": [
+                "sha256:0542525145d5afc984c88f914a0c85c77527f65946617edb5274f72406f981df",
+                "sha256:f7f16b6bf9653a918a03f1f2c2d62aac0cd64b1bc088e93ea279517f6b61120b"
+            ],
+            "index": "pypi",
+            "version": "==3.0.5"
+        },
         "greenlet": {
             "hashes": [
                 "sha256:0109af1138afbfb8ae647e31a2b1ab030f58b21dd8528c27beaeb0093b7938a9",
@@ -335,7 +343,7 @@
                 "sha256:f6327b6907b4cb72f650a5b7b1be23a2aab395017aa6f1adb13069d66360eb3f",
                 "sha256:fb412b7db83fe56847df9c47b6fe3f13911b06339c2aa02dcc09dce8bbf582cd"
             ],
-            "markers": "python_version >= '3' and platform_machine == 'aarch64' or (platform_machine == 'ppc64le' or (platform_machine == 'x86_64' or (platform_machine == 'amd64' or (platform_machine == 'AMD64' or (platform_machine == 'win32' or platform_machine == 'WIN32')))))",
+            "index": "pypi",
             "version": "==2.0.1"
         },
         "gunicorn": {
