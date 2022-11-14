@@ -21,6 +21,9 @@ psycopg2 = "*"
 greenlet = "*"
 futures = "*"
 pymysql = "*"
+pip = "*"
+install = "*"
+pg8000 = "*"
 
 [dev-packages]
 

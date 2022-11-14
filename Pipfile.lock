@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9e0cdd8ef361bcc1c4017499ef69e9676e42a5bfa674e651a74aec8b7892bb95"
+            "sha256": "8ceae8b89e79676b19327d54f576b2a3ec4986cd7f82dc7f2b05ce501f2400db"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,6 +31,13 @@
             ],
             "markers": "platform_system == 'Darwin'",
             "version": "==0.1.3"
+        },
+        "asn1crypto": {
+            "hashes": [
+                "sha256:13ae38502be632115abf8a24cbe5f4da52e3b5231990aff31123c805306ccb9c",
+                "sha256:db4e40728b728508912cbb3d44f19ce188f218e9eba635821bb4b68564f8fd67"
+            ],
+            "version": "==1.5.1"
         },
         "asttokens": {
             "hashes": [
@@ -369,6 +376,14 @@
             ],
             "markers": "python_version < '3.10'",
             "version": "==5.0.0"
+        },
+        "install": {
+            "hashes": [
+                "sha256:0d3fadf4aa62c95efe8d34757c8507eb46177f86c016c21c6551eafc6a53d5a9",
+                "sha256:e67c8a0be5ccf8cb4ffa17d090f3a61b6e820e6a7e21cd1d2c0f7bc59b18e647"
+            ],
+            "index": "pypi",
+            "version": "==1.3.5"
         },
         "ipykernel": {
             "hashes": [
@@ -716,6 +731,14 @@
             "markers": "sys_platform != 'win32'",
             "version": "==4.8.0"
         },
+        "pg8000": {
+            "hashes": [
+                "sha256:398097469ad5b9cf9e899653dfb4ee8b10bd7f90efc7f60404d0a116dd93f0c5",
+                "sha256:c8c954d3c86d7fbf591bc83b00d6ece289fae176c8335a182a7570699da2bfdc"
+            ],
+            "index": "pypi",
+            "version": "==1.29.3"
+        },
         "pickleshare": {
             "hashes": [
                 "sha256:87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca",
@@ -789,6 +812,14 @@
             ],
             "markers": "python_version >= '3.7'",
             "version": "==9.3.0"
+        },
+        "pip": {
+            "hashes": [
+                "sha256:65fd48317359f3af8e593943e6ae1506b66325085ea64b706a998c6e83eeaf38",
+                "sha256:908c78e6bc29b676ede1c4d57981d490cb892eb45cd8c214ab6298125119e077"
+            ],
+            "index": "pypi",
+            "version": "==22.3.1"
         },
         "platformdirs": {
             "hashes": [
@@ -1054,6 +1085,14 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==24.0.1"
+        },
+        "scramp": {
+            "hashes": [
+                "sha256:b142312df7c2977241d951318b7ee923d6b7a4f75ba0f05b621ece1ed616faa3",
+                "sha256:b7022a140040f33cf863ab2657917ed05287a807b917950489b89b9f685d59bc"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==1.4.4"
         },
         "setuptools": {
             "hashes": [
