@@ -16,7 +16,6 @@ RUN chmod +x boot.sh
 
 ENV FLASK_APP quiniela.py
 
-RUN wget https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 -O cloud_sql_proxy
 RUN chown -R quiniela:quiniela ./
 USER quiniela
 
