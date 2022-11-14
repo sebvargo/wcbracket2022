@@ -15,9 +15,8 @@ COPY quiniela.py config.py boot.sh ./
 RUN chmod +x boot.sh
 
 ENV FLASK_APP quiniela.py
-
 RUN chown -R quiniela:quiniela ./
 USER quiniela
 
-EXPOSE 8080
+EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
