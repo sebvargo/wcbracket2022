@@ -1,4 +1,4 @@
-FROM python:3.9.5-slim-buster
+FROM python:3.9.5-slim
 
 RUN useradd quiniela
 
@@ -6,9 +6,10 @@ WORKDIR /home/quiniela
 
 COPY requirements.txt requirements.txt
 RUN python -m venv venv
+RUN apt-get update && apt-get -y install libpq-dev gcc && venv/bin/pip install psycopg2
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn pymysql cryptography
-RUN apt-get update && apt-get -y install libpq-dev gcc && venv/bin/pip install psycopg2
+
 
 COPY app app
 COPY migrations migrations
