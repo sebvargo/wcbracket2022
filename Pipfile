@@ -20,6 +20,7 @@ flask-session = "*"
 psycopg2 = "*"
 greenlet = "*"
 futures = "*"
+pymysql = "*"
 
 [dev-packages]
 

@@ -8,4 +8,4 @@ while true; do
     echo Upgrade command failed, retrying in 5 secs...
     sleep 5
 done
-exec gunicorn --preload -b :5000 --access-logfile - --error-logfile - quiniela:app
+exec gunicorn --bind :5000 --workers 3 --threads 8 --timeout 0 main:app
