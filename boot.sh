@@ -8,4 +8,4 @@ while true; do
     echo Upgrade command failed, retrying in 5 secs...
     sleep 5
 done
-exec gunicorn -b :5000 --access-logfile - --error-logfile - quiniela:app --workers=3 --threads=8 --worker-class=gthread
+exec gunicorn -b :8080 --access-logfile - --error-logfile - quiniela:app --workers=3 --threads=8 --worker-class=gthread
