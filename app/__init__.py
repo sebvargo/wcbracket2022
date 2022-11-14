@@ -3,6 +3,7 @@ from config import Config
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
+from flask_session import Session
 
 db = SQLAlchemy()
 def create_app():
@@ -12,9 +13,11 @@ def create_app():
     return app
 
 app = create_app()
+Session(app)
 login = LoginManager(app)
 login.init_app(app)
 login.login_view = 'login'
+
 
 migrate = Migrate(app, db)
 app.app_context().push()

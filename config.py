@@ -2,6 +2,8 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'you will never guess'
+    SESSION_PERMANENT =  False
+    SESSION_TYPE = 'filesystem'
     try:
         SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL').replace('postgres://', 'postgresql://')
     except:

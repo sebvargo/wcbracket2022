@@ -1,5 +1,5 @@
 from app import app, db
-from flask import render_template, redirect, flash, url_for, request
+from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction
 from app.utility_functions import read_group_stage_bracket
 from flask_login import current_user, login_user, logout_user, login_required
@@ -27,7 +27,9 @@ def login():
         if user is None or not user.check_password(form.password.data):
             flash('Invalid Username or Password')
             return redirect(url_for('login'))
+        
         login_user(user, remember=form.remember_me.data)
+        session['user_id'] = user.user_id
         return redirect(url_for('index'))    
         # next_page = request.args.get('next')
         # if not next_page or url_parse(next_page).netloc != '':
@@ -52,6 +54,7 @@ def upload():
 @app.route('/logout')
 def logout():
     logout_user()
+    session['user_id'] = None
     return redirect(url_for('login'))
 
 @app.route('/register', methods = ['GET', 'POST'])
