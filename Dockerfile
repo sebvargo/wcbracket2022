@@ -19,5 +19,5 @@ ENV FLASK_APP quiniela.py
 RUN chown -R quiniela:quiniela ./
 USER quiniela
 
-EXPOSE 5000
+EXPOSE 8080
 ENTRYPOINT ["./boot.sh"]
