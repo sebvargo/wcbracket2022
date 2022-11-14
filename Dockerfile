@@ -8,6 +8,7 @@ COPY requirements.txt requirements.txt
 RUN python -m venv venv
 RUN venv/bin/pip install -r requirements.txt
 RUN venv/bin/pip install gunicorn pymysql cryptography
+RUN apt-get update && apt-get -y install libpq-dev gcc && pip install psycopg2
 
 COPY app app
 COPY migrations migrations
