@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     predictions = db.relationship('Prediction', backref = 'user', lazy = 'dynamic')
     goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic')
-    group_predictions = db.relationship('Group', backref = 'user', lazy = 'dynamic')
+    # group_predictions = db.relationship('Group', backref = 'user', lazy = 'dynamic')
     
     def __repr__(self):
         return f'<User {self.username}>'
