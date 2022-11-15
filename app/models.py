@@ -50,6 +50,8 @@ class Prediction(db.Model):
     goals2 = db.Column(db.Integer)
     winner = db.Column(db.Integer)
     stage = db.Column(db.String(16))
+    points_outcome = db.Column(db.Integer)
+    points_score = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     
     def __repr__(self) -> str:
