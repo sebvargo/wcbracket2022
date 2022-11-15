@@ -10,9 +10,8 @@ class Config(object):
     db_pass = os.environ.get('DB_PASS')
     db_name = os.environ.get('DB_NAME')
     db_instance = os.environ.get('DB_INSTANCE')
-    if os.environ.get('DATABASE_TYPE') == 'postgres':
-        SQLALCHEMY_DATABASE_URI = f'postgresql://{db_user}:{db_user}@localhost/{db_name}?host=/cloudsql/{db_instance}'
-    else:
-        SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', '').replace('postgres://', 'postgresql://') or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    
+    # if os.environ.get('DATABASE_TYPE') == 'postgres':
+    #     SQLALCHEMY_DATABASE_URI = f'postgresql://{db_user}:{db_user}@localhost/{db_name}?host=/cloudsql/{db_instance}'
