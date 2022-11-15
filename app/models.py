@@ -9,6 +9,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     predictions = db.relationship('Prediction', backref = 'user', lazy = 'dynamic')
     goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic')
+    group_predictions = db.relationship('Group', backref = 'user', lazy = 'dynamic')
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -64,3 +65,13 @@ class Goleador(db.Model):
     
     def __repr__(self) -> str:
         return f'{self.prediction}'
+    
+# class Group(db.Model):
+#     group_id = db.Column(db.Integer, primary_key = True, autoincrement=True)
+#     name = db.Column(db.String(1)) # A, B, C...
+#     winner = db.Column(db.String(3))
+#     runner_up = db.Column(db.String(3))
+#     pts_winner = db.Column(db.Integer)
+#     pts_runner = db.Column(db.Integer)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), unique=True)
+    
