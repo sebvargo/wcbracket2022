@@ -8,6 +8,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
     predictions = db.relationship('Prediction', backref = 'user', lazy = 'dynamic')
+    goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic')
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -54,3 +55,10 @@ class Prediction(db.Model):
     def __repr__(self) -> str:
         return f'<Game {self.game_id} Prediction: {self.team1} {self.goals1} - {self.goals2} {self.team2}, {self.winner} wins>'
 
+class Goleador(db.Model):
+    goleador_id = db.Column(db.Integer, primary_key = True, autoincrement=True)
+    prediction = db.Column(db.String(120))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), unique=True)
+    
+    def __repr__(self) -> str:
+        return f'{self.prediction}'
