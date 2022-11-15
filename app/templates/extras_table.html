@@ -1,0 +1,57 @@
+<div class="table-responsive">
+
+  
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingTwo">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo-extra" aria-expanded="false" aria-controls="flush-collapseTwo-extra">
+            Goleador
+          </button>
+        </h2>
+        <div id="flush-collapseTwo-extra" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body"><h3>{{ goleador }} </h3></div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="flush-headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne-extra" aria-expanded="false" aria-controls="flush-collapseOne-extra">
+            Group Stage
+          </button>
+        </h2>
+        <div id="flush-collapseOne-extra" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+          <div class="accordion-body">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th scope="col">Group</th>
+                  <th scope="col">1ero</th>
+                  <th scope="col">2ndo</th>
+                  <th scope="col">1ro oficial</th>
+                  <th scope="col">2ndo oficial</th>
+                  <th scope="col">Pts. 1ro</th>
+                  <th scope="col">Pts. 2ndo</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {% for p in group_stage_predictions %}
+                      <tr>
+                          <th scope="row"> - </th>
+                          <td> - </td>
+                          <td> - </td>
+                          <td> - </td>
+                          <td> - </td>
+                          <td> - </td>
+                          <td> - </td>
+                      </tr>
+                  {% endfor %}
+               
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+</div>
