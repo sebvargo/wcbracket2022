@@ -3,3 +3,7 @@ app.db
 *.xlsx
 text_editor.txt
 flask_session
+app.yaml
+boot.sh
+Dockerfile
+wip.ipynb
