@@ -7,9 +7,9 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(120), index=True, unique=True)
     password_hash = db.Column(db.String(128))
-    predictions = db.relationship('Prediction', backref = 'user', lazy = 'dynamic')
-    goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic')
-    # group_predictions = db.relationship('Group', backref = 'user', lazy = 'dynamic')
+    predictions = db.relationship('Prediction', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
+    goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
+    stages = db.relationship('Stage', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan",)
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -75,9 +75,9 @@ class Stage(db.Model):
     pts_winner_outcome = db.Column(db.Integer)
     pts_runner_score = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
-    teams = db.relationship('Team', backref = 'stage', lazy = 'dynamic', cascade="all,delete, delete-orphan",)
+    teams = db.relationship('Team', backref = 'stage', lazy = 'dynamic', cascade="all,delete, delete-orphan")
     
-    def get_predictions_results(self, user_id, save_results = True):
+    def get_prediction_results(self, user_id, save_results = True):
         points_win = 3
         points_tie = 1
         for team in self.teams:
@@ -106,7 +106,12 @@ class Stage(db.Model):
             else: # Tie
                 team1.points += points_tie
                 team2.points += points_tie
-            
+        
+        # determine group winner and runner-up
+        top_2_teams = self.teams.order_by(Team.points.desc(), Team.goal_difference.desc(), Team.goals_scored.desc()).all()[:2]
+        self.winner, self.runner_up = [t.country_code for t in top_2_teams]
+        print(f'{self.name} Top 2: {self.winner}, {self.runner_up}')
+        
         if save_results:      
             try:
                 db.session.commit()
