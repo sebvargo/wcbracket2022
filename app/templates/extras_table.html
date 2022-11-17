@@ -21,9 +21,7 @@
         </h2>
         <div id="flush-collapseOne-extra" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
-            Esta informacion la tendra una vez se cierre el plazo para subir las Quinielas de Primera ronda.<br>
-            This information will be displayed once the first round deadline has passed.
-            <!--
+            
             <table class="table table-sm">
               <thead>
                 <tr>
@@ -37,11 +35,11 @@
                 </tr>
               </thead>
               <tbody>
-                  {% for p in group_stage_predictions %}
+                  {% for s in stage_results %}
                       <tr>
-                          <th scope="row"> - </th>
-                          <td> - </td>
-                          <td> - </td>
+                          <th scope="row"> {{ s.name }} </th>
+                          <td> {{ s.winner }} </td>
+                          <td> {{ s.runner_up }} </td>
                           <td> - </td>
                           <td> - </td>
                           <td> - </td>
@@ -50,8 +48,8 @@
                   {% endfor %}
                
               </tbody>
-            </table>>
-            -->
+            </table>
+            
           </div>
         </div>
       </div>

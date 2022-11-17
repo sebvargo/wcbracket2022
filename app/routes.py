@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
-from app.models import User, Prediction, Goleador
-from app.utility_functions import read_group_stage_bracket, read_goleador
+from app.models import User, Prediction, Goleador, Stage
+from app.utility_functions import read_group_stage_bracket, read_goleador, calculate_group_results
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm
 from werkzeug.urls import url_parse
@@ -14,7 +14,8 @@ def index():
     user = f'{current_user.username} - id: {current_user.user_id}'
     group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').all()
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador)
+    stage_results = current_user.stages.order_by(Stage.name).all()
+    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador, stage_results = stage_results)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -47,6 +48,7 @@ def upload():
         f = form.file.data
         read_group_stage_bracket(f)
         read_goleador(f)
+        calculate_group_results(current_user, stage_type = 'group')
         return redirect(url_for('index'))
 
     return render_template('upload.html', title = 'Upload Quiniela', form = form)

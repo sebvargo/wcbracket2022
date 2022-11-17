@@ -81,3 +81,17 @@ def create_group_stage(user_id, stage_type):
     except:
         db.session.rollback()
         print("DID NOT create  stages and team successfully successully. Session rolled back")  
+
+def calculate_group_results(user, stage_type = 'group'):
+    print(user.username)
+    if len(Stage.query.filter_by(user_id = user.user_id).all()) > 1:
+        print(f'{user.username} has Stages')
+    else:
+        print(f'{user.username} has NO Stages')
+        
+    # Create stages
+    create_group_stage(user.user_id, stage_type)
+    
+    # get results
+    for s in user.stages.all():
+        s.get_prediction_results(user.user_id)
