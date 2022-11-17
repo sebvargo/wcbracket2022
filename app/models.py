@@ -9,7 +9,8 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     predictions = db.relationship('Prediction', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
     goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
-    stages = db.relationship('Stage', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan",)
+    stages = db.relationship('Stage', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
+    events = db.relationship('EventTracker', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -132,7 +133,13 @@ class Team(db.Model):
     goal_difference = db.Column(db.Integer)
     stage_id = db.Column(db.Integer, db.ForeignKey('stage.stage_id'))
     
-
+class EventTracker(UserMixin, db.Model):
+    event_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    description = db.Column(db.String(1024))
+    count = db.Column(db.Integer)
+    
+    
 
 GROUPS = {
     'A':['QAT','ECU','SEN','NED'],

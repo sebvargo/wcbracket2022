@@ -1,0 +1,30 @@
+
+<form action="" method="post" class ="mb-3" novalidate>
+    {{ form.hidden_tag() }}
+    
+    <div class="row">
+        <div class="col">
+        
+            {{ form.goals_belgium.label(class_="form-label") }}
+            {{ form.goals_belgium(class_='form-control', size=32, disabled=True, placeholder= game_26.goals1) }}
+            {% for error in form.goals_belgium.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        
+        </div>
+        <div class="col">
+            {{ form.goals_morocco.label(class_="form-label") }}
+            <div class="input-group">
+                
+                {{ form.goals_morocco(class_='form-control', size=32, placeholder= game_26.goals2 ) }}
+                {{ form.submit(class_='btn btn-primary') }}
+                {% for error in form.goals_morocco.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+      
+    
+
+</form>

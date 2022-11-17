@@ -3,6 +3,7 @@ from flask_wtf.file import FileField, FileAllowed, FileRequired
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
+from app.utility_functions import FLAGS
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -32,5 +33,10 @@ class RegistrationForm(FlaskForm):
 class QuinielaForm(FlaskForm):
     file = FileField('File', validators=[FileRequired(), FileAllowed(['xlsx'], '.xlsx files only!')])
     submit = SubmitField('Submit')
+    
+class MoroccoForm(FlaskForm):
+    goals_belgium = StringField(f'{FLAGS["BEL"]} Belgica')
+    goals_morocco = StringField(f'{FLAGS["MAR"]} Marruecos', validators=[DataRequired()])
+    submit = SubmitField('Save')
     
     

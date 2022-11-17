@@ -1,21 +1,39 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
-from app.models import User, Prediction, Goleador, Stage
+from app.models import User, Prediction, Goleador, Stage, EventTracker
 from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm, QuinielaForm
+from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 import pandas as pd
 
-@app.route('/')
+
+@app.route('/', methods = ['GET', 'POST'])
 @login_required
 def index():
+    form = MoroccoForm()
+    if form.validate_on_submit():
+        game_26 = Prediction.query.filter_by(user_id = current_user.user_id, game_id = 26).first()
+        game_26.goals2 = int(form.goals_morocco.data)
+        if EventTracker.query.filter_by(user_id = current_user.user_id, description = "MAR goals update").first() is not None:
+            update_morocco_event = EventTracker.query.filter_by(user_id = current_user.user_id, description = "MAR goals update").first()
+            update_morocco_event.count += 1
+        else:
+            update_morocco_event = EventTracker(user_id = current_user.user_id, description = "MAR goals update", count = 1)
+            db.session.add(update_morocco_event)
+        try:
+            db.session.commit()
+            print(f'{current_user.username} - Morocco update was successful')
+        except:
+            db.session.rollback()
+            print(f'{current_user.username} - Morocco update was NOT successful')
     user = f'{current_user.username} - id: {current_user.user_id}'
     group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').all()
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador, stage_results = stage_results, flags = FLAGS)
+    game_26 = Prediction.query.filter_by(user_id = current_user.user_id, game_id = 26).first()
+    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador, stage_results = stage_results, flags = FLAGS, form = form, game_26 = game_26)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
