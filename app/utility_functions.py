@@ -1,29 +1,8 @@
 import pandas as pd
 from app import db
-from app.models import User, Prediction, Goleador
 from flask_login import current_user
+from app.models import *
 
-GROUPS = {
-    'A':['QAT','ECU','SEN','NED'],
-    'B':['ENG','IRN','USA','WAL'],
-    'C':['ARG','KSA','MEX','POL'],
-    'D':['FRA','AUS','DEN','TUN'],
-    'E':['ESP','CRC','GER','JPN'],
-    'F':['BEL','CAN','MAR','CRO'],
-    'G':['BRA','SRB','SUI','CMR'],
-    'H':['POR','GHA','URU','KOR'],
-}
-
-GAMES_IN_GROUP = {
-    'A': [1, 2, 18, 19, 35, 36],
-    'B': [3, 4, 17, 20, 33, 34],
-    'C': [7, 8, 22, 24, 39, 40],
-    'D': [5, 6, 21, 23, 37, 38],
-    'E': [10, 11, 25, 28, 43, 44],
-    'F': [9, 12, 26, 27, 41, 42],
-    'G': [13, 16, 29, 31, 47, 48],
-    'H': [14, 15, 30, 32, 45, 46]
- }
 
 def read_group_stage_bracket(xlsx_file, stage = 'group'):
     cols = ['match_id', 'team1', 'team2', 'team1_prediction', 'team2_prediction', 'stage']
@@ -72,3 +51,33 @@ def read_goleador(xlsx_file):
         print('Could not add goleador, please try again.')
         return 'Could not add predictions, please try again.'
     
+    
+def create_group_stage(user_id, stage_type):
+    # Create all groups for user:
+    # check if user already has groups created
+    if Stage.query.filter_by(user_id = user_id).first() is not None:
+        for stage in Stage.query.filter_by(user_id = user_id, stage_type = stage_type).all():
+            # delete any corresponding the stage
+            Team.query.filter_by(stage_id = stage.stage_id).delete()
+        # delete stage
+        Stage.query.filter_by(user_id = user_id).delete()
+        
+    # create groups
+    for group_name in GROUPS.keys():
+        stage = Stage(stage_type = stage_type, name = group_name, user_id = user_id)
+        db.session.add(stage)
+
+    # add teams to group 
+    for group_name in  GROUPS.keys(): # A, B, C ...
+        stage_id = Stage.query.filter_by(stage_type =stage_type, name = group_name, user_id = user_id).first().stage_id
+
+        for country_code in GROUPS[group_name]: # QAT, ECU, ...
+            team = Team(name = TEAM_NAMES[country_code], country_code = country_code, stage_id = stage_id)
+            db.session.add(team)
+
+    try:
+        db.session.commit()
+        print("Created stages and teams successfully")
+    except:
+        db.session.rollback()
+        print("DID NOT create  stages and team successfully successully. Session rolled back")  
