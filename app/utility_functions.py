@@ -3,6 +3,7 @@ from app import db
 from flask_login import current_user
 from app.models import *
 
+FLAGS = {'ARG':'🇦🇷','AUS':'🇦🇹','BEL':'🇧🇪','BRA':'🇧🇷','CMR':'🇨🇲','CAN':'🇨🇦','CRC':'🇨🇷','CRO':'🇭🇷','DEN':'🇩🇰','ECU':'🇪🇨','ENG':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','FRA':'🇫🇷','GER':'🇩🇪','GHA':'🇬🇭','IRN':'🇮🇷','JPN':'🇯🇵','MEX':'🇲🇽','MAR':'🇲🇦','NED':'🇳🇱','POL':'🇵🇱','POR':'🇵🇹','QAT':'🇶🇦','KSA':'🇸🇦','SEN':'🇸🇳','SRB':'🇷🇸','KOR':'🇰🇷','ESP':'🇪🇸','SUI':'🇨🇭','TUN':'🇹🇳','URU':'🇺🇾','USA':'🇺🇸','WAL':'🏴󠁧󠁢󠁷󠁬󠁳󠁿'}
 
 def read_group_stage_bracket(xlsx_file, stage = 'group'):
     cols = ['match_id', 'team1', 'team2', 'team1_prediction', 'team2_prediction', 'stage']

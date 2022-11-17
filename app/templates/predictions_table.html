@@ -28,11 +28,11 @@
                   {% for p in group_stage_predictions %}
                       <tr>
                           <th scope="row">{{ p.game_id }}</th>
-                          <td>{{ p.team1 }}</td>
+                          <td>{{ flags[p.team1] }} {{ p.team1 }}</td>
                           <td>{{ p.goals1 }}</td>
                           <td> - </td>
                           <td>{{ p.goals2 }}</td>
-                          <td>{{ p.team2 }}</td>
+                          <td>{{ flags[p.team2] }} {{ p.team2 }}</td>
                           <td>
                           </td>
                           <td>{{ p.points_outcome }}</td>
