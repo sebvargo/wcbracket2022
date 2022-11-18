@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm
 from werkzeug.urls import url_parse
@@ -28,6 +28,7 @@ def index():
         except:
             db.session.rollback()
             print(f'{current_user.username} - Morocco update was NOT successful')
+            
     user = f'{current_user.username} - id: {current_user.user_id}'
     group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').all()
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
@@ -49,6 +50,7 @@ def login():
             return redirect(url_for('login'))
         
         login_user(user, remember=form.remember_me.data)
+        add_event(description = 'login', user = current_user, init_value = 1)
         session['user_id'] = user.user_id
         return redirect(url_for('index'))    
         # next_page = request.args.get('next')

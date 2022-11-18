@@ -6,8 +6,22 @@ from emoji import emojize
 
 TEAM_NAMES_EMOJI = {'ARG' : 'Argentina','AUS':'Australia','BEL':'Belgium','BRA':'Brazil','CMR':'Cameroon','CAN':'Canada','CRC':'Costa_Rica','CRO':'Croatia','DEN':'Denmark','ECU':'Ecuador','ENG':'England','FRA':'France','GER':'Germany','GHA':'Ghana','IRN':'Iran','JPN':'Japan','MEX':'Mexico','MAR':'Morocco','NED':'Netherlands','POL':'Poland','POR':'Portugal','QAT':'Qatar','KSA':'Saudi_Arabia','SEN':'Senegal','SRB':'Serbia','KOR':'South_Korea','ESP':'Spain','SUI':'Switzerland','TUN':'Tunisia','URU':'Uruguay','USA':'United_States','WAL':'Wales'}
 FLAGS = {k: emojize(f':{t}:') for k, t in TEAM_NAMES_EMOJI.items()}
-OLD_FLAGS = {'ARG':'🇦🇷','AUS':'🇦🇹','BEL':'🇧🇪','BRA':'🇧🇷','CMR':'🇨🇲','CAN':'🇨🇦','CRC':'🇨🇷','CRO':'🇭🇷','DEN':'🇩🇰','ECU':'🇪🇨','ENG':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','FRA':'🇫🇷','GER':'🇩🇪','GHA':'🇬🇭','IRN':'🇮🇷','JPN':'🇯🇵','MEX':'🇲🇽','MAR':'🇲🇦','NED':'🇳🇱','POL':'🇵🇱','POR':'🇵🇹','QAT':'🇶🇦','KSA':'🇸🇦','SEN':'🇸🇳','SRB':'🇷🇸','KOR':'🇰🇷','ESP':'🇪🇸','SUI':'🇨🇭','TUN':'🇹🇳','URU':'🇺🇾','USA':'🇺🇸','WAL':'🏴󠁧󠁢󠁷󠁬󠁳󠁿'}
+# OLD_FLAGS = {'ARG':'🇦🇷','AUS':'🇦🇹','BEL':'🇧🇪','BRA':'🇧🇷','CMR':'🇨🇲','CAN':'🇨🇦','CRC':'🇨🇷','CRO':'🇭🇷','DEN':'🇩🇰','ECU':'🇪🇨','ENG':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','FRA':'🇫🇷','GER':'🇩🇪','GHA':'🇬🇭','IRN':'🇮🇷','JPN':'🇯🇵','MEX':'🇲🇽','MAR':'🇲🇦','NED':'🇳🇱','POL':'🇵🇱','POR':'🇵🇹','QAT':'🇶🇦','KSA':'🇸🇦','SEN':'🇸🇳','SRB':'🇷🇸','KOR':'🇰🇷','ESP':'🇪🇸','SUI':'🇨🇭','TUN':'🇹🇳','URU':'🇺🇾','USA':'🇺🇸','WAL':'🏴󠁧󠁢󠁷󠁬󠁳󠁿'}
 
+def add_event(description, user, init_value = 1):
+        if EventTracker.query.filter_by(user_id = user.user_id, description = description).first() is not None:
+            event = EventTracker.query.filter_by(user_id = user.user_id, description = description).first()
+            event.count += 1
+        else:
+            event = EventTracker(user_id = user.user_id, description = description, count = init_value)
+            db.session.add(event)
+        try:
+            db.session.commit()
+            print(f'{user.username} - {description} update was successful')
+        except:
+            db.session.rollback()
+            print(f'{user.username} - {description} update was NOT successful')
+            
 def read_group_stage_bracket(xlsx_file, stage = 'group'):
     cols = ['match_id', 'team1', 'team2', 'team1_prediction', 'team2_prediction', 'stage']
     df = pd.read_excel(xlsx_file,sheet_name='Resumen', usecols = cols)
