@@ -2,28 +2,30 @@
 
 {% block content %}
 <div class="container">
-    <h1>Suba su Quiniela / Upload your Quiniela</h1>
-    <hr>
-    Recuerde que puede subir su archivo las veces que quiera hasta el deadline de la primera ronda. Cada vez que suba el archivo sus predicciones seran actualizadas.
-    Por favor asegurese de:
-    <ul class="list">
-        <li>Subir el archivo de Excel que se le envio.</li>
-        <li>Hacer una prediccion en TODOS los partidos!</li>
-        <li>Escoger su goleador.</li>
-        <li>Ser PACIENTE :) El archivo tarda un poco en mandarse.</li>
-    </ul>
-    <hr>
-    Remember, you can upload your file as many times as you like before the first round deadline. Doing so will UPDATE your predictions. 
-    Please make sure that:
-    <ul class="list">
-        <li>You upload the original file we sent you.</li>
-        <li>Predict EVERY game.</li>
-        <li>Choose your tournament goal scorer.</li>
-        <li>Be PATIENT :) The file upload takes a little while.</li>
+    {% if current_user.username == "sebvargas" %}
+        <h1>Suba su Quiniela / Upload your Quiniela</h1>
+        <hr>
+        Recuerde que puede subir su archivo las veces que quiera hasta el deadline de la primera ronda. Cada vez que suba el archivo sus predicciones seran actualizadas.
+        Por favor asegurese de:
+        <ul class="list">
+            <li>Subir el archivo de Excel que se le envio.</li>
+            <li>Hacer una prediccion en TODOS los partidos!</li>
+            <li>Escoger su goleador.</li>
+            <li>Ser PACIENTE :) El archivo tarda un poco en mandarse.</li>
+        </ul>
+        <hr>
+        Remember, you can upload your file as many times as you like before the first round deadline. Doing so will UPDATE your predictions. 
+        Please make sure that:
+        <ul class="list">
+            <li>You upload the original file we sent you.</li>
+            <li>Predict EVERY game.</li>
+            <li>Choose your tournament goal scorer.</li>
+            <li>Be PATIENT :) The file upload takes a little while.</li>
 
-    </ul>
-    <hr>
-    {% include 'upload_input.html' %}
+        </ul>
+        <hr>
+        {% include 'upload_input.html' %}
+    {% endif %}
     
     
 </div>

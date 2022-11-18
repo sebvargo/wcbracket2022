@@ -90,3 +90,10 @@ def register():
         flash(f'{user.username} welcome to the Quiniela 2022!')
         return redirect(url_for('login'))
     return render_template('register.html', title = 'register', form = form)
+
+@app.route('/admin', methods = ['GET', 'POST'])
+def admin():
+    users = User.query.all()
+    return render_template('admin.html', 
+                           title = 'admin',
+                           users = users)
