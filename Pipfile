@@ -24,6 +24,7 @@ pymysql = "*"
 pip = "*"
 install = "*"
 pg8000 = "*"
+emoji = "*"
 
 [dev-packages]
 
