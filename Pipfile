@@ -25,6 +25,7 @@ pip = "*"
 install = "*"
 pg8000 = "*"
 emoji = "*"
+xlsxwriter = "*"
 
 [dev-packages]
 

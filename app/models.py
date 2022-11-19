@@ -30,14 +30,14 @@ def load_user(user_id):
     
 class Game(db.Model):
     game_id = db.Column(db.Integer, primary_key = True)
-    utc_time = db.Column(db.DateTime, index = True)
+    local_time = db.Column(db.DateTime, index = True)
     team1 = db.Column(db.String(3))
     team2 = db.Column(db.String(3))
     group = db.Column(db.String(1))
     location = db.Column(db.String(120))
     stage = db.Column(db.String(16))
-    cell1 = db.Column(db.String(4))
-    cell2 = db.Column(db.String(4))
+    official_goals1 = db.Column(db.Integer)
+    official_goals2 = db.Column(db.Integer)
     
         
     def __repr__(self) -> str:

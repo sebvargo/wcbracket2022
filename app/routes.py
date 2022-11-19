@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
-from app.models import User, Prediction, Goleador, Stage, EventTracker
+from app.models import User, Prediction, Goleador, Stage, EventTracker, Game
 from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm
@@ -99,3 +99,9 @@ def admin():
     return render_template('admin.html', 
                            title = 'admin',
                            users = users)
+ 
+@app.route('/calendar', methods = ['GET'])   
+def calendar():
+    games = Game.query.all()
+    
+    return render_template('calendar.html', title = 'Calendario Qatar 2022', games = games)
