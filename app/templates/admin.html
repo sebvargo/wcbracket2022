@@ -2,6 +2,7 @@
 
 {% block content %}
 <div class="container">
+
 {% if current_user.username == 'sebvargas' %}
     <h1>Hola, {{ current_user.username }}! </h1>
     <p>Personas inscritas y confirmacion de picks. 
@@ -31,7 +32,6 @@
             </table>
         </div>
 {% endif %}
-  
 </div>
 {% endblock content %}
 

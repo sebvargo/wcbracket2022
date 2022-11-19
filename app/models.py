@@ -26,6 +26,27 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
+    def calculate_points(self, event_description = '2022_quiniela_qatar'):
+        # get points from Predictions
+        pred_points= Prediction.query.filter_by(user_id = self.user_id)
+        pred_points = np.array([p.points_outcome + p.points_score if p.points_outcome is not None else 0 for p in self.predictions])
+        pred_sum = pred_points.sum()
+        goleador_points = self.goleador.first().goleador_points if self.goleador.first().goleador_points is not None else 0
+        stage_points = np.array([p.pts_winner_outcome  + p.pts_runner_score if p.pts_winner_outcome is not None else 0 for p in self.stages])
+        stage_sum = stage_points.sum()
+        total_points = np.sum([pred_sum, goleador_points, stage_sum])
+        points = Points(user_id = self.user_id, points = int(total_points), event_description = event_description)
+        db.session.add(points)
+        
+        try:
+            db.session.commit()
+            print(f'{self.username} - POINTS update was successful')
+        except Exception as e:
+            db.session.rollback()
+            print(f'{self.username} - POINTS update was NOT successful: {e}')
+        
+        return f'{self.user_id} {self.username}: {total_points} points'
+    
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -143,21 +164,9 @@ class EventTracker(UserMixin, db.Model):
     
 class Points(UserMixin, db.Model):
     point_id = db.Column(db.Integer, primary_key = True)
+    event_description = db.Column(db.String(1024))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     points = db.Column(db.Integer)
-    
-    def calculate_points(self, ):
-        # get points from Predictions
-        pred_points= Prediction.query.filter_by(user_id = self.user_id)
-        import numpy as np
-        user = self.user
-        pred_points = np.array([p.points_outcome + p.points_score if p.points_outcome is not None else 0 for p in user.predictions])
-        pred_sum = pred_points.sum()
-        goleador_points = user.goleador.first().goleador_points if user.goleador.first().goleador_points is not None else 0
-        stage_points = np.array([p.pts_winner_outcome  + p.pts_runner_score if p.pts_winner_outcome is not None else 0 for p in user.stages])
-        stage_sum = stage_points.sum()
-        self.points = np.sum([pred_sum, goleador_points, stage_sum])
-        db.session.commit()
     
     
 
