@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
-from app.models import User, Prediction, Goleador, Stage, EventTracker, Game
+from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
 from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm
@@ -98,11 +98,11 @@ def register():
 @app.route('/admin', methods = ['GET', 'POST'])
 @login_required
 def admin():
-    users = User.query.all()
+    points = Points.query.order_by(Points.points.desc()).all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
-                           users = users)
+                           points = points)
 
 @app.route('/calculate_points', methods = ['GET', 'POST'])
 @login_required
@@ -125,6 +125,15 @@ def calendar():
 @app.route('/results', methods = ['GET'])  
 @login_required
 def results():
-    games = Game.query.order_by(Game.local_time).all()
+    points = Points.query.order_by(Points.points.desc()).all()
     add_event("view_results", current_user)
-    return render_template('results.html', title = 'Posiciones/Rankings', games = games, flags = FLAGS)
+    return render_template('results.html', title = 'Posiciones/Rankings', points = points, flags = FLAGS)
+
+@app.route('/user_profile/<int:user_id>', methods = ['GET', 'POST'])
+@login_required
+def user_profile(user_id):
+    user = User.query.filter_by(user_id = user_id).first()
+    stage_results = user.stages.order_by(Stage.name).all()
+    goleador = user.goleador.first()
+    return render_template('user_profile.html', title = f'Profile: {user.username}', user = user, group_stage_predictions = user.predictions.all(), flags = FLAGS,
+                           stage_results = stage_results, goleador = goleador)

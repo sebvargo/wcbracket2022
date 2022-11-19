@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  <h1 class = "h1 mb-3">User: {{ user.username }} </h1>
+  <div class="row mb-3">
+    {% include 'extras_table.html' %}
+  </div>
+  <div class="row mb-3">
+    {% include 'predictions_table.html' %}
+  </div>
+</div>
+{% endblock content %}
+

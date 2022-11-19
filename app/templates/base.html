@@ -34,6 +34,7 @@
 
                         
                         <a class="nav-link" href="{{ url_for('calendar') }}">Calendario</a>
+                        <a class="nav-link" href="{{ url_for('results') }}">Posiciones/Rankings</a>
                         {% if  current_user.username == 'sebvargas' %}
                             <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
                         {% endif %}

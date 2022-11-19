@@ -28,12 +28,18 @@ class User(UserMixin, db.Model):
     
     def calculate_points(self, event_description = '2022_quiniela_qatar'):
         # get points from Predictions
+        if Points.query.filter_by(user_id = self.user_id).first() is not None:
+            Points.query.filter_by(user_id = self.user_id).delete()
+            
         pred_points= Prediction.query.filter_by(user_id = self.user_id)
         pred_points = np.array([p.points_outcome + p.points_score if p.points_outcome is not None else 0 for p in self.predictions])
         pred_sum = pred_points.sum()
+        print(pred_points)
         goleador_points = self.goleador.first().goleador_points if self.goleador.first().goleador_points is not None else 0
+        print(goleador_points)
         stage_points = np.array([p.pts_winner_outcome  + p.pts_runner_score if p.pts_winner_outcome is not None else 0 for p in self.stages])
         stage_sum = stage_points.sum()
+        print(stage_sum)
         total_points = np.sum([pred_sum, goleador_points, stage_sum])
         points = Points(user_id = self.user_id, points = int(total_points), event_description = event_description)
         db.session.add(points)

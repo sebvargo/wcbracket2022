@@ -1,0 +1,24 @@
+        <p>Personas inscritas y confirmacion de picks. 
+            <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Usuario</th>
+                      <th scope="col">Puntos</th>
+                      <th scope="col">Goleador</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for p in points %}
+                          <tr>
+                              <th scope="row">{{p.user.user_id}}</th>
+                              <td><a href="{{ url_for('user_profile', user_id = p.user.user_id ) }}" class="link-primary">{{p.user.username}}</a></td>
+                              <td>{{p.points}}</td>
+                              <td>{{p.user.goleador.first()}}</td>
+                          </tr>
+                      {% endfor %}
+                  
+                  </tbody>
+                </table>
+            </div>
