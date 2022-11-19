@@ -70,7 +70,7 @@ def upload():
         read_goleador(f)
         calculate_group_results(current_user, stage_type = 'group')
         return redirect(url_for('index'))
-
+    add_event("view_results", current_user)
     return render_template('upload.html', title = 'Upload Quiniela', form = form)
 
 @app.route('/logout')
@@ -81,6 +81,7 @@ def logout():
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
+    
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
@@ -91,17 +92,25 @@ def register():
         db.session.commit()
         flash(f'{user.username} welcome to the Quiniela 2022!')
         return redirect(url_for('login'))
+    
     return render_template('register.html', title = 'register', form = form)
 
 @app.route('/admin', methods = ['GET', 'POST'])
 def admin():
     users = User.query.all()
+    add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
                            users = users)
  
 @app.route('/calendar', methods = ['GET'])   
 def calendar():
-    games = Game.query.all()
-    
-    return render_template('calendar.html', title = 'Calendario Qatar 2022', games = games)
+    games = Game.query.order_by(Game.local_time).all()
+    add_event("view_calendar", current_user)
+    return render_template('calendar.html', title = 'Calendario Qatar 2022', games = games, flags = FLAGS)
+
+@app.route('/results', methods = ['GET'])   
+def results():
+    games = Game.query.order_by(Game.local_time).all()
+    add_event("view_results", current_user)
+    return render_template('results.html', title = 'Posiciones/Rankings', games = games, flags = FLAGS)

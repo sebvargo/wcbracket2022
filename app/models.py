@@ -1,6 +1,7 @@
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login  import UserMixin
+import numpy as np
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key = True)
@@ -11,6 +12,7 @@ class User(UserMixin, db.Model):
     goleador = db.relationship('Goleador', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
     stages = db.relationship('Stage', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
     events = db.relationship('EventTracker', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
+    points = db.relationship('Points', backref = 'user', lazy = 'dynamic', cascade="all,delete, delete-orphan")
     
     def __repr__(self):
         return f'<User {self.username}>'
@@ -33,15 +35,14 @@ class Game(db.Model):
     local_time = db.Column(db.DateTime, index = True)
     team1 = db.Column(db.String(3))
     team2 = db.Column(db.String(3))
-    group = db.Column(db.String(1))
+    group = db.Column(db.String(16))
     location = db.Column(db.String(120))
     stage = db.Column(db.String(16))
     official_goals1 = db.Column(db.Integer)
     official_goals2 = db.Column(db.Integer)
     
-        
     def __repr__(self) -> str:
-        return f'<{self.stage} stage game on {self.utc_time} | {self.game_id}: {self.team1} v. {self.team2}>'
+        return f'< {self.game_id}: {self.team1} v. {self.team2} | {self.local_time}>'
     
 class Prediction(db.Model):
     pred_id = db.Column(db.Integer, primary_key = True)
@@ -63,6 +64,7 @@ class Goleador(db.Model):
     goleador_id = db.Column(db.Integer, primary_key = True, autoincrement=True)
     prediction = db.Column(db.String(120))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), unique=True)
+    goleador_points = db.Column(db.Integer)
     
     def __repr__(self) -> str:
         return f'{self.prediction}'
@@ -138,6 +140,24 @@ class EventTracker(UserMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     description = db.Column(db.String(1024))
     count = db.Column(db.Integer)
+    
+class Points(UserMixin, db.Model):
+    point_id = db.Column(db.Integer, primary_key = True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    points = db.Column(db.Integer)
+    
+    def calculate_points(self, ):
+        # get points from Predictions
+        pred_points= Prediction.query.filter_by(user_id = self.user_id)
+        import numpy as np
+        user = self.user
+        pred_points = np.array([p.points_outcome + p.points_score if p.points_outcome is not None else 0 for p in user.predictions])
+        pred_sum = pred_points.sum()
+        goleador_points = user.goleador.first().goleador_points if user.goleador.first().goleador_points is not None else 0
+        stage_points = np.array([p.pts_winner_outcome  + p.pts_runner_score if p.pts_winner_outcome is not None else 0 for p in user.stages])
+        stage_sum = stage_points.sum()
+        self.points = np.sum([pred_sum, goleador_points, stage_sum])
+        db.session.commit()
     
     
 

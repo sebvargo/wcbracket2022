@@ -1,1 +1,34 @@
 {% extends 'base.html' %}
+{% block content %}
+    <h1>Qatar 2022</h1> 
+    <div class="table-responsive">
+        <table class="table table-sm">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Fecha y Hora (Qatar)</th>
+            <th scope="col">Group</th>
+            <th scope="col">Local</th>
+            <th scope="col">Visitante</th>
+            <th scope="col">Location</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for g in games %}
+                <tr>
+                    <th scope="row">{{ g.game_id }}</th>
+                    <td>{{ g.local_time.strftime("%a, %b %d %H:%M") }}</td>
+                    <td>{{ g.group }}</td>
+                    <td>{{ flags[g.team1] }} {{ g.team1 }}</td>
+                    <td>{{ flags[g.team2] }} {{ g.team2 }}</td>
+                    <td>{{ g.location }}</td>
+                    <td>{{ g.points_outcome }}</td>
+                    <td>{{ g.points_score }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+        </table>
+    </div>
+{% endblock %}
