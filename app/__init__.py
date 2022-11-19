@@ -16,6 +16,7 @@ app = create_app()
 Session(app)
 login = LoginManager(app)
 login.init_app(app)
+login.login_message_category = "warning"
 login.login_view = 'login'
 
 

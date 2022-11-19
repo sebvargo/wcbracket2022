@@ -46,7 +46,7 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Invalid Username or Password')
+            flash('Invalid Username or Password', 'danger')
             return redirect(url_for('login'))
         
         login_user(user, remember=form.remember_me.data)
@@ -90,26 +90,40 @@ def register():
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(f'{user.username} welcome to the Quiniela 2022!')
+        flash(f'{user.username} Welcome/Bienvenido!', 'info')
         return redirect(url_for('login'))
     
     return render_template('register.html', title = 'register', form = form)
 
 @app.route('/admin', methods = ['GET', 'POST'])
+@login_required
 def admin():
     users = User.query.all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
                            users = users)
- 
-@app.route('/calendar', methods = ['GET'])   
+
+@app.route('/calculate_points', methods = ['GET', 'POST'])
+@login_required
+def calculate_points():
+    users = User.query.all()
+    check = []
+    for user in users: 
+        calc = user.calculate_points(event_description = '2022_quiniela_qatar')
+        check.append(calc)
+    flash(f'{sum(check)}/{len(check)} points calculated succesfully', 'success')
+    return redirect(url_for('admin'))
+
+@app.route('/calendar', methods = ['GET'])  
+@login_required 
 def calendar():
     games = Game.query.order_by(Game.local_time).all()
     add_event("view_calendar", current_user)
     return render_template('calendar.html', title = 'Calendario Qatar 2022', games = games, flags = FLAGS)
 
-@app.route('/results', methods = ['GET'])   
+@app.route('/results', methods = ['GET'])  
+@login_required
 def results():
     games = Game.query.order_by(Game.local_time).all()
     add_event("view_results", current_user)

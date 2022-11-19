@@ -41,11 +41,13 @@ class User(UserMixin, db.Model):
         try:
             db.session.commit()
             print(f'{self.username} - POINTS update was successful')
+            return True
+        
         except Exception as e:
             db.session.rollback()
             print(f'{self.username} - POINTS update was NOT successful: {e}')
+            return False
         
-        return f'{self.user_id} {self.username}: {total_points} points'
     
 @login.user_loader
 def load_user(user_id):

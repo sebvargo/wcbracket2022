@@ -2,36 +2,41 @@
 
 {% block content %}
 <div class="container">
+  <h1 class = "h1 mb-3">Admin: {{ current_user.username }} </h1>
+  {% include "admin_buttons.html"  %}
+  
+  <div class="row mb-3">
+    {% if current_user.username == 'sebvargas' %}
+        
+        <p>Personas inscritas y confirmacion de picks. 
+            <div class="table-responsive">
+                <table class="table table-sm">
+                  <thead>
+                    <tr>
+                      <th scope="col">ID</th>
+                      <th scope="col">Usuario</th>
+                      <th scope="col">Predicciones</th>
+                      <th scope="col">Marruecos</th>
+                      <th scope="col">Goleador</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                      {% for user in users %}
+                          <tr>
+                              <th scope="row">{{ user.user_id}}</th>
+                              <td>{{ user.username }}</td>
+                              <td>{{ user.predictions.all()|length > 0 }}</td>
+                              <td></td>
+                              <td>{{ user.goleador.first() }}</td>
+                          </tr>
+                      {% endfor %}
+                  
+                  </tbody>
+                </table>
+            </div>
+    {% endif %}
+  </div>
 
-{% if current_user.username == 'sebvargas' %}
-    <h1>Hola, {{ current_user.username }}! </h1>
-    <p>Personas inscritas y confirmacion de picks. 
-        <div class="table-responsive">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Usuario</th>
-                  <th scope="col">Predicciones</th>
-                  <th scope="col">Marruecos</th>
-                  <th scope="col">Goleador</th>
-                </tr>
-              </thead>
-              <tbody>
-                  {% for user in users %}
-                      <tr>
-                          <th scope="row">{{ user.user_id}}</th>
-                          <td>{{ user.username }}</td>
-                          <td>{{ user.predictions.all()|length > 0 }}</td>
-                          <td></td>
-                          <td>{{ user.goleador.first() }}</td>
-                      </tr>
-                  {% endfor %}
-              
-              </tbody>
-            </table>
-        </div>
-{% endif %}
 </div>
 {% endblock content %}
 
