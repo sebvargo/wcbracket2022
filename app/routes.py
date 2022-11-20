@@ -171,7 +171,7 @@ def calendar():
 @app.route('/results', methods = ['GET'])  
 @login_required
 def results():
-    points = Points.query.order_by(Points.points.desc()).all()
+    points = Points.query.order_by(Points.points.desc(), Points.user_id).all()
     add_event("view_results", current_user)
     return render_template('results.html', title = 'Posiciones/Rankings', points = points, flags = FLAGS)
 
