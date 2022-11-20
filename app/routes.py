@@ -31,7 +31,9 @@ def index():
             print(f'{current_user.username} - Morocco update was NOT successful')
             
     user = f'{current_user.username} - id: {current_user.user_id}'
-    group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
+    official_games = Game.query.order_by(Game.game_id).all()
+    predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
+    group_stage_predictions = zip(predictions, official_games)
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
     game_26 = Prediction.query.filter_by(user_id = current_user.user_id, game_id = 26).first()
@@ -100,13 +102,34 @@ def register():
 @login_required
 def admin():
     if request.method == 'POST':
-        game_id = request.form['btn_submit'] 
-        goals1 = request.form.get("goals1")
-        goals2 = request.form.get("goals2")
-        game_to_edit = Game.query.filter_by(game_id = game_id).first()
-        game_to_edit.official_goals1 = goals1
-        game_to_edit.official_goals2 = goals2
-        description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
+        try:
+            game_id = request.form['btn_submit'] 
+            goals1 = request.form.get("goals1")
+            goals2 = request.form.get("goals2")
+            if goals1 is None or goals2 is None: 
+                flash('Please add scores', 'danger')
+                return
+            game_to_edit = Game.query.filter_by(game_id = game_id).first()
+            game_to_edit.official_goals1 = goals1
+            game_to_edit.official_goals2 = goals2
+            game_to_edit.calculate_user_points()
+            # compare official result to predictions
+            description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
+            try:
+                db.session.commit()
+                print(f'{description} update was successful')
+                flash(f'{description} update was successful', 'success')
+            except:
+                db.session.rollback()
+                print(f'{description} update was NOT successful')
+                flash(f'{description} update was NOT successful', 'danger')
+                return
+        
+        except Exception:
+            flash(Exception, 'danger')
+        
+        # Calculate points
+        game_to_edit.calculate_user_points()
         try:
             db.session.commit()
             print(f'{description} update was successful')
@@ -114,8 +137,9 @@ def admin():
         except:
             db.session.rollback()
             print(f'{description} update was NOT successful')
-            flash(f'{description} update was successful', 'danger')
-            
+            flash(f'{description} update was NOT successful', 'danger')
+            return
+        
     points = Points.query.order_by(Points.points.desc()).all()
     today = dt.date.today()
     yesterday = dt.date.today() - dt.timedelta(days=1)
@@ -155,7 +179,20 @@ def results():
 @login_required
 def user_profile(user_id):
     user = User.query.filter_by(user_id = user_id).first()
+    points = Points.query.filter_by(user_id = user_id).first().points
     stage_results = user.stages.order_by(Stage.name).all()
     goleador = user.goleador.first()
-    return render_template('user_profile.html', title = f'Profile: {user.username}', user = user, group_stage_predictions = user.predictions.order_by(Prediction.game_id).all(), flags = FLAGS,
-                            stage_results = stage_results, goleador = goleador)
+    
+    official_games = Game.query.order_by(Game.game_id).all()
+    predictions = Prediction.query.filter_by(user_id = user.user_id, stage = 'group').order_by(Prediction.game_id).all()
+    group_stage_predictions = zip(predictions, official_games)
+    add_event("view_results", current_user)
+    return render_template('user_profile.html', title = f'Profile: {user.username}', user = user, group_stage_predictions = group_stage_predictions, flags = FLAGS,
+                            stage_results = stage_results, goleador = goleador, points = points)
+    
+@app.route('/rollback', methods = ['GET', 'POST'])
+@login_required
+def rollback():
+    db.session.rollback()
+    flash('Rollback Session Succesful', 'info')
+    return redirect(url_for('admin'))

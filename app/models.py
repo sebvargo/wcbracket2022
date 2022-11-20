@@ -73,6 +73,44 @@ class Game(db.Model):
     def __repr__(self) -> str:
         return f'< {self.game_id}: {self.team1} v. {self.team2} | {self.local_time}>'
     
+    def get_winner(self):
+        if self.official_goals1 > self.official_goals2: return self.team1
+        elif self.official_goals1 < self.official_goals2: return self.team2
+        else: return 'tie'
+            
+        
+    def calculate_user_points(self, user_id=None):
+        if user_id is None: users = User.query.all()
+        else: users = User.query.filter_by(user_id = user_id).all()
+        
+        official_winner = self.get_winner()
+        
+        for u in users:
+            prediction = u.predictions.filter_by(game_id = self.game_id).first()
+            if prediction is None:
+                continue
+            # check if score matches
+            print(f'Official ({u.username}): {self.official_goals1}-{self.official_goals2} | Prediction: {prediction.goals1}-{prediction.goals2}')
+            if self.official_goals1 == prediction.goals1:
+                if self.official_goals2 == prediction.goals2:
+                    
+                    prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
+                    prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+            else:
+                prediction.points_score = 0
+                # check if outcome matches
+                if   prediction.goals1 > prediction.goals2: # team 1 wins
+                     prediction.winner = prediction.team1 
+                elif prediction.goals1 < prediction.goals2: # team 2 wins
+                     prediction.winner = prediction.team2 
+                else:prediction.winner = 'tie'
+                
+                if prediction.winner == official_winner: 
+                    prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                else: prediction.points_outcome = 0
+                    
+                
+    
 class Prediction(db.Model):
     pred_id = db.Column(db.Integer, primary_key = True)
     game_id = db.Column(db.Integer, index=True)
@@ -80,7 +118,7 @@ class Prediction(db.Model):
     team2 = db.Column(db.String(3))
     goals1 = db.Column(db.Integer)
     goals2 = db.Column(db.Integer)
-    winner = db.Column(db.Integer)
+    winner = db.Column(db.String(64))
     stage = db.Column(db.String(16))
     points_outcome = db.Column(db.Integer)
     points_score = db.Column(db.Integer)
@@ -234,3 +272,12 @@ TEAM_NAMES = {
     'USA' : 'USA',
     'WAL' : 'Wales',
 }
+
+POINT_SYSTEM = {
+    'group'     : {'match_score':  5, 'outcome': 10},
+    'rd16'      : {'match_score': 25, 'outcome': 50},
+    'quarters'  : {'match_score': 30, 'outcome': 60},
+    'semis'     : {'match_score': 35, 'outcome': 70},
+    '3rd'       : {'match_score': 40, 'outcome': 80},
+    'final'     : {'match_score': 50, 'outcome': 100}
+ }
