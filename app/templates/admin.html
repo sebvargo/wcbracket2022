@@ -4,10 +4,11 @@
   {% if current_user.username == 'sebvargas' %}  
     <div class="container">
       <h1 class = "h1 mb-3">Admin: {{ current_user.username }} </h1>
-      <div class="row mb-3">
-        {% include "admin_buttons.html"  %}
-      </div>
-      <div class="row mb-3">
+ 
+      {% include "admin_buttons.html"  %}
+      <hr>
+      <h2>Rankings</h2>
+    <div class="row mb-3">
       {% include "rankings_table.html" %}
       </div>
     </div>

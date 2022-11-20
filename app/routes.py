@@ -3,10 +3,11 @@ from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
 from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event
 from flask_login import current_user, login_user, logout_user, login_required
-from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm
+from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
 from werkzeug.utils import secure_filename
 import pandas as pd
+import datetime as dt
 
 
 @app.route('/', methods = ['GET', 'POST'])
@@ -98,11 +99,32 @@ def register():
 @app.route('/admin', methods = ['GET', 'POST'])
 @login_required
 def admin():
+    if request.method == 'POST':
+        game_id = request.form['btn_submit'] 
+        goals1 = request.form.get("goals1")
+        goals2 = request.form.get("goals2")
+        game_to_edit = Game.query.filter_by(game_id = game_id).first()
+        game_to_edit.official_goals1 = goals1
+        game_to_edit.official_goals2 = goals2
+        description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
+        try:
+            db.session.commit()
+            print(f'{description} update was successful')
+            flash(f'{description} update was successful', 'success')
+        except:
+            db.session.rollback()
+            print(f'{description} update was NOT successful')
+            flash(f'{description} update was successful', 'danger')
+            
     points = Points.query.order_by(Points.points.desc()).all()
+    today = dt.date.today()
+    yesterday = dt.date.today() - dt.timedelta(days=1)
+    tomorrow = dt.date.today() + dt.timedelta(days=2)
+    games = Game.query.filter(Game.local_time >= yesterday, Game.local_time <= tomorrow + dt.timedelta(days=1)).order_by(Game.local_time).all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
-                           points = points)
+                           points = points, zip = zip, games = games, dt = dt, flags = FLAGS)
 
 @app.route('/calculate_points', methods = ['GET', 'POST'])
 @login_required
@@ -120,7 +142,7 @@ def calculate_points():
 def calendar():
     games = Game.query.order_by(Game.local_time).all()
     add_event("view_calendar", current_user)
-    return render_template('calendar.html', title = 'Calendario Qatar 2022', games = games, flags = FLAGS)
+    return render_template('calendar.html', title = 'Calendario Qatar 2022', games = games, flags = FLAGS, dt = dt)
 
 @app.route('/results', methods = ['GET'])  
 @login_required

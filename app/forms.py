@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, Label
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 from app.utility_functions import FLAGS
@@ -38,5 +38,17 @@ class MoroccoForm(FlaskForm):
     goals_belgium = StringField(f'{FLAGS["BEL"]} Belgica')
     goals_morocco = StringField(f'{FLAGS["MAR"]} Marruecos', validators=[DataRequired()])
     submit = SubmitField('Save')
+    
+class OfficialScoreForm(FlaskForm):
+    goals1 = StringField(f'Local', validators=[DataRequired()])
+    goals2 = StringField(f'Away', validators=[DataRequired()])
+    submit = SubmitField('Save')
+    
+    def __init__(self, labels = None, **kwargs):
+        super().__init__(**kwargs)
+        if labels is None:
+            labels = ["Local", "Away"]
+        self['goals1'].label = Label(self['goals1'].id, labels[0])
+        self['goals2'].label = Label(self['goals1'].id, labels[1])
     
     

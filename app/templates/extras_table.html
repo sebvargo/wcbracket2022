@@ -22,7 +22,7 @@
         <div id="flush-collapseOne-extra" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
             
-            <table class="table table-sm">
+            <table class="table table-sm>
               <thead>
                 <tr>
                   <th scope="col">Group</th>
@@ -37,13 +37,13 @@
               <tbody>
                   {% for s in stage_results %}
                       <tr>
-                          <th scope="row"> {{ s.name }} </th>
-                          <td> {{ flags[s.winner] }} {{ s.winner }}</td>
-                          <td> {{ flags[s.runner_up] }} {{ s.runner_up }} </td>
-                          <td> - </td>
-                          <td> - </td>
-                          <td> - </td>
-                          <td> - </td>
+                          <th scope="row">{{ s.name }}</th>
+                          <td>{{ flags[s.winner] }} {{ s.winner }}</td>
+                          <td>{{ flags[s.runner_up] }} {{ s.runner_up }}</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
+                          <td>-</td>
                       </tr>
                   {% endfor %}
                
