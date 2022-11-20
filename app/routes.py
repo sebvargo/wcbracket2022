@@ -30,7 +30,7 @@ def index():
             print(f'{current_user.username} - Morocco update was NOT successful')
             
     user = f'{current_user.username} - id: {current_user.user_id}'
-    group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').all()
+    group_stage_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
     game_26 = Prediction.query.filter_by(user_id = current_user.user_id, game_id = 26).first()
@@ -135,5 +135,5 @@ def user_profile(user_id):
     user = User.query.filter_by(user_id = user_id).first()
     stage_results = user.stages.order_by(Stage.name).all()
     goleador = user.goleador.first()
-    return render_template('user_profile.html', title = f'Profile: {user.username}', user = user, group_stage_predictions = user.predictions.all(), flags = FLAGS,
-                           stage_results = stage_results, goleador = goleador)
+    return render_template('user_profile.html', title = f'Profile: {user.username}', user = user, group_stage_predictions = user.predictions.order_by(Prediction.game_id).all(), flags = FLAGS,
+                            stage_results = stage_results, goleador = goleador)
