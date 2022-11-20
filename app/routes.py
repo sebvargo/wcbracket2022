@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
@@ -141,10 +141,7 @@ def admin():
             return
         
     points = Points.query.order_by(Points.points.desc()).all()
-    today = dt.date.today()
-    yesterday = dt.date.today() - dt.timedelta(days=1)
-    tomorrow = dt.date.today() + dt.timedelta(days=2)
-    games = Game.query.filter(Game.local_time >= yesterday, Game.local_time <= tomorrow + dt.timedelta(days=1)).order_by(Game.local_time).all()
+    games = get_next_games(days_back =1, days_ahead = 1)
     add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
@@ -172,8 +169,13 @@ def calendar():
 @login_required
 def results():
     points = Points.query.order_by(Points.points.desc()).all()
+    games = get_next_games(days_back =1, days_ahead = 1)
+    avg_goals = []
+    for g in games:
+        avg_goals.append(g.get_average_goal_prediction())
+    games = zip(games, avg_goals)
     add_event("view_results", current_user)
-    return render_template('results.html', title = 'Posiciones/Rankings', points = points, flags = FLAGS)
+    return render_template('results.html', title = 'Posiciones/Rankings', points = points, flags = FLAGS, games = games, dt = dt)
 
 @app.route('/user_profile/<int:user_id>', methods = ['GET', 'POST'])
 @login_required
@@ -196,3 +198,10 @@ def rollback():
     db.session.rollback()
     flash('Rollback Session Succesful', 'info')
     return redirect(url_for('admin'))
+
+# @app.route('/game_predictions', methods = ['GET', 'POST'])
+# @login_required
+# def rollback():
+#     db.session.rollback()
+#     flash('Rollback Session Succesful', 'info')
+#     return redirect(url_for('admin'))

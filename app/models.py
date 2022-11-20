@@ -2,6 +2,7 @@ from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login  import UserMixin
 import numpy as np
+from sqlalchemy.sql import func
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key = True)
@@ -73,11 +74,16 @@ class Game(db.Model):
     def __repr__(self) -> str:
         return f'< {self.game_id}: {self.team1} v. {self.team2} | {self.local_time}>'
     
+    def get_average_goal_prediction(self):
+        """get average goals predicted for this game"""
+        goals1_avg = np.float128(db.session.query(func.avg(Prediction.goals1).label('average')).filter(Prediction.game_id == self.game_id).first()[0])
+        goals2_avg = np.float128(db.session.query(func.avg(Prediction.goals2).label('average')).filter(Prediction.game_id == self.game_id).first()[0])
+        return goals1_avg, goals2_avg 
+    
     def get_winner(self):
         if self.official_goals1 > self.official_goals2: return self.team1
         elif self.official_goals1 < self.official_goals2: return self.team2
-        else: return 'tie'
-            
+        else: return 'tie'  
         
     def calculate_user_points(self, user_id=None):
         if user_id is None: users = User.query.all()

@@ -3,6 +3,8 @@ from app import db
 from flask_login import current_user
 from app.models import *
 from emoji import emojize
+import datetime as dt
+
 
 TEAM_NAMES_EMOJI = {'ARG' : 'Argentina','AUS':'Australia','BEL':'Belgium','BRA':'Brazil','CMR':'Cameroon','CAN':'Canada','CRC':'Costa_Rica','CRO':'Croatia','DEN':'Denmark','ECU':'Ecuador','ENG':'England','FRA':'France','GER':'Germany','GHA':'Ghana','IRN':'Iran','JPN':'Japan','MEX':'Mexico','MAR':'Morocco','NED':'Netherlands','POL':'Poland','POR':'Portugal','QAT':'Qatar','KSA':'Saudi_Arabia','SEN':'Senegal','SRB':'Serbia','KOR':'South_Korea','ESP':'Spain','SUI':'Switzerland','TUN':'Tunisia','URU':'Uruguay','USA':'United_States','WAL':'Wales'}
 FLAGS = {k: emojize(f':{t}:') for k, t in TEAM_NAMES_EMOJI.items()}
@@ -154,3 +156,11 @@ def calculate_group_results(user, stage_type = 'group'):
     # get results
     for s in user.stages.all():
         s.get_prediction_results(user.user_id)
+        
+def get_next_games(days_back =1, days_ahead = 1):
+    today = dt.date.today()
+    yesterday = dt.date.today() - dt.timedelta(days=days_back)
+    tomorrow = dt.date.today() + dt.timedelta(days=days_ahead)
+    games = Game.query.filter(Game.local_time >= yesterday, Game.local_time <= tomorrow + dt.timedelta(days=1)).order_by(Game.local_time).all()
+    return games
+    

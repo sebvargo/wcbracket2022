@@ -2,9 +2,19 @@
 {% block content %}
     <div class="row">
         <div class="col">
+            <h2> Predicciones Promedio / Average Predictions </h2>
+        </div>
+    </div>
+    <div class="row g-2 mb-3">
+        {% include "average_predictions.html" %}
+    </div>
+
+    <div class="row">
+        <div class="col">
             <h2> Tabla de Posiciones / Rankings </h2>
         </div>
     </div>
+
     <div class="row">
         <div class="col">
             {% include "rankings_table.html" %}
@@ -12,3 +22,4 @@
     </div>
 
 {% endblock %}
+
