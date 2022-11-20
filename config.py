@@ -15,4 +15,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # if os.environ.get('DATABASE_TYPE') == 'postgres':
-    #     SQLALCHEMY_DATABASE_URI = f'postgresql://{db_user}:{db_user}@localhost/{db_name}?host=/cloudsql/{db_instance}'
+    #     SQLALCHEMY_DATABASE_URI = f'postgresql://{db_user}:{db_user}@localhost/{db_name}?host=/cloudsql/{db_instance}'res
