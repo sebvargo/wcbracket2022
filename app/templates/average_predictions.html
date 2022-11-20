@@ -7,12 +7,11 @@
               <h6 class="card-subtitle mb-2 text-muted">{{(game.local_time - dt.timedelta(hours=11)).strftime("%a, %b %d | %H:%M")}} PST </h6>
               <h1 class="display-6">{{avg_goals_tuple[0]|round(1, 'floor')}} - {{avg_goals_tuple[1]|round(1, 'floor')}}</h1>
 
-              <a href="#" class="card-link">Vea las predicciones</a>
-              <a href="#" class="card-link">See picks</a>
+              <a href="{{ url_for('predictions', game_id = game.game_id ) }}" class="card-link">Vea las predicciones</a>
+              <a href="{{ url_for('predictions', game_id = game.game_id ) }}" class="card-link">See picks</a>
             </div>
           </div>
         </div>
-
     {% endfor %}
 
 </div>

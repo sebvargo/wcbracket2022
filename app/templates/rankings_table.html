@@ -10,7 +10,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                      {% for p in points %}
+                      {% for p in predictions %}
                           <tr>
                               <th scope="row">{{loop.index}}</th>
                               <td><a href="{{ url_for('user_profile', user_id = p.user.user_id ) }}" class="link-primary">{{p.user.username}}</a></td>
@@ -22,3 +22,5 @@
                   </tbody>
                 </table>
             </div>
+
+            
