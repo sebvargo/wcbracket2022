@@ -12,7 +12,7 @@
         <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
           <div class="accordion-body">
             <div class="table-responsive">
-              <table class="table table-sm">
+              <table id="predictions-table" class="table table-sm" data-page-length='64'>
                 <thead>
                   <tr>
                     <th scope="col">Partido</th>
@@ -29,7 +29,7 @@
                 <tbody>
                     {% for p, official in group_stage_predictions %}
                         <tr>
-                            <th scope="row">{{ p.game_id }}</th>
+                            <td scope="row">{{ p.game_id }}</th>
                             <td>{{ flags[p.team1] }} {{ p.team1 }}</td>
                             <td>{{ p.goals1 }}</td>
                             <td> - </td>
@@ -38,7 +38,6 @@
                             <td>{{official.official_goals1}}-{{official.official_goals2}}</td>
                             <td>{{ p.points_outcome }}</td>
                             <td>{{ p.points_score }}</td>
-                            <td></td>
                         </tr>
                     {% endfor %}
                 

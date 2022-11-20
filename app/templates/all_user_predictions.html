@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col">
             <div class="table-responsive">
-                <table class="table table-sm">
+                <table id="allpredictions-table" data-order='[[ 7, "desc" ], [8,"desc"]]' data-page-length='51' class="table table-sm">
                   <thead>
                     <tr>
                       <th scope="col">User</th>
@@ -44,7 +44,6 @@
                               <td>{{official[0]}}-{{official[1]}}</td>
                               <td>{{ p.points_outcome }}</td>
                               <td>{{ p.points_score }}</td>
-                              <td></td>
                           </tr>
                       {% endfor %}
                   

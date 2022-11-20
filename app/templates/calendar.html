@@ -2,7 +2,7 @@
 {% block content %}
     <h1>Qatar 2022</h1> 
     <div class="table-responsive">
-        <table class="table table-sm">
+        <table id="calendar-table" class="table table-sm" data-page-length='64'>
         <thead>
         <tr>
             <th scope="col">ID</th>
@@ -18,7 +18,7 @@
         <tbody>
             {% for g in games %}
                 <tr> 
-                    <th scope="row">{{ g.game_id }}</th>
+                    <td scope="row">{{ g.game_id }}</td>
                     <td>{{ g.local_time.strftime("%a, %b %d") }}</td>
                     <td>{{(g.local_time - dt.timedelta(hours=11)).strftime("%H:%M") }}</td>
                     <td>{{(g.local_time - dt.timedelta(hours=8)).strftime("%H:%M") }}</td>
@@ -26,9 +26,6 @@
                     <td>{{ flags[g.team1] }} {{ g.team1 }}</td>
                     <td>{{ flags[g.team2] }} {{ g.team2 }}</td>
                     <td>{{ g.location }}</td>
-                    <td>{{ g.points_outcome }}</td>
-                    <td>{{ g.points_score }}</td>
-                    <td></td>
                 </tr>
             {% endfor %}
 

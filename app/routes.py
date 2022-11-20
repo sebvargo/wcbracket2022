@@ -207,3 +207,8 @@ def predictions(game_id):
     predictions = Prediction.query.filter_by(game_id = game_id)
     official = [game.official_goals1, game.official_goals2]
     return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, dt = dt)
+
+@app.route('/table', methods = ['GET', 'POST'])
+@login_required
+def table():
+    return render_template('table.html')
