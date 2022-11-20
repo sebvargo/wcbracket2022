@@ -1,6 +1,5 @@
 __pycache__
 app.db
-*.xlsx
 text_editor.txt
 flask_session
 app.yaml
