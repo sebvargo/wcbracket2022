@@ -12,32 +12,14 @@ import datetime as dt
 
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
-def index():
-    form = MoroccoForm()
-    if form.validate_on_submit():
-        game_26 = Prediction.query.filter_by(user_id = current_user.user_id, game_id = 26).first()
-        game_26.goals2 = int(form.goals_morocco.data)
-        if EventTracker.query.filter_by(user_id = current_user.user_id, description = "MAR goals update").first() is not None:
-            update_morocco_event = EventTracker.query.filter_by(user_id = current_user.user_id, description = "MAR goals update").first()
-            update_morocco_event.count += 1
-        else:
-            update_morocco_event = EventTracker(user_id = current_user.user_id, description = "MAR goals update", count = 1)
-            db.session.add(update_morocco_event)
-        try:
-            db.session.commit()
-            print(f'{current_user.username} - Morocco update was successful')
-        except:
-            db.session.rollback()
-            print(f'{current_user.username} - Morocco update was NOT successful')
-            
+def index():        
     user = f'{current_user.username} - id: {current_user.user_id}'
     official_games = Game.query.order_by(Game.game_id).all()
     predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
     group_stage_predictions = zip(predictions, official_games)
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
-    game_26 = Prediction.query.filter_by(user_id = current_user.user_id, game_id = 26).first()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador, stage_results = stage_results, flags = FLAGS, form = form, game_26 = game_26)
+    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador, stage_results = stage_results, flags = FLAGS)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
