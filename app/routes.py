@@ -153,7 +153,7 @@ def results():
     ordered_point_obs = Points.query.order_by(Points.points.desc()).all()
     rankings, points = get_rankings(ordered_point_obs=ordered_point_obs)
     rankings_and_points = zip(rankings, ordered_point_obs)
-    games = get_next_games(days_back =0, days_ahead = 1)
+    games = get_next_games(days_back =0, days_ahead = 0)
     avg_goals = []
     for g in games:
         avg_goals.append(g.get_average_goal_prediction())
