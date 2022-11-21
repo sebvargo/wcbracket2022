@@ -13,14 +13,13 @@ import datetime as dt
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
 def index():    
-    user_count = len(User.query.all())   
     ranking = current_user.points.first().get_ranking()
     official_games = Game.query.order_by(Game.game_id).all()
     predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
     group_stage_predictions = zip(predictions, official_games)
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions, user_count=user_count, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS)
+    return render_template('index.html', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -165,6 +164,7 @@ def results():
 @login_required
 def user_profile(user_id):
     user = User.query.filter_by(user_id = user_id).first()
+    ranking = user.points.first().get_ranking()
     points = Points.query.filter_by(user_id = user_id).first().points
     stage_results = user.stages.order_by(Stage.name).all()
     goleador = user.goleador.first()
@@ -173,7 +173,7 @@ def user_profile(user_id):
     predictions = Prediction.query.filter_by(user_id = user.user_id, stage = 'group').order_by(Prediction.game_id).all()
     group_stage_predictions = zip(predictions, official_games)
     add_event("view_results", current_user)
-    return render_template('user_profile.html', title = f'Profile: {user.username}', user = user, group_stage_predictions = group_stage_predictions, flags = FLAGS,
+    return render_template('user_profile.html', title = f'Profile: {user.username}', ranking = ranking, user = user, group_stage_predictions = group_stage_predictions, flags = FLAGS,
                             stage_results = stage_results, goleador = goleador, points = points)
     
 @app.route('/rollback', methods = ['GET', 'POST'])
