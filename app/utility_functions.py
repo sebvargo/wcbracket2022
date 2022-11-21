@@ -164,3 +164,15 @@ def get_next_games(days_back =1, days_ahead = 1):
     games = Game.query.filter(Game.local_time >= yesterday, Game.local_time <= tomorrow + dt.timedelta(days=1)).order_by(Game.local_time).all()
     return games
     
+def get_rankings(ordered_point_obs):
+    position = 1
+    current = ordered_point_obs[0].points
+    rankings = []
+    for p in ordered_point_obs:
+        if p.points == current: rankings.append(position)
+        else:
+            current = p.points
+            position += 1
+            rankings.append(position)
+    ordered_points = [p.points for p in ordered_point_obs]
+    return rankings, ordered_points

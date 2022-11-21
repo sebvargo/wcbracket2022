@@ -35,13 +35,17 @@
                   <tbody>
                       {% for p in predictions %}
                           <tr>
-                              <th scope="row">{{ p.user.username }}</th>
+                              <td><a href="{{ url_for('user_profile', user_id = p.user.user_id ) }}" class="link-primary">{{p.user.username}}</a></td>
                               <td>{{ flags[p.team1] }} {{ p.team1 }}</td>
                               <td>{{ p.goals1 }}</td>
                               <td> - </td>
                               <td>{{ p.goals2 }}</td>
                               <td>{{ flags[p.team2] }} {{ p.team2 }}</td>
-                              <td>{{official[0]}}-{{official[1]}}</td>
+                                {% if official[0] is not none %}
+                                    <td><span class="badge bg-success mb-2">{{ official[0] }}-{{ official[1] }}</span><br></td>
+                                {% else %}
+                                    <td> - </td>
+                                {% endif %}
                               <td>{{ p.points_outcome }}</td>
                               <td>{{ p.points_score }}</td>
                           </tr>

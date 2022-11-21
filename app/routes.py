@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games, get_rankings
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
@@ -12,14 +12,15 @@ import datetime as dt
 
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
-def index():        
-    user = f'{current_user.username} - id: {current_user.user_id}'
+def index():    
+    user_count = len(User.query.all())   
+    ranking = current_user.points.first().get_ranking()
     official_games = Game.query.order_by(Game.game_id).all()
     predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
     group_stage_predictions = zip(predictions, official_games)
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions, user = user, goleador = goleador, stage_results = stage_results, flags = FLAGS)
+    return render_template('index.html', group_stage_predictions = group_stage_predictions, user_count=user_count, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -48,7 +49,6 @@ def login():
 @login_required
 def upload():
     form = QuinielaForm()
-    
     if form.validate_on_submit():
         f = form.file.data
         read_group_stage_bracket(f)
@@ -150,14 +150,16 @@ def calendar():
 @app.route('/results', methods = ['GET'])  
 @login_required
 def results():
-    points = Points.query.order_by(Points.points.desc()).all()
-    games = get_next_games(days_back =0, days_ahead = 0)
+    ordered_point_obs = Points.query.order_by(Points.points.desc()).all()
+    rankings, points = get_rankings(ordered_point_obs=ordered_point_obs)
+    rankings_and_points = zip(rankings, ordered_point_obs)
+    games = get_next_games(days_back =0, days_ahead = 1)
     avg_goals = []
     for g in games:
         avg_goals.append(g.get_average_goal_prediction())
     games = zip(games, avg_goals)
     add_event("view_results", current_user)
-    return render_template('results.html', title = 'Posiciones/Rankings', points = points, flags = FLAGS, games = games, dt = dt)
+    return render_template('results.html', title = 'Posiciones/Rankings', rankings_and_points = rankings_and_points, flags = FLAGS, games = games, dt = dt)
 
 @app.route('/user_profile/<int:user_id>', methods = ['GET', 'POST'])
 @login_required

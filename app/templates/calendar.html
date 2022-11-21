@@ -1,35 +1,50 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h1>Qatar 2022</h1> 
-    <div class="table-responsive">
-        <table id="calendar-table" class="table table-sm" data-page-length='64'>
-        <thead>
-        <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">PST</th>
-            <th scope="col">EST/Colombia</th>
-            <th scope="col">Group</th>
-            <th scope="col">Local</th>
-            <th scope="col">Visitante</th>
-            <th scope="col">Location</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for g in games %}
-                <tr> 
-                    <td scope="row">{{ g.game_id }}</td>
-                    <td>{{ g.local_time.strftime("%a, %b %d") }}</td>
-                    <td>{{(g.local_time - dt.timedelta(hours=11)).strftime("%H:%M") }}</td>
-                    <td>{{(g.local_time - dt.timedelta(hours=8)).strftime("%H:%M") }}</td>
-                    <td>{{ g.group }}</td>
-                    <td>{{ flags[g.team1] }} {{ g.team1 }}</td>
-                    <td>{{ flags[g.team2] }} {{ g.team2 }}</td>
-                    <td>{{ g.location }}</td>
-                </tr>
-            {% endfor %}
-
-        </tbody>
-        </table>
+<div class="row">
+    <div class="col">
+        <h1>Calendario / Calendar</h1> 
     </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="table-responsive">
+            <table id="calendar-table" class="table table-striped table-hover" data-page-length='64'>
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">PST</th>
+                <th scope="col">EST</th>
+                <th scope="col">Group</th>
+                <th scope="col">Home</th>
+                <th scope="col">Result</th>
+                <th scope="col">Away</th>
+                <th scope="col">Location</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for g in games %}
+                    <tr href="{{ url_for('predictions', game_id = g.game_id ) }}"> 
+                        <td scope="row"><a href="{{ url_for('predictions', game_id = g.game_id ) }}" class="card-link">{{g.game_id}}</a></td>
+                        <td>{{ g.local_time.strftime("%a, %b %d") }}</td>
+                        <td>{{(g.local_time - dt.timedelta(hours=11)).strftime("%H:%M") }}</td>
+                        <td>{{(g.local_time - dt.timedelta(hours=8)).strftime("%H:%M") }}</td>
+                        <td>{{ g.group }}</td>
+                        <td>{{ flags[g.team1] }} {{ g.team1 }} </td>
+                        {% if g.official_goals1 is not none %}
+                            <td><span class="badge bg-success mb-2">{{ g.official_goals1 }}-{{ g.official_goals2 }}</span><br></td>
+                        {% else %}
+                            <td> - </td>
+                        {% endif %}
+                        <td>{{ flags[g.team2] }} {{ g.team2 }} </td>
+                        <td>{{ g.location }}</td>
+                    </tr>
+                {% endfor %}
+    
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

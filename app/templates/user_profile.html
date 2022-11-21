@@ -2,7 +2,16 @@
 
 {% block content %}
 <div class="container">
-  <h1 class = "h1 mb-3">{{ user.username }} | {{points}} puntos</h1>
+  <div class="row">
+    <div class="col-auto me-auto">
+      <h1>{{ current_user.username }}</h1>
+    </div>
+
+    <div class="col-auto">
+      <h1><span class="badge bg-primary">{{points}} points</span></h1>
+    </div>
+  </div>
+ <hr>
   <div class="row mb-3">
     {% include 'extras_table.html' %}
   </div>

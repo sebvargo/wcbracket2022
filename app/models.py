@@ -220,6 +220,23 @@ class Points(UserMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     points = db.Column(db.Integer)
     
+    def get_ranking(self):
+        ordered_point_obs = Points.query.order_by(Points.points.desc()).all()
+        # get current rankings
+        position = 1
+        current = ordered_point_obs[0].points
+        rankings = []
+        for p in ordered_point_obs:
+            if p.points == current: rankings.append(position)
+            else:
+                current = p.points
+                position += 1
+                rankings.append(position)
+        ordered_points = [p.points for p in ordered_point_obs]
+        ranking = rankings[ordered_points.index(self.points)]
+        return ranking
+    
+    
     
 
 GROUPS = {
