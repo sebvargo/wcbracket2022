@@ -151,7 +151,7 @@ def calendar():
 @login_required
 def results():
     points = Points.query.order_by(Points.points.desc()).all()
-    games = get_next_games(days_back =1, days_ahead = 1)
+    games = get_next_games(days_back =0, days_ahead = 0)
     avg_goals = []
     for g in games:
         avg_goals.append(g.get_average_goal_prediction())
