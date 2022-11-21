@@ -6,7 +6,7 @@
         <h5 class="card-title">{{ flags[game.team1] }} {{ game.team1 }} v. {{ flags[game.team2] }} {{ game.team2 }}</h5>
         <h6 class="card-subtitle mb-2 text-muted">{{(game.local_time - dt.timedelta(hours=11)).strftime("%a, %b %d | %H:%M")}} PST </h6>
         {% if game.official_goals1 is not none %}
-          <h1 class="display-6">{{ game.official_goals2 }} - {{ game.official_goals2 }}</h1>
+          <h1 class="display-6">{{ game.official_goals1 }} - {{ game.official_goals2 }}</h1>
           <span class="badge bg-success mb-2">Oficial/Official</span><br>
         {% else %}
           <h1 class="display-6">{{avg_goals_tuple[0]|round(1, 'floor')}} - {{avg_goals_tuple[1]|round(1, 'floor')}}</h1>
