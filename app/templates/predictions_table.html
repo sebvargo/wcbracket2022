@@ -35,7 +35,11 @@
                             <td> - </td>
                             <td>{{ p.goals2 }}</td>
                             <td>{{ flags[p.team2] }} {{ p.team2 }}</td>
-                            <td>{{official.official_goals1}}-{{official.official_goals2}}</td>
+                            {% if official.official_goals1 is not none %}
+                              <td><span class="badge bg-success mb-2">{{ official.official_goals1 }}-{{ official.official_goals2 }}</span><br></td>
+                            {% else %}
+                              <td> - </td>
+                            {% endif %}
                             <td>{{ p.points_outcome }}</td>
                             <td>{{ p.points_score }}</td>
                         </tr>
