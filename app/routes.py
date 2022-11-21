@@ -122,7 +122,7 @@ def admin():
             return
         
     points = Points.query.order_by(Points.points.desc()).all()
-    games = get_next_games(days_back =1, days_ahead = 1)
+    games = get_next_games(days_back = 0, days_ahead = 0)
     add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
