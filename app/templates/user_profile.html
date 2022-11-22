@@ -3,20 +3,9 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-auto me-auto">
-      <h1>{{ user.username }}</h1>
-    </div>
-    <div class="col-auto">
-      {% if ranking == 1 %}<h1><span class="badge bg-warning">Posición/Rank: {{ranking}}</span></h1>
-        {% elif ranking == 2 %}<h1><span class="badge bg-secondary">Posición/Rank: {{ranking}}</span></h1>
-        {% elif ranking == 3 %}<h1><span class="badge bg-primary">Posición/Rank: {{ranking}}</span></h1>
-        {% else %}<h1><span class="badge bg-dark">Posición/Rank: {{ranking}}</span></h1>
-        {% endif %}
-    </div>
-
-    <div class="col-auto">
-      <h1><span class="badge bg-primary">{{points}} points</span></h1>
-    </div>
+    {% with user = user, ranking = ranking %}
+      {% include "user_info.html" %}
+    {% endwith %}
   </div>
  <hr>
   <div class="row mb-3">

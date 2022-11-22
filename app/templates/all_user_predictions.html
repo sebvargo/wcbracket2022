@@ -36,11 +36,11 @@
                       {% for p in predictions %}
                           <tr>
                               <td><a href="{{ url_for('user_profile', user_id = p.user.user_id ) }}" class="link-primary">{{p.user.username}}</a></td>
-                              <td>{% with team = p.team1, w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ p.team1 }}</td>
+                              <td>{% with team = p.team1, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team1 }}</td>
                               <td>{{ p.goals1 }}</td>
                               <td> - </td>
                               <td>{{ p.goals2 }}</td>
-                              <td>{% with team = p.team2, w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ p.team2 }}</td>
+                              <td>{% with team = p.team2, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team2 }}</td>
                                 {% if official[0] is not none %}
                                     <td><span class="badge bg-success mb-2">{{ official[0] }}-{{ official[1] }}</span><br></td>
                                 {% else %}

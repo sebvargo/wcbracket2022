@@ -4,8 +4,8 @@
           <div class="card" style="width: 18rem;">
             <div class="card-body">
               <h5 class="card-title">
-                {% with team = game.team1, w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ game.team1 }} v.
-                {% with team = game.team2, w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ game.team2 }}
+                {% with team = game.team1, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team1 }} v.
+                {% with team = game.team2, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team2 }}
               </h5>
               <h6 class="card-subtitle mb-2 text-muted">{{(game.local_time - dt.timedelta(hours=11)).strftime("%a, %b %d | %H:%M")}} PST </h6>
               {% if game.official_goals1 is not none %}
