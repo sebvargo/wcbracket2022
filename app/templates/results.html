@@ -1,25 +1,38 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="container">
     <div class="row">
+        {% with user = current_user, ranking = current_user_rank %}
+        {% include "user_info.html" %}
+        {% endwith %}
+    </div>
+    <hr>
+
+    <div class="row mb-2">
         <div class="col">
-            <h2> Partidos de Hoy / Today's Games </h2>
+            <h2>Proximos Partidos / Upcoming Games </h2>    
         </div>
     </div>
-    <div class="row g-2 mb-3">
+    <div class="row g-2 mb-2">
         {% include "average_predictions.html" %}
     </div>
-
-    <div class="row">
+    <hr>
+    <div class="row mb-2">
         <div class="col">
             <h2> Tabla de Posiciones / Rankings </h2>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mb-2">
         <div class="col">
             {% include "rankings_table.html" %}
         </div>
     </div>
 
+
+    
+
+
+</div>
 {% endblock %}
 

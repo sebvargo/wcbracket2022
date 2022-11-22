@@ -19,7 +19,7 @@ def index():
     group_stage_predictions = zip(predictions, official_games)
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
-    return render_template('index.html', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS)
+    return render_template('index.html', title='Mis Predicciones', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -37,7 +37,7 @@ def login():
         login_user(user, remember=form.remember_me.data)
         add_event(description = 'login', user = current_user, init_value = 1)
         session['user_id'] = user.user_id
-        return redirect(url_for('index'))    
+        return redirect(url_for('results'))    
         # next_page = request.args.get('next')
         # if not next_page or url_parse(next_page).netloc != '':
         #     next_page = url_for('index')
@@ -149,6 +149,7 @@ def calendar():
 @app.route('/results', methods = ['GET'])  
 @login_required
 def results():
+    current_user_rank = current_user.points.first().get_ranking()
     ordered_point_obs = Points.query.order_by(Points.points.desc()).all()
     rankings, points = get_rankings(ordered_point_obs=ordered_point_obs)
     rankings_and_points = zip(rankings, ordered_point_obs)
@@ -158,7 +159,7 @@ def results():
         avg_goals.append(g.get_average_goal_prediction())
     games = zip(games, avg_goals)
     add_event("view_results", current_user)
-    return render_template('results.html', title = 'Posiciones/Rankings', rankings_and_points = rankings_and_points, flags = FLAGS, games = games, dt = dt)
+    return render_template('results.html', title = 'Resultados/Results', rankings_and_points = rankings_and_points, current_user_rank = current_user_rank, flags = FLAGS, games = games, dt = dt)
 
 @app.route('/user_profile/<int:user_id>', methods = ['GET', 'POST'])
 @login_required

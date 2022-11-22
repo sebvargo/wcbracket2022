@@ -29,7 +29,7 @@
  
         <nav class="navbar navbar-expand-sm navbar-dark bg-primary mb-4">
             <div class="container-fluid">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ url_for('results') }}">
                 <img src="{{ url_for('static', filename='images/vargas_2018.png') }}" alt="" width="30" height="24" class="d-inline-block align-text-top">
                 Quiniela Vargas
             </a>
@@ -39,14 +39,12 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                 {% if hide_links is not defined %}
-                    <a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Home</a>
+                    <a class="nav-link" aria-current="page" href="{{ url_for('index') }}">Mis predicciones</a>
                     {% if current_user.is_anonymous %}
                         <a class="nav-link" href="{{ url_for('login') }}">Login</a>
                     {% else %}
-
-                        
+                        <a class="nav-link" href="{{ url_for('results') }}">Resultados/Results</a>
                         <a class="nav-link" href="{{ url_for('calendar') }}">Calendario</a>
-                        <a class="nav-link" href="{{ url_for('results') }}">Posiciones/Rankings</a>
                         {% if  current_user.username == 'sebvargas' %}
                             <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
                         {% endif %}
