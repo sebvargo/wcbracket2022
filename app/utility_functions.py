@@ -8,6 +8,7 @@ import datetime as dt
 
 TEAM_NAMES_EMOJI = {'ARG' : 'Argentina','AUS':'Australia','BEL':'Belgium','BRA':'Brazil','CMR':'Cameroon','CAN':'Canada','CRC':'Costa_Rica','CRO':'Croatia','DEN':'Denmark','ECU':'Ecuador','ENG':'England','FRA':'France','GER':'Germany','GHA':'Ghana','IRN':'Iran','JPN':'Japan','MEX':'Mexico','MAR':'Morocco','NED':'Netherlands','POL':'Poland','POR':'Portugal','QAT':'Qatar','KSA':'Saudi_Arabia','SEN':'Senegal','SRB':'Serbia','KOR':'South_Korea','ESP':'Spain','SUI':'Switzerland','TUN':'Tunisia','URU':'Uruguay','USA':'United_States','WAL':'Wales'}
 FLAGS = {k: emojize(f':{t}:') for k, t in TEAM_NAMES_EMOJI.items()}
+# FLAGS = {k: f'/flags/{k}.svg' for k, t in TEAM_NAMES_EMOJI.items()}
 # OLD_FLAGS = {'ARG':'🇦🇷','AUS':'🇦🇹','BEL':'🇧🇪','BRA':'🇧🇷','CMR':'🇨🇲','CAN':'🇨🇦','CRC':'🇨🇷','CRO':'🇭🇷','DEN':'🇩🇰','ECU':'🇪🇨','ENG':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','FRA':'🇫🇷','GER':'🇩🇪','GHA':'🇬🇭','IRN':'🇮🇷','JPN':'🇯🇵','MEX':'🇲🇽','MAR':'🇲🇦','NED':'🇳🇱','POL':'🇵🇱','POR':'🇵🇹','QAT':'🇶🇦','KSA':'🇸🇦','SEN':'🇸🇳','SRB':'🇷🇸','KOR':'🇰🇷','ESP':'🇪🇸','SUI':'🇨🇭','TUN':'🇹🇳','URU':'🇺🇾','USA':'🇺🇸','WAL':'🏴󠁧󠁢󠁷󠁬󠁳󠁿'}
 
 def add_games_to_db(filename = 'Quiniela Fixed.xlsx'):

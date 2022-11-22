@@ -43,8 +43,8 @@
                   {% for s in stage_results %}
                       <tr>
                           <th scope="row">{{ s.name }}</th>
-                          <td>{{ flags[s.winner] }} {{ s.winner }}</td>
-                          <td>{{ flags[s.runner_up] }} {{ s.runner_up }}</td>
+                          <td>{% with team = s.winner, w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ s.winner }}</td>
+                          <td>{% with team = s.runner_up, w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ s.runner_up }}</td>
                           <td>-</td>
                           <td>-</td>
                           <td>-</td>
