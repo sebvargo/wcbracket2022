@@ -1,4 +1,21 @@
 @charset "UTF-8";
+.my-col {
+  background-color: lightpink;
+  border: 2px solid red;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.my-col-2 {
+  background-color: lightseagreen;
+  border: 2px solid green;
+  color: black;
+  text-align: center;
+}
+
 /*!
  * Bootstrap  v5.2.2 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors

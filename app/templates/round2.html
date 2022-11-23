@@ -1,0 +1,68 @@
+{% include "base.html" %}
+
+{% block content %}
+
+<div class="container-md my-container">
+    <div class="row">
+        <div class="col">
+            <h1>Elimination Directa / Playoffs</h1>
+            <hr>
+        </div>
+    </div>
+    <div class="row align-items-center">
+        <!-- Round of 16 -->
+        <div class="col-sm">
+            <h5>Octavos/Rd of 16</h5>
+        </div>
+        <!-- Quarters -->
+        <div class="col-sm">
+            <h5>Cuartos/Final 8</h5>
+        </div>
+
+        <!-- Semis -->
+        <div class="col-sm">
+            <h5>Semis</h5>
+        </div>
+
+        <!-- Finals -->
+        <div class="col-sm">
+            <h5>Finals</h5>
+        </div>
+    </div>
+    <form class="row g-3 needs-validation align-items-center" novalidate>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Submit form</button>
+            </div>
+            <!-- Round of 16 -->
+            
+            <div class="col-sm my-col" style="height:110vh">
+                {% with games = [1, 2, 3,4, 5, 6, 7, 8], margin = 2%}
+                    {% include "bracket.html"%}
+                {% endwith %}
+            </div>
+            <!-- Quarters -->
+            <div class="col-sm my-col" style="height:93.5vh">
+                {% with games = [1, 2, 3,4] , margin = 2 %}
+                    {% include "bracket.html"%}
+                {% endwith %}
+            </div>
+
+            <!-- Semis -->
+            <div class="col-sm my-col" style="height:67.5vh">
+                {% with games = [1, 2], margin = 2%}
+                    {% include "bracket.html"%}
+                {% endwith %}
+            </div>
+
+            <!-- Finals -->
+            <div class="col-sm my-col justify-content-around"  style="height:40vh">
+                {% with games = [1, 2], margin = 2%}
+                    {% include "bracket.html"%}
+                {% endwith %}
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+

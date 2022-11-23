@@ -10,6 +10,11 @@ import pandas as pd
 import datetime as dt
 
 
+@app.route('/round2', methods = ['GET', 'POST'])
+@login_required
+def round2():    
+    return render_template('round2.html', title='round2', user = current_user)
+
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
 def index():    

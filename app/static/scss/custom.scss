@@ -2,4 +2,25 @@
 $primary: #56042C;
 $secondary: #6c757d;
 
+
+.my-col{
+    background-color: lightpink;
+    border: 2px solid red;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+.my-col-2{
+    background-color: lightseagreen;
+    border: 2px solid green;
+    color: black;
+    text-align: center;
+
+
+}
+
+
+
 @import "../../../node_modules/bootstrap/scss/bootstrap";
