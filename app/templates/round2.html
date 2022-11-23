@@ -9,6 +9,7 @@
             <hr>
         </div>
     </div>
+
     <div class="row align-items-center">
         <!-- Round of 16 -->
         <div class="col-sm">
@@ -29,7 +30,8 @@
             <h5>Finals</h5>
         </div>
     </div>
-    <form class="row g-3 needs-validation align-items-center" novalidate>
+    
+    <form class="row g-3 align-items-center was-validated" validate>
             <div class="col-12">
                 <button class="btn btn-primary" type="submit">Submit form</button>
             </div>
@@ -60,8 +62,11 @@
                     {% include "bracket.html"%}
                 {% endwith %}
             </div>
-        </div>
+
+
     </form>
+
+
 </div>
 
 {% endblock %}

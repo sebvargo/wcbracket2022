@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed, FileRequired
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, Label
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, Label, IntegerField, HiddenField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo
 from app.models import User
 from app.utility_functions import FLAGS
@@ -50,5 +50,4 @@ class OfficialScoreForm(FlaskForm):
             labels = ["Local", "Away"]
         self['goals1'].label = Label(self['goals1'].id, labels[0])
         self['goals2'].label = Label(self['goals1'].id, labels[1])
-    
     

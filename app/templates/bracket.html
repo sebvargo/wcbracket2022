@@ -1,19 +1,28 @@
 {% for g in games %}
 <div class="row  mt-{{margin}} ">
     <div class="col ">
-        <label for="basic-url" class="form-label">Your vanity URL</label>
+        <!-- Label -->
+        <label for="basic-game" class="form-label">Game #</label>
+
+        <!-- Team 1 -->
         <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text" id="basic-addon1">{% with team = "TBD", w=24, h=24, align="top", game_id = 49 %}{% include "flag.html" %}{% endwith %} TBD</span>
-            <input required type="number" class="form-control" placeholder="0" aria-label="Goals" aria-describedby="basic-addon1">
+            <!-- Flag and country code -->
+            <span class="input-group-text" id="basic-addon1">
+                {% with team = "TBD", w=24, h=24, align="top", game_id = 49 %}{% include "flag.html" %}{% endwith %} TBD</span>
+            <!-- Goals -->
+                <input type="number" class="form-control" placeholder="0" required>
+                <!-- <div class="valid-tooltip">Valid.</div> -->
+            <!-- Radio Button -->
             <div class="input-group-text">
-                <input class="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" />
+                <input class="form-check-input mt-0" type="radio" />
             </div>
         </div>
+
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="basic-addon1">{% with team = "TBD", w=24, h=24, align="top", game_id = 49 %}{% include "flag.html" %}{% endwith %} TBD</span>
-            <input required type="number" class="form-control" placeholder="0" aria-label="Goals" aria-describedby="basic-addon1">
+            <input required type="number" class="form-control" placeholder="0">
             <div class="input-group-text">
-                <input class="form-check-input mt-0" type="radio" value="" aria-label="Radio button for following text input" />
+                <input class="form-check-input mt-0" type="radio" />
             </div>
         </div>
     </div>
