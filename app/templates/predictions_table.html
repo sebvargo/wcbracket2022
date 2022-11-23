@@ -36,7 +36,7 @@
                             <td>{{ p.goals2 }}</td>
                             <td>{% with team = p.team2, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team2 }}</td>
                             {% if official.official_goals1 is not none %}
-                              <td><span class="badge bg-success mb-2">{{ official.official_goals1 }}-{{ official.official_goals2 }}</span><br></td>
+                              <!-- <td><span class="badge bg-success mb-2">{{ official.official_goals1 }}-{{ official.official_goals2 }}</span><br></td> -->
                             {% else %}
                               <td> - </td>
                             {% endif %}

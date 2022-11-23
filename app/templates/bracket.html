@@ -2,27 +2,27 @@
 <div class="row  mt-{{margin}} ">
     <div class="col ">
         <!-- Label -->
-        <label for="basic-game" class="form-label">Game #</label>
+        <label for="basic-game" class="form-label">Stage: {{ g.game_id }} </label>
 
         <!-- Team 1 -->
         <div class="input-group input-group-sm mb-3">
             <!-- Flag and country code -->
-            <span class="input-group-text" id="basic-addon1">
-                {% with team = "TBD", w=24, h=24, align="top", game_id = 49 %}{% include "flag.html" %}{% endwith %} TBD</span>
+            <span class="input-group-text" id="label-1-{{g.game_id}}">
+                {% with team = g.team1, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag.html" %}{% endwith %}  {{g.team1}}</span>
             <!-- Goals -->
-                <input type="number" class="form-control" placeholder="0" required>
+                <input type="number" class="form-control" id="input-1-{{g.game_id}}" id="input-1-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} required>
                 <!-- <div class="valid-tooltip">Valid.</div> -->
             <!-- Radio Button -->
             <div class="input-group-text">
-                <input class="form-check-input mt-0" type="radio" />
+                <input class="form-check-input mt-0" type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
             </div>
         </div>
 
         <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text" id="basic-addon1">{% with team = "TBD", w=24, h=24, align="top", game_id = 49 %}{% include "flag.html" %}{% endwith %} TBD</span>
-            <input required type="number" class="form-control" placeholder="0">
+            <span class="input-group-text" id="label-2-{{g.game_id}}">{% with team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag.html" %}{% endwith %} {{g.team2}}</span>
+            <input required type="number" class="form-control" id="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} >
             <div class="input-group-text">
-                <input class="form-check-input mt-0" type="radio" />
+                <input class="form-check-input mt-0" type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
             </div>
         </div>
     </div>

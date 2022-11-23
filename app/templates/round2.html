@@ -36,29 +36,28 @@
                 <button class="btn btn-primary" type="submit">Submit form</button>
             </div>
             <!-- Round of 16 -->
-            
             <div class="col-sm my-col" style="height:110vh">
-                {% with games = [1, 2, 3,4, 5, 6, 7, 8], margin = 2%}
+                {% with games = games['rd16'], margin = 2, disabled = false %}
                     {% include "bracket.html"%}
                 {% endwith %}
             </div>
             <!-- Quarters -->
             <div class="col-sm my-col" style="height:93.5vh">
-                {% with games = [1, 2, 3,4] , margin = 2 %}
+                {% with games = games['quarters'], margin = 2 , disabled = true %}
                     {% include "bracket.html"%}
                 {% endwith %}
             </div>
 
             <!-- Semis -->
             <div class="col-sm my-col" style="height:67.5vh">
-                {% with games = [1, 2], margin = 2%}
+                {% with games = games['semis'], margin = 2, disabled = true %}
                     {% include "bracket.html"%}
                 {% endwith %}
             </div>
 
             <!-- Finals -->
             <div class="col-sm my-col justify-content-around"  style="height:40vh">
-                {% with games = [1, 2], margin = 2%}
+                {% with games = games['finals'], margin = 2, disabled = true %}
                     {% include "bracket.html"%}
                 {% endwith %}
             </div>

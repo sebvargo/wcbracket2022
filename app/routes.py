@@ -12,8 +12,14 @@ import datetime as dt
 
 @app.route('/round2', methods = ['GET', 'POST'])
 @login_required
-def round2():    
-    return render_template('round2.html', title='round2', user = current_user)
+def round2():  
+    games = {
+        'rd16': Game.query.filter(Game.stage == 'rd16').all(),
+        'quarters': Game.query.filter(Game.stage == 'quarters').all(),
+        'semis': Game.query.filter(Game.stage == 'semis').all(),
+        'finals': Game.query.filter(Game.game_id > 62).all()
+    }
+    return render_template('round2.html', title='Round 2', user = current_user, games = games, flags = FLAGS)
 
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
@@ -198,7 +204,3 @@ def predictions(game_id):
     official = [game.official_goals1, game.official_goals2]
     return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, dt = dt)
 
-@app.route('/table', methods = ['GET', 'POST'])
-@login_required
-def table():
-    return render_template('table.html')
