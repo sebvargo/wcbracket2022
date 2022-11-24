@@ -33,16 +33,73 @@ children = {
 
 document.addEventListener('DOMContentLoaded', function() 
 {
-    stages.forEach(function (item, idx) 
+    stages.forEach(function (game_id, idx) 
     {
-        document.getElementById(`input-1-${item}`).onchange = function() {action(item)} ;
-        document.getElementById(`input-2-${item}`).onchange = function() {action(item)} ;
+        document.getElementById(`input-1-${game_id}`).oninput = function() {check_winner(game_id)} ;
+        document.getElementById(`input-2-${game_id}`).oninput = function() {check_winner(game_id)} ;
+        document.getElementById(`radio-1-${game_id}`).onclick = function() {handle_radios(game_id, 1)};
+        document.getElementById(`radio-2-${game_id}`).onclick = function() {handle_radios(game_id, 2)};
     });
 });
 
 
-function action(game_id) {
-    goals1 = document.getElementById(`input-1-${game_id}`).value
-    goals2 = document.getElementById(`input-2-${game_id}`).value
-    console.log(`${game_id} changed. Score: ${goals1}-${goals2}`)
+function check_winner(game_id) {
+    let goals1 = parseInt(document.getElementById(`input-1-${game_id}`).value)
+    let goals2 = parseInt(document.getElementById(`input-2-${game_id}`).value)
+    let radio1 = document.getElementById(`radio-1-${game_id}`)
+    let radio2 = document.getElementById(`radio-2-${game_id}`)
+
+    if (goals1 != "" && goals2 != "") {
+        let result = determine_winner(goals1, goals2, game_id)
+        update_radios(result, radio1, radio2)
+        console.log(`${game_id}: winner${result}. radio1 ${radio1.checked}, radio 2 ${radio2.checked} `)
+
+    } else {
+        console.log(`${game_id}: winner CANNOT be determined`)
+    }
 };
+
+function determine_winner(goals1, goals2) {
+    // returns 1 if team1, 2 if team2 and 3 if tie
+    if (goals1 > goals2) { //team 1 wins
+        return 1
+    } else if (goals1 < goals2) { // team 2 wins
+        return 2
+    } else { //tie
+        return 3 // tie
+    }
+}
+
+function update_radios(result, radio1, radio2) {
+    if (result == 1) { //team 1 wins
+        radio1.disabled = true
+        radio2.disabled = true
+        radio1.checked = true
+        radio2.checked = false
+        return
+    } else if (result == 2) { // team 2 wins
+        radio1.disabled = true
+        radio2.disabled = true
+        radio1.checked = false
+        radio2.checked = true
+        return
+    } else { //tie
+        radio1.disabled = false
+        radio2.disabled = false
+        radio1.checked = false
+        radio2.checked = false
+        return 
+    }
+}
+
+function handle_radios(game_id, radio_num) {
+    console.log(radio_num)
+    let radio1 = document.getElementById(`radio-1-${game_id}`)
+    let radio2 = document.getElementById(`radio-2-${game_id}`)
+
+    if (radio_num == 1) {
+        radio2.checked = false
+    } else {
+        radio1.checked = false
+    }
+}

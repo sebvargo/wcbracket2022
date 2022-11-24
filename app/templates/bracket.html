@@ -14,7 +14,7 @@
                 <!-- <div class="valid-tooltip">Valid.</div> -->
             <!-- Radio Button -->
             <div class="input-group-text">
-                <input class="form-check-input mt-0" type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
+                <input class="form-check-input mt-0" required disabled type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
             </div>
         </div>
 
@@ -22,7 +22,7 @@
             <span class="input-group-text" id="label-2-{{g.game_id}}">{% with team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag.html" %}{% endwith %} {{g.team2}}</span>
             <input required type="number" class="form-control" id="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} >
             <div class="input-group-text">
-                <input class="form-check-input mt-0" type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
+                <input class="form-check-input mt-0" required disabled type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
             </div>
         </div>
     </div>
