@@ -35,24 +35,58 @@ document.addEventListener('DOMContentLoaded', function()
 {
     stages.forEach(function (game_id, idx) 
     {
-        document.getElementById(`input-1-${game_id}`).oninput = function() {check_winner(game_id)};
-        document.getElementById(`input-2-${game_id}`).oninput = function() {check_winner(game_id)};
+        document.getElementById(`input-1-${game_id}`).oninput = function() {update_radios(game_id)};
+        document.getElementById(`input-2-${game_id}`).oninput = function() {update_radios(game_id)};
         document.getElementById(`radio-1-${game_id}`).onclick = function() {handle_radios(game_id, 1)};
         document.getElementById(`radio-2-${game_id}`).onclick = function() {handle_radios(game_id, 2)};
     });
 });
 
+function update_child(parent_game_id) {
+    let parent_result = get_radio_result(parent_game_id)
+    console.log(parent_result)
+    
+    if (parent_result == 3)  { // in case of tie, look at the radios
+        return
+    }
+    let child_id = children[parent_game_id]
+    let child_label = document.getElementById(`label-${child_id}`)
+    let child_input = document.getElementById(`input-${child_id}`)
+    let parent_label = document.getElementById(`label-${parent_result}-${parent_game_id}`).innerHTML
+    console.log(`parent${parent_game_id}-result-${parent_result}`)
+    child_label.innerHTML = parent_label
+    child_input.disabled = false
+    
+}
+
+
+function get_radio_result(game_id) {
+    let parent_radio1 = document.getElementById(`radio-1-${game_id}`)
+    let parent_radio2 = document.getElementById(`radio-2-${game_id}`)
+    if (parent_radio1.checked) { // team1 selected to win
+        return 1
+    } else if (parent_radio2.checked) {
+        return 2
+    } else {
+        return 3
+    }
+}
+
 function handle_radios(game_id, radio_num) {
+    console.log("changing RADIO")
     let radio1 = document.getElementById(`radio-1-${game_id}`)
     let radio2 = document.getElementById(`radio-2-${game_id}`)
 
     if (radio_num == 1) {
         radio2.checked = false
+        update_child(game_id)
     } else {
         radio1.checked = false
+        update_child(game_id)
     }
 
 }
+
 
 
 function check_winner(game_id) {
@@ -82,47 +116,49 @@ function determine_winner(goals1, goals2) {
     }
 }
 
-function update_radios(result, radio1, radio2) {
-    if (result == 1) { //team 1 wins
-        radio1.disabled = true
-        radio2.disabled = true
-        radio1.checked = true
-        radio2.checked = false
-        return 
-    } else if (result == 2) { // team 2 wins
-        radio1.disabled = true
-        radio2.disabled = true
-        radio1.checked = false
-        radio2.checked = true
-        return 
-    } else { //tie
-        radio1.disabled = false
-        radio2.disabled = false
-        radio1.checked = true
-        radio2.checked = false
-        return 
-    }
-}
+function update_radios(game_id) {
+    let goals1 = parseInt(document.getElementById(`input-1-${game_id}`).value)
+    let goals2 = parseInt(document.getElementById(`input-2-${game_id}`).value)
+    let radio1 = document.getElementById(`radio-1-${game_id}`)
+    let radio2 = document.getElementById(`radio-2-${game_id}`)
 
-function update_child(parent_game_id, parent_result) {
-    let child = children[parent_game_id]
-    child_label = document.getElementById(`label-${child}`)
-    if (parent_result == 3)  { // in case of tie, look at the radios
-        parent_result = get_radio_result(parent_game_id)
-    }
-    console.log(`parent${parent_game_id}-result-${parent_result}`)
-    let parent_label = document.getElementById(`label-${parent_result}-${parent_game_id}`).innerHTML
-    child_label.innerHTML = parent_label
-}
-
-function get_radio_result(game_id) {
-    let parent_radio1 = document.getElementById(`radio-1-${game_id}`)
-    if (parent_radio1.checked) { // team1 selected to win
-        return 1
+    if (goals1 != "" && goals2 != "") {
+        let result = determine_winner(goals1, goals2, game_id)
+        if (result == 1) { //team 1 wins
+            radio1.disabled = true
+            radio2.disabled = true
+            radio1.checked = true
+            radio2.checked = false
+            radio1.value = 1
+            radio2.value = 0
+            update_child(game_id)
+            return 
+        } else if (result == 2) { // team 2 wins
+            radio1.disabled = true
+            radio2.disabled = true
+            radio1.checked = false
+            radio2.checked = true
+            radio1.value = 0
+            radio2.value = 1
+            update_child(game_id)
+            return 
+        } else { //tie
+            radio1.disabled = false
+            radio2.disabled = false
+            radio1.checked = true
+            radio2.checked = false
+            radio1.value = 1
+            radio2.value = 0
+            update_child(game_id)
+            return 
+        }
     } else {
-        return 2
+        console.log(`${game_id}: winner CANNOT be determined`)
     }
+
 }
+
+
     
 
 
