@@ -23,11 +23,11 @@
                         <form action="" method="post" class ="mb-3" validate>
                             <div class="row">
                                 <div class="col">
-                                    <label for="goals1" class="form-label">{{flags[game.team1]}} {{game.team1}}</label>
+                                    <label for="goals1" class="form-label">{% with team = game.team1, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team1 }}</label>
                                     <input type="text" class="form-control" name="goals1" id="goals1" aria-describedby="basic-addon1">
                                 </div>
                                 <div class="col">
-                                    <label for="goals2" class="form-label">{{flags[game.team2]}} {{game.team2}}</label>
+                                    <label for="goals2" class="form-label">{% with team = game.team2, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team2 }}</label>
                                     <input type="text" class="form-control" name="goals2" id="goals2" aria-describedby="basic-addon2">
                                 </div>
                             </div> 
