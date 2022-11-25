@@ -52,10 +52,13 @@ function update_child(parent_game_id) {
     let child_id = children[parent_game_id]
     let child_label = document.getElementById(`label-${child_id}`)
     let child_input = document.getElementById(`input-${child_id}`)
+    let child_img = document.getElementById('img-${child_id}')
     let parent_label = document.getElementById(`label-${parent_result}-${parent_game_id}`).innerHTML
+    
     console.log(`parent${parent_game_id}-result-${parent_result}`)
     child_label.innerHTML = parent_label
     child_input.disabled = false
+    child_img.src = `/static/images/flags/${parent_label}.svg`
     
 }
 

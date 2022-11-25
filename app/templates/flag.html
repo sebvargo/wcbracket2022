@@ -1,5 +1,5 @@
-{% if game_id < 49 %}
-    <img class="align-{{align}}" src="{{ url_for("static", filename="".join(["images/flags/",team,".svg"])) }}" alt="Bootstrap" width={{w}} height={{h}}>
+{% if game_id < 50 %}
+    <img class="align-{{align}}" value = {{team}} src="{{ url_for("static", filename="".join(["images/flags/",team,".svg"])) }}" alt="Bootstrap" width={{w}} height={{h}}>
 {% else %}
-    <img class="align-{{align}}" src="{{ url_for("static", filename="".join(["images/flags/BRA.svg"])) }}" alt="Bootstrap" width={{w}} height={{h}}>
+    <img class="align-{{align}}" value = {{team}} src="{{ url_for("static", filename="".join(["images/flags/BRA.svg"])) }}" alt="Bootstrap" width={{w}} height={{h}}>
 {% endif %}
