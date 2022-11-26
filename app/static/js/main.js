@@ -26,8 +26,8 @@ children = {
     58: "2-61", 
     59: "1-62", 
     60: "2-62", 
-    61: "1-63", 
-    62: "2-63",
+    61: "1-64", 
+    62: "2-64",
 }
 
 
@@ -43,22 +43,42 @@ document.addEventListener('DOMContentLoaded', function()
 });
 
 function update_child(parent_game_id) {
-    let parent_result = get_radio_result(parent_game_id)
-    console.log(parent_result)
     
+    let parent_result = get_radio_result(parent_game_id)
     if (parent_result == 3)  { // in case of tie, look at the radios
         return
     }
+
+
     let child_id = children[parent_game_id]
+    let child_identifier = child_id.split("-")[0]
     let child_label = document.getElementById(`label-${child_id}`)
     let child_input = document.getElementById(`input-${child_id}`)
-    let child_img = document.getElementById('img-${child_id}')
+    let child_img = document.getElementById(`img-${child_id}`)
     let parent_label = document.getElementById(`label-${parent_result}-${parent_game_id}`).innerHTML
+    let parent_country_code = parent_label.split(" ").slice(-1)[0]
+
     
-    console.log(`parent${parent_game_id}-result-${parent_result}`)
     child_label.innerHTML = parent_label
     child_input.disabled = false
-    child_img.src = `/static/images/flags/${parent_label}.svg`
+
+    // handle last two games
+    if (parent_game_id == 61 || parent_game_id == 62) {
+        let loser_result = 0
+        if (parent_result == 1 ) {loser_result = 2}
+        if (parent_result == 2) {loser_result = 1}
+
+        let loser_parent_label = document.getElementById(`label-${loser_result}-${parent_game_id}`).innerHTML
+        let loser_child_label = document.getElementById(`label-${child_identifier}-63`)
+        let child_input = document.getElementById(`input-${child_identifier}-63`)
+        loser_child_label.innerHTML = loser_parent_label
+        child_input.disabled = false
+        
+    } else {
+        
+    }
+
+    return
     
 }
 
