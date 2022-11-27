@@ -61,10 +61,11 @@ function update_child(parent_game_id) {
     child_input.disabled = false
     child_input.value = ""
     child_input.dataset['country_code'] = parent_country_code
-    update_child(child_game_id)
-
+    
     // handle last two games
-    if (parent_game_id == 61 || parent_game_id == 62) {
+    if (child_game_id != 64) {
+        update_child(child_game_id)
+    } else {
         let loser_result = 0
         if (parent_result == 1 ) {loser_result = 2}
         if (parent_result == 2) {loser_result = 1}
@@ -76,10 +77,9 @@ function update_child(parent_game_id) {
         loser_child_input.dataset['country_code'] = loser_country_code
         loser_child_label.innerHTML = `<img class="align-top" id="img-${child_identifier}-${child_game_id}" src="/static/images/flags/${loser_country_code}.svg" alt="Bootstrap" width="24" height="24">&nbsp; ${loser_country_code}`
         loser_child_input.disabled = false
-
-    } 
-    
+    }
 }
+   
 
 function check_winner(game_id) {
     let goals1 = parseInt(document.getElementById(`input-1-${game_id}`).value)

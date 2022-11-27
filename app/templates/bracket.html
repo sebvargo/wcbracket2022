@@ -10,7 +10,7 @@
             <span class="input-group-text" id="label-1-{{g.game_id}}">
                 {% with team_num = 1, team = g.team1, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team1}}</span>
             <!-- Goals -->
-                <input type="number" class="form-control" id="input-1-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} required>
+                <input type="number"  value = {{ loop.index }} class="form-control" id="input-1-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} required>
                 <!-- <div class="valid-tooltip">Valid.</div> -->
             <!-- Radio Button -->
             <div class="input-group-text">
@@ -20,7 +20,7 @@
 
         <div class="input-group input-group-sm mb-3">
             <span class="input-group-text" id="label-2-{{g.game_id}}">{% with team_num = 2, team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team2}}</span>
-            <input required type="number" class="form-control" id="input-2-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} >
+            <input required type="number"  value = {{ loop.index+1 }} class="form-control" id="input-2-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} >
             <div class="input-group-text">
                 <input class="form-check-input mt-0" disabled type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
             </div>
