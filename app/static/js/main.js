@@ -14,22 +14,21 @@ parents = {
 }
 
 children = {
-    49: "1-57", 
-    50: "2-57", 
-    51: "1-58", 
-    52: "2-58", 
-    53: "1-59", 
-    54: "2-59", 
-    55: "1-60", 
-    56: "2-60", 
-    57: "1-61", 
-    58: "2-61", 
-    59: "1-62", 
-    60: "2-62", 
-    61: "1-64", 
-    62: "2-64",
+    49: [1,57], 
+    50: [2,57], 
+    51: [1,58], 
+    52: [2,58], 
+    53: [1,59], 
+    54: [2,59], 
+    55: [1,60], 
+    56: [2,60], 
+    57: [1,61], 
+    58: [2,61], 
+    59: [1,62], 
+    60: [2,62], 
+    61: [1,64], 
+    62: [2,64],
 }
-
 
 document.addEventListener('DOMContentLoaded', function() 
 {
@@ -49,18 +48,20 @@ function update_child(parent_game_id) {
         return
     }
 
+    let child_identifier = children[parent_game_id][0] // 1 or 2
+    let child_game_id = children[parent_game_id][1] //48, 49 ...64
 
-    let child_id = children[parent_game_id]
-    let child_identifier = child_id.split("-")[0]
-    let child_label = document.getElementById(`label-${child_id}`)
-    let child_input = document.getElementById(`input-${child_id}`)
-    let child_img = document.getElementById(`img-${child_id}`)
+    let child_label = document.getElementById(`label-${child_identifier}-${child_game_id}`)
+    let child_input = document.getElementById(`input-${child_identifier}-${child_game_id}`)
+    // let child_radio = document.getElementById(`radio-${child_identifier}-${child_game_id}`)
     let parent_label = document.getElementById(`label-${parent_result}-${parent_game_id}`).innerHTML
     let parent_country_code = parent_label.split(" ").slice(-1)[0]
 
-    
-    child_label.innerHTML = parent_label
+    child_label.innerHTML = `<img class="align-top" id="img-${child_identifier}-${child_game_id}" src="/static/images/flags/${parent_country_code}.svg" alt="Bootstrap" width="24" height="24">&nbsp; ${parent_country_code}`
     child_input.disabled = false
+    child_input.value = ""
+    child_input.dataset['country_code'] = parent_country_code
+    update_child(child_game_id)
 
     // handle last two games
     if (parent_game_id == 61 || parent_game_id == 62) {
@@ -70,47 +71,15 @@ function update_child(parent_game_id) {
 
         let loser_parent_label = document.getElementById(`label-${loser_result}-${parent_game_id}`).innerHTML
         let loser_child_label = document.getElementById(`label-${child_identifier}-63`)
-        let child_input = document.getElementById(`input-${child_identifier}-63`)
-        loser_child_label.innerHTML = loser_parent_label
-        child_input.disabled = false
-        
-    } else {
-        
-    }
+        let loser_child_input = document.getElementById(`input-${child_identifier}-63`)
+        let loser_country_code = loser_parent_label.split(" ").slice(-1)[0]
+        loser_child_input.dataset['country_code'] = loser_country_code
+        loser_child_label.innerHTML = `<img class="align-top" id="img-${child_identifier}-${child_game_id}" src="/static/images/flags/${loser_country_code}.svg" alt="Bootstrap" width="24" height="24">&nbsp; ${loser_country_code}`
+        loser_child_input.disabled = false
 
-    return
+    } 
     
 }
-
-
-function get_radio_result(game_id) {
-    let parent_radio1 = document.getElementById(`radio-1-${game_id}`)
-    let parent_radio2 = document.getElementById(`radio-2-${game_id}`)
-    if (parent_radio1.checked) { // team1 selected to win
-        return 1
-    } else if (parent_radio2.checked) {
-        return 2
-    } else {
-        return 3
-    }
-}
-
-function handle_radios(game_id, radio_num) {
-    console.log("changing RADIO")
-    let radio1 = document.getElementById(`radio-1-${game_id}`)
-    let radio2 = document.getElementById(`radio-2-${game_id}`)
-
-    if (radio_num == 1) {
-        radio2.checked = false
-        update_child(game_id)
-    } else {
-        radio1.checked = false
-        update_child(game_id)
-    }
-
-}
-
-
 
 function check_winner(game_id) {
     let goals1 = parseInt(document.getElementById(`input-1-${game_id}`).value)
@@ -181,7 +150,32 @@ function update_radios(game_id) {
 
 }
 
+function get_radio_result(game_id) {
+    let parent_radio1 = document.getElementById(`radio-1-${game_id}`)
+    let parent_radio2 = document.getElementById(`radio-2-${game_id}`)
+    if (parent_radio1.checked) { // team1 selected to win
+        return 1
+    } else if (parent_radio2.checked) {
+        return 2
+    } else {
+        return 3
+    }
+}
 
-    
+function handle_radios(game_id, radio_num) {
+    console.log("changing RADIO")
+    let radio1 = document.getElementById(`radio-1-${game_id}`)
+    let radio2 = document.getElementById(`radio-2-${game_id}`)
+
+    if (radio_num == 1) {
+        radio2.checked = false
+        update_child(game_id)
+    } else {
+        radio1.checked = false
+        update_child(game_id)
+    }
+
+}
+
 
 
