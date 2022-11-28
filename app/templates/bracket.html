@@ -1,44 +1,70 @@
 {% for g in games %}
-<div class="row  mt-{{margin}} ">
-    <div class="col ">
-        
-        <!-- Label -->
-        <label for="basic-game" class="form-label">Stage: {{ g.game_id }} </label>
-        <input type="hidden" name="winner-{{g.game_id}}" id="winner-{{g.game_id}}" value="{{g.team1}}"/>
-        <input type="hidden" name="runnerup-{{g.game_id}}" id="runnerup-{{g.game_id}}" value="{{g.team2}}"/>
-        
-        <!-- Team 1 -->
-        <div class="input-group input-group-sm mb-3">
-            
-            <!-- Flag and country code -->
-            <span class="input-group-text" id="label-1-{{g.game_id}}" name = "label-1-{{g.game_id}}" >
-                {% with team_num = 1, team = g.team1, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team1}}</span>
-            
-            <!-- Goals -->
-            <input type="number"  value = {% if load_data %}{{ g.goals1 }} {% elif disabled %} disabled {% else %} placeholder="0" {% endif %} class="form-control" name="input-1-{{g.game_id}}" id="input-1-{{g.game_id}}"  required>
-            
-            <!-- Radio Button -->
-            <div class="input-group-text">
-                <input class="form-check-input mt-0" data-country_code = "{{g.team1}}" {% if g.winner == g.team1 %}checked{% endif %} disabled type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
-                <input type="hidden" name="country-1-{{g.game_id}}" id="country-1-{{g.game_id}}" value="{{g.team1}}"/>
-            </div>
-        </div>
-        
-        <!-- Team 2 -->
-        <div class="input-group input-group-sm mb-3">
+    <div class="row {% if g.game_id == 63 %} mt-2 {% elif g.game_id == 64 %}{% else %}{% endif %}">
+    {% if g.game_id < 63 %} 
+    <div class="col my-col-2 card 
+        {% if color_change_at >= loop.index  %}
+            border-primary bg-primary text-light m-2
+        {% else %} 
+            border-light bg-light text-primary  m-2
+        {% endif %}">
+    {% else %} 
+        <div class="col my-col-2 card 
+        {% if g.game_id == 63 %} 
+            col-10 mx-auto border-light bg-light text-primary 
+        {% elif g.game_id == 64 %}  
+            border-warning text-warning m-2 border-primary bg-primary
+        {% endif %}">
+    {% endif %}
 
-            <!-- Flag and country code -->
-            <span class="input-group-text" id="label-2-{{g.game_id}}" name = "label-2-{{g.game_id}}" >{% with team_num = 2, team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team2}}</span>
+        <div class="card-body">
+            <!-- Label -->
+            <h5 for="basic-game" class="form-label card-title {% if g.game_id == 64 %} display-6 {% endif %}">
+                {% if g.game_id == 63 %} 
+                <img class="align-{{align}}" src="{{ url_for("static", filename="images/bronze.png") }}" alt="Bootstrap" width=32 height=32>
+                {% elif g.game_id == 64 %}
+                <img class="align-{{align}}" src="{{ url_for("static", filename="images/cup.png") }}" alt="Bootstrap" width=36 height=36>
+                {% else %}{% endif %} 
+                Stage: {{ g.game_id }} 
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">MM-DD HH:MM</h6>
+            <input type="hidden" name="winner-{{g.game_id}}" id="winner-{{g.game_id}}" value="{{g.team1}}"/>
+            <input type="hidden" name="runnerup-{{g.game_id}}" id="runnerup-{{g.game_id}}" value="{{g.team2}}"/>
             
-            <!-- Goals -->
-            <input required type="number"  value = {% if load_data %}{{ g.goals2 }} {% elif disabled %} disabled {% else %} placeholder="0" {% endif %} class="form-control" name="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}">
+            <!-- Team 1 -->
+            <div class="input-group input-group-sm mb-3">
+                
+                <!-- Flag and country code -->
+                <span class="input-group-text" id="label-1-{{g.game_id}}" name = "label-1-{{g.game_id}}" >
+                    {% with team_num = 1, team = g.team1, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team1}}</span>
+                
+                <!-- Goals -->
+                <input type="number"  value = {% if load_data %}{{ g.goals1 }} {% elif disabled %} disabled {% else %} placeholder="0" {% endif %} class="form-control" name="input-1-{{g.game_id}}" id="input-1-{{g.game_id}}"  required>
+                
+                <!-- Radio Button -->
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" data-country_code = "{{g.team1}}" {% if g.winner == g.team1 %}checked{% endif %} disabled type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
+                    <input type="hidden" name="country-1-{{g.game_id}}" id="country-1-{{g.game_id}}" value="{{g.team1}}"/>
+                </div>
+            </div>
             
-            <!-- Radio Button -->
-            <div class="input-group-text">
-                <input class="form-check-input mt-0" data-country_code = "{{g.team2}}" {% if g.winner == g.team2 %}checked{% endif %} disabled type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
-                <input type="hidden" name="country-2-{{g.game_id}}" id="country-2-{{g.game_id}}" value="{{g.team2}}"/>
+            <!-- Team 2 -->
+            <div class="input-group input-group-sm mb-3">
+
+                <!-- Flag and country code -->
+                <span class="input-group-text" id="label-2-{{g.game_id}}" name = "label-2-{{g.game_id}}" >{% with team_num = 2, team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team2}}</span>
+                
+                <!-- Goals -->
+                <input required type="number"  value = {% if load_data %}{{ g.goals2 }} {% elif disabled %} disabled {% else %} placeholder="0" {% endif %} class="form-control" name="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}">
+                
+                <!-- Radio Button -->
+                <div class="input-group-text">
+                    <input class="form-check-input mt-0" data-country_code = "{{g.team2}}" {% if g.winner == g.team2 %}checked{% endif %} disabled type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
+                    <input type="hidden" name="country-2-{{g.game_id}}" id="country-2-{{g.game_id}}" value="{{g.team2}}"/>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    </div>
+
+
 {% endfor %}

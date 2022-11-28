@@ -23,20 +23,20 @@ def round2():
     if Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").first() is not None:
         load_data = True
         games = {}
-        games['rd16'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").all()
-        games['quarters'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "quarters").all()
-        games['semis'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "semis").all()
-        games['third'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "third").first()
-        games['final'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "final").first()
-        games['finals'] =  [games['third'], games['final']]
+        games['rd16'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").order_by(Prediction.game_id).all()
+        games['quarters'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "quarters").order_by(Prediction.game_id).all()
+        games['semis'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "semis").order_by(Prediction.game_id).all()
+        games['third'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "third").order_by(Prediction.game_id).first()
+        games['final'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "final").order_by(Prediction.game_id).first()
+        games['finals'] =  [games['final'], games['third']]
         
     else:
         load_data = False
         games = {
-        'rd16': Game.query.filter(Game.stage == 'rd16').all(),
-        'quarters': Game.query.filter(Game.stage == 'quarters').all(),
-        'semis': Game.query.filter(Game.stage == 'semis').all(),
-        'finals': Game.query.filter(Game.game_id > 62).all()
+        'rd16': Game.query.filter(Game.stage == 'rd16').order_by(Game.game_id).all(),
+        'quarters': Game.query.filter(Game.stage == 'quarters').order_by(Game.game_id).all(),
+        'semis': Game.query.filter(Game.stage == 'semis').order_by(Game.game_id).all(),
+        'finals': Game.query.filter(Game.game_id > 62).order_by(Game.game_id.desc()).all()
     }
     return render_template('round2.html', title='Round 2', user = current_user, load_data = load_data, games = games, flags = FLAGS)
 
