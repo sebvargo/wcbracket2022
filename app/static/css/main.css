@@ -1,7 +1,6 @@
 @charset "UTF-8";
 .my-col {
-  background-color: lightpink;
-  border: 2px solid red;
+  background-color: lightgrey;
   color: black;
   display: flex;
   flex-direction: column;

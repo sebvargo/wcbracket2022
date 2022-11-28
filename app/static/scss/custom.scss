@@ -4,8 +4,8 @@ $secondary: #6c757d;
 
 
 .my-col{
-    background-color: lightpink;
-    border: 2px solid red;
+    background-color: lightgrey;
+    // border: 2px solid red;
     color: black;
     display: flex;
     flex-direction: column;
@@ -20,7 +20,6 @@ $secondary: #6c757d;
 
 
 }
-
 
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";

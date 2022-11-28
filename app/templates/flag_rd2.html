@@ -1,5 +1,1 @@
-{% if game_id < 57 %}
-    <img class="align-{{align}}" id = "img-{{team_num}}-{{game_id}}" src="{{ url_for('static', filename=''.join(['images/flags/',team,'.svg'])) }}" alt="Bootstrap" width={{w}} height={{h}}>
-{% else %}
-    <img class="align-{{align}}" id = "img-{{team_num}}-{{game_id}}" src="{{ url_for('static', filename=''.join(['images/flags/tbd.svg'])) }}" alt="Bootstrap" width={{w}} height={{h}}>
-{% endif %}
+<img class="align-{{align}}" id = "img-{{team_num}}-{{game_id}}" src="{{ url_for('static', filename=''.join(['images/flags/',team,'.svg'])) }}" alt="Bootstrap" width={{w}} height={{h}}>

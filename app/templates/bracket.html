@@ -3,26 +3,29 @@
     <div class="col ">
         <!-- Label -->
         <label for="basic-game" class="form-label">Stage: {{ g.game_id }} </label>
-
+        <input type="hidden" name="winner-{{g.game_id}}" id="winner-{{g.game_id}}" value="{{g.team1}}"/>
+        <input type="hidden" name="runnerup-{{g.game_id}}" id="runnerup-{{g.game_id}}" value="{{g.team2}}"/>
         <!-- Team 1 -->
         <div class="input-group input-group-sm mb-3">
             <!-- Flag and country code -->
-            <span class="input-group-text" id="label-1-{{g.game_id}}">
+            <span class="input-group-text" id="label-1-{{g.game_id}}" name = "label-1-{{g.game_id}}" >
                 {% with team_num = 1, team = g.team1, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team1}}</span>
             <!-- Goals -->
-                <input type="number"  value = {{ loop.index }} class="form-control" id="input-1-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} required>
+                <input type="number"  value = "" class="form-control" name="input-1-{{g.game_id}}" id="input-1-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} required>
                 <!-- <div class="valid-tooltip">Valid.</div> -->
             <!-- Radio Button -->
             <div class="input-group-text">
-                <input class="form-check-input mt-0" disabled type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
+                <input class="form-check-input mt-0" data-country_code = "{{g.team1}}" disabled type="radio" id="radio-1-{{g.game_id}}" name="radio-1-{{g.game_id}}" />
+                <input type="hidden" name="country-1-{{g.game_id}}" id="country-1-{{g.game_id}}" value="{{g.team1}}"/>
             </div>
         </div>
 
         <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text" id="label-2-{{g.game_id}}">{% with team_num = 2, team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team2}}</span>
-            <input required type="number"  value = {{ loop.index+1 }} class="form-control" id="input-2-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} >
+            <span class="input-group-text" id="label-2-{{g.game_id}}" name = "label-2-{{g.game_id}}" >{% with team_num = 2, team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team2}}</span>
+            <input required type="number"  value = "" class="form-control" name="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}" {% if disabled %} disabled {% else %} placeholder="0" {% endif %} >
             <div class="input-group-text">
-                <input class="form-check-input mt-0" disabled type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
+                <input class="form-check-input mt-0" data-country_code = "{{g.team2}}" disabled type="radio" id="radio-2-{{g.game_id}}" name="radio-2-{{g.game_id}}"  />
+                <input type="hidden" name="country-2-{{g.game_id}}" id="country-2-{{g.game_id}}" value="{{g.team2}}"/>
             </div>
         </div>
     </div>

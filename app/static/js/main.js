@@ -53,14 +53,16 @@ function update_child(parent_game_id) {
 
     let child_label = document.getElementById(`label-${child_identifier}-${child_game_id}`)
     let child_input = document.getElementById(`input-${child_identifier}-${child_game_id}`)
+    let child_country = document.getElementById(`country-${child_identifier}-${child_game_id}`)
     // let child_radio = document.getElementById(`radio-${child_identifier}-${child_game_id}`)
     let parent_label = document.getElementById(`label-${parent_result}-${parent_game_id}`).innerHTML
     let parent_country_code = parent_label.split(" ").slice(-1)[0]
+    
 
     child_label.innerHTML = `<img class="align-top" id="img-${child_identifier}-${child_game_id}" src="/static/images/flags/${parent_country_code}.svg" alt="Bootstrap" width="24" height="24">&nbsp; ${parent_country_code}`
     child_input.disabled = false
     child_input.value = ""
-    child_input.dataset['country_code'] = parent_country_code
+    child_country.value = parent_country_code
     
     // handle last two games
     if (child_game_id != 64) {
@@ -74,7 +76,8 @@ function update_child(parent_game_id) {
         let loser_child_label = document.getElementById(`label-${child_identifier}-63`)
         let loser_child_input = document.getElementById(`input-${child_identifier}-63`)
         let loser_country_code = loser_parent_label.split(" ").slice(-1)[0]
-        loser_child_input.dataset['country_code'] = loser_country_code
+        let loser_child_country = document.getElementById(`country-${child_identifier}-63`)
+        loser_child_country.value = loser_country_code
         loser_child_label.innerHTML = `<img class="align-top" id="img-${child_identifier}-${child_game_id}" src="/static/images/flags/${loser_country_code}.svg" alt="Bootstrap" width="24" height="24">&nbsp; ${loser_country_code}`
         loser_child_input.disabled = false
     }
@@ -113,6 +116,10 @@ function update_radios(game_id) {
     let goals2 = parseInt(document.getElementById(`input-2-${game_id}`).value)
     let radio1 = document.getElementById(`radio-1-${game_id}`)
     let radio2 = document.getElementById(`radio-2-${game_id}`)
+    let country1 = document.getElementById(`country-1-${game_id}`).value
+    let country2 = document.getElementById(`country-2-${game_id}`).value
+    let winner = document.getElementById(`winner-${game_id}`)
+    let runnerup = document.getElementById(`runnerup-${game_id}`)
 
     if (goals1 != "" && goals2 != "") {
         let result = determine_winner(goals1, goals2, game_id)
@@ -123,6 +130,8 @@ function update_radios(game_id) {
             radio2.checked = false
             radio1.value = 1
             radio2.value = 0
+            winner.value = country1
+            runnerup.value = country2
             update_child(game_id)
             return 
         } else if (result == 2) { // team 2 wins
@@ -132,6 +141,8 @@ function update_radios(game_id) {
             radio2.checked = true
             radio1.value = 0
             radio2.value = 1
+            winner.value = country2
+            runnerup.value = country1
             update_child(game_id)
             return 
         } else { //tie
@@ -141,6 +152,8 @@ function update_radios(game_id) {
             radio2.checked = false
             radio1.value = 1
             radio2.value = 0
+            winner.value = country1
+            runnerup.value = country2
             update_child(game_id)
             return 
         }

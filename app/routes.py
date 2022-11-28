@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games, get_rankings
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games, get_rankings, second_round_games, add_round_two_game
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
@@ -19,6 +19,13 @@ def round2():
         'semis': Game.query.filter(Game.stage == 'semis').all(),
         'finals': Game.query.filter(Game.game_id > 62).all()
     }
+    if request.method == 'POST': 
+        for stage, game_ids in second_round_games.items():
+            msg, msg_type = add_round_two_game(game_ids, stage, request.form, current_user.user_id)
+            flash(msg, msg_type)
+    
+    
+    
     return render_template('round2.html', title='Round 2', user = current_user, games = games, flags = FLAGS)
 
 @app.route('/', methods = ['GET', 'POST'])
