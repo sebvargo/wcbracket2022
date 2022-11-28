@@ -111,6 +111,7 @@ def add_round_two_game(game_ids, stage, form, user_id):
             goals1 = form.get(f'input-1-{game_id}'),
             goals2 = form.get(f'input-2-{game_id}'),
             winner = form.get(f'winner-{game_id}'),
+            user_id = user_id,
             stage = stage,)
         db.session.add(g)
     try:

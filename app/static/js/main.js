@@ -179,12 +179,20 @@ function handle_radios(game_id, radio_num) {
     console.log("changing RADIO")
     let radio1 = document.getElementById(`radio-1-${game_id}`)
     let radio2 = document.getElementById(`radio-2-${game_id}`)
+    let winner = document.getElementById(`winner-${game_id}`)
+    let runnerup = document.getElementById(`runnerup-${game_id}`)
+    let country1 = document.getElementById(`country-1-${game_id}`).value
+    let country2 = document.getElementById(`country-2-${game_id}`).value
 
     if (radio_num == 1) {
         radio2.checked = false
+        winner.value = country1
+        runnerup.value = country2
         update_child(game_id)
     } else {
         radio1.checked = false
+        winner.value = country2
+        runnerup.value = country1
         update_child(game_id)
     }
 
