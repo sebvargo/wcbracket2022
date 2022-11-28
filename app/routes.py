@@ -13,20 +13,32 @@ import datetime as dt
 @app.route('/round2', methods = ['GET', 'POST'])
 @login_required
 def round2():  
-    games = {
+
+    if request.method == 'POST': 
+        for stage, game_ids in second_round_games.items():
+            msg, msg_type = add_round_two_game(game_ids, stage, request.form, current_user.user_id)
+            flash(msg, msg_type)
+
+    # check if predictions are already in DB
+    if Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").first() is not None:
+        load_data = True
+        games = {}
+        games['rd16'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").all()
+        games['quarters'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "quarters").all()
+        games['semis'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "semis").all()
+        games['third'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "third").first()
+        games['final'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "final").first()
+        games['finals'] =  [games['third'], games['final']]
+        
+    else:
+        load_data = False
+        games = {
         'rd16': Game.query.filter(Game.stage == 'rd16').all(),
         'quarters': Game.query.filter(Game.stage == 'quarters').all(),
         'semis': Game.query.filter(Game.stage == 'semis').all(),
         'finals': Game.query.filter(Game.game_id > 62).all()
     }
-    if request.method == 'POST': 
-        for stage, game_ids in second_round_games.items():
-            msg, msg_type = add_round_two_game(game_ids, stage, request.form, current_user.user_id)
-            flash(msg, msg_type)
-    
-    
-    
-    return render_template('round2.html', title='Round 2', user = current_user, games = games, flags = FLAGS)
+    return render_template('round2.html', title='Round 2', user = current_user, load_data = load_data, games = games, flags = FLAGS)
 
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
