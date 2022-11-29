@@ -213,6 +213,7 @@ class EventTracker(UserMixin, db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     description = db.Column(db.String(1024))
     count = db.Column(db.Integer)
+    timestamp = db.Column(db.DateTime(timezone = True), index = True)
     
 class Points(UserMixin, db.Model):
     point_id = db.Column(db.Integer, primary_key = True)

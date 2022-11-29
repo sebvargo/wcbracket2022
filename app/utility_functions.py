@@ -58,12 +58,13 @@ def add_games_to_db(filename = 'Quiniela Fixed.xlsx'):
     
     
        
-def add_event(description, user, init_value = 1):
+def add_event(description, user, init_value = 1, timestamp = dt.datetime.now(dt.timezone.utc)):
         if EventTracker.query.filter_by(user_id = user.user_id, description = description).first() is not None:
             event = EventTracker.query.filter_by(user_id = user.user_id, description = description).first()
             event.count += 1
+            event.timestamp = timestamp
         else:
-            event = EventTracker(user_id = user.user_id, description = description, count = init_value)
+            event = EventTracker(user_id = user.user_id, description = description, count = init_value, timestamp = timestamp)
             db.session.add(event)
         try:
             db.session.commit()
