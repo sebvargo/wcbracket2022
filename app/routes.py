@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games, get_rankings
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games, get_rankings, second_round_games, add_round_two_game
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
@@ -9,6 +9,36 @@ from werkzeug.utils import secure_filename
 import pandas as pd
 import datetime as dt
 
+
+@app.route('/round2', methods = ['GET', 'POST'])
+@login_required
+def round2():  
+
+    if request.method == 'POST': 
+        for stage, game_ids in second_round_games.items():
+            msg, msg_type = add_round_two_game(game_ids, stage, request.form, current_user.user_id)
+            flash(msg, msg_type)
+
+    # check if predictions are already in DB
+    if Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").first() is not None:
+        load_data = True
+        games = {}
+        games['rd16'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").order_by(Prediction.game_id).all()
+        games['quarters'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "quarters").order_by(Prediction.game_id).all()
+        games['semis'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "semis").order_by(Prediction.game_id).all()
+        games['third'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "third").order_by(Prediction.game_id).first()
+        games['final'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "final").order_by(Prediction.game_id).first()
+        games['finals'] =  [games['final'], games['third']]
+        
+    else:
+        load_data = False
+        games = {
+        'rd16': Game.query.filter(Game.stage == 'rd16').order_by(Game.game_id).all(),
+        'quarters': Game.query.filter(Game.stage == 'quarters').order_by(Game.game_id).all(),
+        'semis': Game.query.filter(Game.stage == 'semis').order_by(Game.game_id).all(),
+        'finals': Game.query.filter(Game.game_id > 62).order_by(Game.game_id.desc()).all()
+    }
+    return render_template('round2.html', title='Round 2', user = current_user, load_data = load_data, games = games, flags = FLAGS)
 
 @app.route('/', methods = ['GET', 'POST'])
 @login_required
@@ -193,7 +223,3 @@ def predictions(game_id):
     official = [game.official_goals1, game.official_goals2]
     return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, dt = dt)
 
-@app.route('/table', methods = ['GET', 'POST'])
-@login_required
-def table():
-    return render_template('table.html')

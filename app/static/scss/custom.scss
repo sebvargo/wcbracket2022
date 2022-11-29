@@ -1,5 +1,65 @@
 
 $primary: #56042C;
 $secondary: #6c757d;
+$info: #49bce3;
+$dark: #1077c3;
+$warning: #fec310;
+$light: #e8d8be;
+
+
+
+.my-col{
+    // background-color: lightgrey;
+    // border: 2px solid red;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // text-align: center;
+}
+
+.col-rd16 {
+    height: fit-content;
+}
+
+.col-quarters {
+    height: 1425px;
+}
+.col-semis {
+    height: 1015px;
+}
+.col-finals {
+    height: 230px; 
+    flex-direction: column;
+    justify-content: space-between;
+    // border: 2px solid red;
+    align-items: flex-end !important;
+    display: grid;
+    text-align: center;
+
+}
+
+
+.my-col-2{
+    background-color: lightseagreen;
+    border: 2px solid green;
+    color: black;
+    height: 11.5rem;
+    // text-align: center;
+}
+
+// Remove number arrows
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";

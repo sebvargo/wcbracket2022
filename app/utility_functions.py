@@ -1,5 +1,6 @@
 import pandas as pd
 from app import db
+from flask import flash
 from flask_login import current_user
 from app.models import *
 from emoji import emojize
@@ -8,8 +9,13 @@ import datetime as dt
 
 TEAM_NAMES_EMOJI = {'ARG' : 'Argentina','AUS':'Australia','BEL':'Belgium','BRA':'Brazil','CMR':'Cameroon','CAN':'Canada','CRC':'Costa_Rica','CRO':'Croatia','DEN':'Denmark','ECU':'Ecuador','ENG':'England','FRA':'France','GER':'Germany','GHA':'Ghana','IRN':'Iran','JPN':'Japan','MEX':'Mexico','MAR':'Morocco','NED':'Netherlands','POL':'Poland','POR':'Portugal','QAT':'Qatar','KSA':'Saudi_Arabia','SEN':'Senegal','SRB':'Serbia','KOR':'South_Korea','ESP':'Spain','SUI':'Switzerland','TUN':'Tunisia','URU':'Uruguay','USA':'United_States','WAL':'Wales'}
 FLAGS = {k: emojize(f':{t}:') for k, t in TEAM_NAMES_EMOJI.items()}
-# FLAGS = {k: f'/flags/{k}.svg' for k, t in TEAM_NAMES_EMOJI.items()}
-# OLD_FLAGS = {'ARG':'🇦🇷','AUS':'🇦🇹','BEL':'🇧🇪','BRA':'🇧🇷','CMR':'🇨🇲','CAN':'🇨🇦','CRC':'🇨🇷','CRO':'🇭🇷','DEN':'🇩🇰','ECU':'🇪🇨','ENG':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','FRA':'🇫🇷','GER':'🇩🇪','GHA':'🇬🇭','IRN':'🇮🇷','JPN':'🇯🇵','MEX':'🇲🇽','MAR':'🇲🇦','NED':'🇳🇱','POL':'🇵🇱','POR':'🇵🇹','QAT':'🇶🇦','KSA':'🇸🇦','SEN':'🇸🇳','SRB':'🇷🇸','KOR':'🇰🇷','ESP':'🇪🇸','SUI':'🇨🇭','TUN':'🇹🇳','URU':'🇺🇾','USA':'🇺🇸','WAL':'🏴󠁧󠁢󠁷󠁬󠁳󠁿'}
+second_round_games = {
+    'rd16'      : [49, 50, 51, 52, 53, 54, 55, 56],
+    'quarters'  : [57, 58, 59, 60],
+    'semis'     : [61, 62],
+    'third'       : [63],
+    'final'     : [64],
+ }
 
 def add_games_to_db(filename = 'Quiniela Fixed.xlsx'):
 
@@ -91,6 +97,33 @@ def read_group_stage_bracket(xlsx_file, stage = 'group'):
         print('Could not add predictions, please try again.')
         return 'Could not add predictions, please try again.'
     
+def add_round_two_game(game_ids, stage, form, user_id):
+    
+    # check if user has predictions in db, if so delete existing predictions
+    if Prediction.query.filter_by(user_id = user_id, stage = stage).first() is not None:
+        Prediction.query.filter_by(user_id = user_id, stage = stage).delete()
+    
+    for game_id in game_ids:
+        g = Prediction(
+            game_id = game_id,
+            team1 = form.get(f'country-1-{game_id}'),
+            team2 = form.get(f'country-2-{game_id}'),
+            goals1 = form.get(f'input-1-{game_id}'),
+            goals2 = form.get(f'input-2-{game_id}'),
+            winner = form.get(f'winner-{game_id}'),
+            user_id = user_id,
+            stage = stage,)
+        db.session.add(g)
+    try:
+        db.session.commit()
+        print(f'Added predictions successfully for user {user_id}')
+        return f'{stage}: Agregamos sus predicciones. Added predictions successfully.', 'success'
+    
+    except:
+        db.session.rollback()
+        print(f'Could not add predictions for user {user_id}, please try again.')
+        return 'Error: Por favor intente de nuevo. Error: Please try again', 'danger'
+
 def read_goleador(xlsx_file):
     
     USER_ID = current_user.user_id
@@ -143,6 +176,7 @@ def create_group_stage(user_id, stage_type):
     except:
         db.session.rollback()
         print("DID NOT create  stages and team successfully successully. Session rolled back")  
+
 
 def calculate_group_results(user, stage_type = 'group'):
     print(user.username)
