@@ -38,7 +38,7 @@
                     {% with team_num = 1, team = g.team1, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team1}}</span>
                 
                 <!-- Goals -->
-                <input type="number"  value = {% if load_data %}{{ g.goals1 }} {% elif disabled %} disabled {% else %} placeholder="0" {% endif %} class="form-control" name="input-1-{{g.game_id}}" id="input-1-{{g.game_id}}"  required>
+                <input type="number"  {% if load_data %} value = "{{ g.goals1 }}" {% else %} value="" {% if disabled %} disabled {% endif %}  {% endif %}  class="form-control" name="input-1-{{g.game_id}}" id="input-1-{{g.game_id}}"  required>
                 
                 <!-- Radio Button -->
                 <div class="input-group-text">
@@ -54,7 +54,7 @@
                 <span class="input-group-text" id="label-2-{{g.game_id}}" name = "label-2-{{g.game_id}}" >{% with team_num = 2, team = g.team2, w=24, h=24, align="top", game_id = g.game_id %}{% include "flag_rd2.html" %}{% endwith %} &nbsp; {{g.team2}}</span>
                 
                 <!-- Goals -->
-                <input required type="number"  value = {% if load_data %}{{ g.goals2 }} {% elif disabled %} disabled {% else %} placeholder="0" {% endif %} class="form-control" name="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}">
+                <input required type="number"  {% if load_data %} value = "{{ g.goals2 }}" {% else %} value="" {% if disabled %} disabled {% endif %}  {% endif %} class="form-control" name="input-2-{{g.game_id}}" id="input-2-{{g.game_id}}">
                 
                 <!-- Radio Button -->
                 <div class="input-group-text">
