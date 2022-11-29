@@ -44,8 +44,10 @@
                     {% else %}
                         <a class="nav-link" href="{{ url_for('results') }}">Resultados/Results</a>
                         <a class="nav-link" href="{{ url_for('calendar') }}">Calendario</a>
-                        <a class="nav-link" href="{{ url_for('round2') }}">Round 2</a>
-                        {% if  current_user.username == 'sebvargas' %}
+                        {% if  current_user.username in ['sebvargas', 'meme', 'Giedrius'] %}
+                        <a class="nav-link" href="{{ url_for('round2') }}">2nd Round</a>
+                        {% endif %}
+                        {% if  current_user.username in ['sebvargas', 'hernando'] %}
                             <a class="nav-link" href="{{ url_for('admin') }}">Admin</a>
                         {% endif %}
                         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
