@@ -301,6 +301,6 @@ POINT_SYSTEM = {
     'rd16'      : {'match_score': 25, 'outcome': 50},
     'quarters'  : {'match_score': 30, 'outcome': 60},
     'semis'     : {'match_score': 35, 'outcome': 70},
-    '3rd'       : {'match_score': 40, 'outcome': 80},
+    'third'       : {'match_score': 40, 'outcome': 80},
     'final'     : {'match_score': 50, 'outcome': 100}
  }

@@ -1,0 +1,107 @@
+{% include "base.html" %}
+
+{% block content %}
+
+<div class="container-md my-container">
+    <div class="row">
+        <div class="col">
+            <h1>Eliminación Directa / Playoffs</h1>
+        </div>
+        <hr>
+
+    </div>
+
+
+    
+    <form class="row g-3 align-items-center was-validated" method="POST" validate>
+    <!-- save Button -->
+        <div class="col-12 mb-3">
+            
+                {% include "btn_save_rd2.html" %}
+            
+        </div>
+    <!-- headers -->
+        <div class="row align-items-center">
+            <!-- Round of 16 -->
+            <div class="col-sm text-center">
+                <h5 class = "">Octavos de final / Eighth-finals</h5>
+            </div>
+            <!-- Quarters -->
+            <div class="col-sm text-center">
+                <h5 class = "">Cuartos de final / Quarterfinals</h5>
+            </div>
+    
+            <!-- Semis -->
+            <div class="col-sm text-center">
+                <h5 class = "">Semifinales / Semifinals </h5>
+            </div>
+    
+            <!-- Finals -->
+            <div class="col-sm text-center">
+                <h5 class = "">Finales / Finals</h5>
+            </div>
+        </div>
+        <hr>
+        
+    <!-- Round of 16 -->
+        <div class="col-sm my-col col-rd16">
+            {% with games = games['rd16'], stage_name = 'Octavo de final / Eighth-final', load_data = load_data, margin = 2, disabled = false, color_change_at = 4%}
+                {% include "bracket.html"%}
+            {% endwith %}
+        </div>
+    <!-- Quarters -->
+        <div class="col-sm my-col col-quarters">
+            {% with games = games['quarters'], stage_name = 'Cuarto de final / Quarterfinal', load_data = load_data, margin = 2 , disabled = true, color_change_at =  2%}
+                {% include "bracket.html"%}
+            {% endwith %}
+        </div>
+
+    <!-- Semis -->
+        <div class="col-sm my-col col-semis" >
+            {% with games = games['semis'], stage_name = 'Semifinal',load_data = load_data, margin = 2, disabled = true, color_change_at = 1 %}
+                {% include "bracket.html"%}
+            {% endwith %}
+        </div>
+
+    <!-- Finals -->
+        <div class="col-sm col-finals"  >
+            {% with games = games['finals'], stage_name = 'Final', load_data = load_data, margin = 2, disabled = true, color_change_at = 1 %}
+                {% include "bracket.html"%}
+            {% endwith %}
+        </div>
+            
+    <!-- Footer -->
+        <hr>
+        <div class="row align-items-center">
+            <!-- Round of 16 -->
+            <div class="col-sm text-center">
+                <h5 class = "">Octavos de final / Eighth-finals</h5>
+            </div>
+            <!-- Quarters -->
+            <div class="col-sm text-center">
+                <h5 class = "">Cuartos de final / Quarterfinals</h5>
+            </div>
+
+            <!-- Semis -->
+            <div class="col-sm text-center">
+                <h5 class = "">Semifinales / Semifinals </h5>
+            </div>
+
+            <!-- Finals -->
+            <div class="col-sm text-center">
+                <h5 class = "">Finales / Finals</h5>
+            </div>
+        </div>
+<!-- button -->
+        <div class="col-12 mb-3">
+            {% include "btn_save_rd2.html" %}
+        </div>
+                                            
+
+    </form>
+
+
+</div>
+
+{% endblock %}
+

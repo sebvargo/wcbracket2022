@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if current_user.username == 'hernando' or current_user.username == 'sebvargas' %}  
+  {% if current_user.username == 'sebvargas' or current_user.username == 'hernando' %}  
     <div class="container">
       <h1 class = "h1 mb-3">Admin: {{ current_user.username }} </h1>
  
