@@ -121,7 +121,7 @@ function update_radios(game_id) {
     let winner = document.getElementById(`winner-${game_id}`)
     let runnerup = document.getElementById(`runnerup-${game_id}`)
 
-    if (goals1 != "" && goals2 != "") {
+    if (goals1 >=0 && goals2 >=0) {
         let result = determine_winner(goals1, goals2, game_id)
         if (result == 1) { //team 1 wins
             radio1.disabled = true
