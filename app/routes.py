@@ -45,7 +45,7 @@ def round2():
 def index():    
     ranking = current_user.points.first().get_ranking()
     official_games = Game.query.order_by(Game.game_id).all()
-    predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = 'group').order_by(Prediction.game_id).all()
+    predictions = Prediction.query.filter_by(user_id = current_user.user_id).order_by(Prediction.game_id).all()
     group_stage_predictions = zip(predictions, official_games)
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()

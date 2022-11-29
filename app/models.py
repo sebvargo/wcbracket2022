@@ -1,5 +1,6 @@
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask import flash
 from flask_login  import UserMixin
 import numpy as np
 from sqlalchemy.sql import func
@@ -95,25 +96,39 @@ class Game(db.Model):
             prediction = u.predictions.filter_by(game_id = self.game_id).first()
             if prediction is None:
                 continue
-            # check if score matches
-            print(f'Official ({u.username}): {self.official_goals1}-{self.official_goals2} | Prediction: {prediction.goals1}-{prediction.goals2}')
-            if self.official_goals1 == prediction.goals1:
-                if self.official_goals2 == prediction.goals2:
+            
+            # if teams match proceed to calculated points, else don't
+            if self.game_id > 57:
+                print()
+                print(f'Game \t{self.game_id}\t{self.team1}-{self.official_goals1}\t{self.official_goals2}-{self.team2}')
+                print(f'Pred \t{prediction.game_id}\t{prediction.team1}-{prediction.goals1}\t{prediction.goals2}-{prediction.team2} ')
+                print(f'{self.team1 == prediction.team1} - {self.team1 == prediction.team1} ')
+                print()
+            if self.team1 == prediction.team1 and self.team2 == prediction.team2:
+                # check if score matches
+                print(f'Official ({u.username}): {self.official_goals1}-{self.official_goals2} | Prediction: {prediction.goals1}-{prediction.goals2}')
+                if self.official_goals1 == prediction.goals1:
+                    if self.official_goals2 == prediction.goals2:
+                        
+                        prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
+                        prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                else:
+                    prediction.points_score = 0
+                    # check if outcome matches
+                    if   prediction.goals1 > prediction.goals2: # team 1 wins
+                        prediction.winner = prediction.team1 
+                    elif prediction.goals1 < prediction.goals2: # team 2 wins
+                        prediction.winner = prediction.team2 
+                    else: prediction.winner = 'tie'
                     
-                    prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
-                    prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                    if prediction.winner == official_winner: 
+                        prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                    else: prediction.points_outcome = 0
             else:
                 prediction.points_score = 0
-                # check if outcome matches
-                if   prediction.goals1 > prediction.goals2: # team 1 wins
-                     prediction.winner = prediction.team1 
-                elif prediction.goals1 < prediction.goals2: # team 2 wins
-                     prediction.winner = prediction.team2 
-                else:prediction.winner = 'tie'
+                prediction.points_outcome = 0
                 
-                if prediction.winner == official_winner: 
-                    prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
-                else: prediction.points_outcome = 0
+                
                     
                 
     
@@ -302,6 +317,6 @@ POINT_SYSTEM = {
     'rd16'      : {'match_score': 25, 'outcome': 50},
     'quarters'  : {'match_score': 30, 'outcome': 60},
     'semis'     : {'match_score': 35, 'outcome': 70},
-    'third'       : {'match_score': 40, 'outcome': 80},
+    'third'     : {'match_score': 40, 'outcome': 80},
     'final'     : {'match_score': 50, 'outcome': 100}
  }
