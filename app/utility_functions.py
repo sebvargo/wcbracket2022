@@ -212,3 +212,44 @@ def get_rankings(ordered_point_obs):
             rankings.append(position)
     ordered_points = [p.points for p in ordered_point_obs]
     return rankings, ordered_points
+
+def calulate_stage_points():
+    for user in User.query.all():
+        for stage_prediction in user.stages.all():
+            stage_type = stage_prediction.stage_type
+            name = stage_prediction.name
+            tournament = "Qatar 2022"
+            
+            official_stage = OfficialStage.query.filter_by(stage_type = stage_type, name = name, tournament = tournament).first()
+            official_winner = official_stage.winner
+            official_runner_up = official_stage.runner_up
+            predicted_winner = stage_prediction.winner
+            predicted_runner_up = stage_prediction.runner_up
+            
+            print(f'{stage_prediction.user_id}')
+            print(f'OFFICIAL\t winner{official_winner}\t runner{official_runner_up}')
+            print(f'PREDICTI\t winner{predicted_winner}\t runner{predicted_runner_up}')
+            print(f'RESULTS:\t winner{predicted_winner == official_winner}\t runner{predicted_runner_up == official_runner_up}')
+            print()
+            
+            
+            if predicted_winner == official_winner:
+                stage_prediction.pts_winner_outcome = 50
+            else: stage_prediction.pts_winner_outcome = 0
+            
+            if predicted_runner_up == official_runner_up:
+                stage_prediction.pts_runner_score = 50
+            else: stage_prediction.pts_runner_score = 0
+    
+    description = "Add user points to stages - "
+    try:
+        db.session.commit()
+        print(f'{description} update was successful')
+        # flash(f'{description} update was successful', 'info')
+    except:
+        db.session.rollback()
+        print(f'{description} update was NOT successful')
+        # flash(f'{description} update was NOT successful', 'danger')
+        return
+            
+            

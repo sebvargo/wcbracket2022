@@ -29,6 +29,7 @@
 <hr>
 <!-- Resultados Oficiales -->
 <h2>Resultados Oficiales</h2>
+<h4> Partidos</h4>
 <div class="row g-2 mb-3">
         {% for game in games %}
             <div class = "col">
@@ -55,18 +56,69 @@
                 </div>
             </div>
         {% endfor %}
-    
+</div>
+<h4> Grupos</h4>
+<div class="row g-2 mb-3">
+        {% for stage in official_stages %}
+            <div class = "col">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Stage: {{stage.name}}</h5>
+                        <p class="card-text">{{stage.stage_type}} </p>
+                        
+                        <form action="{{ url_for('save_official_score', filename='images/favicon.png') }}" method="post" class ="mb-3" validate>
+                          <input type="hidden" name="tournament" value="Qatar 2022">  
+                          <div class="row">
+                                <div class="col">
+                                    <label for="goals1" class="form-label">
+                                      {% if stage.stage_type == 'goleador' %}Goleador{% else %}1ero{% endif %}
+                                    </label>
+                                    <!-- Winner Dropdown -->
+                                    <select class="form-select" id = "winner-{{stage.stage_id}}" name = "winner" aria-label="Default select example">
+                                      {% for option in [stage.team1, stage.team2, stage.team3, stage.team4] %}
+                                      <option>{{option}}</option>
+                                      {% endfor%}
+                                    </select>
+                                </div>
+                              </div>
+                            {% if stage.stage_type != 'goleador' %}
+                            <div class="row">
+                              <div class="col col-12">
+                                
+                                <label for="goals2" class="form-label">
+                                  {% if stage.stage_type == 'goleador' %}Goleador{% else %}2ndo{% endif %}
+                                </label>
+                                  <!-- Runner-up ner Dropdown -->
+                                  <select class="form-select" id = "runnerup-{{stage.stage_id}}" name = "runnerup" aria-label="Default select example">
+                                    {% for option in [stage.team1, stage.team2, stage.team3, stage.team4] %}
+                                      <option {%if loop.index ==2 %}selected{% endif %}>{{option}}</option>
+                                    {% endfor%}
+                                  </select>
+                                  <input type="hidden" name="form_type" value="stage_winners">
+
+                                </label>
+                              </div>
+                            </div>
+                            {% else %}
+                              <div class="row">
+                                <div class="col">
+                                  <input type="hidden" name="form_type" value="goleador">
+                                </div>
+                              </div>
+                            {% endif %}
+
+                            <div class="row">
+                              <div class="col">
+                                <button type="submit" class="btn btn-primary mt-3" name= "btn_stage_id" id= "btn_stage_id" value = {{stage.stage_id}}>Guardar</button>
+                              </div>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
 </div>
 
-    <!--
-    <div class = "col">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Calculate Points</h5>
-          <p class="card-text">Calcula el numero total de puntos para cada usuario, llamando a User.calculate points. </p>
-          <a href="#" class="btn btn-primary">Calcular</a>
-        </div>
-      </div>
-    </div>
 
-    -->

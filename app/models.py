@@ -251,7 +251,19 @@ class Points(UserMixin, db.Model):
         ordered_points = [p.points for p in ordered_point_obs]
         ranking = rankings[ordered_points.index(self.points)]
         return ranking
-    
+
+class OfficialStage(db.Model):
+    stage_id = db.Column(db.Integer, primary_key = True, autoincrement=True)
+    tournament = db.Column(db.String(64), default = "Qatar 2022")
+    stage_type = db.Column(db.String(32))
+    name = db.Column(db.String(32)) # A, B, C...
+    winner = db.Column(db.String(32))
+    runner_up = db.Column(db.String(32))
+    team1 = db.Column(db.String(32))
+    team2 = db.Column(db.String(32))
+    team3 = db.Column(db.String(32))
+    team4 = db.Column(db.String(32))
+
     
     
 

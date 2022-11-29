@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
-from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, add_event, get_next_games, get_rankings, second_round_games, add_round_two_game
+from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points, OfficialStage, GROUPS
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, calulate_stage_points, add_event, get_next_games, get_rankings, second_round_games, add_round_two_game
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
@@ -68,7 +68,10 @@ def index():
 
     
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
-    stage_results = current_user.stages.order_by(Stage.name).all()
+    prediction_results = current_user.stages.order_by(Stage.name).all()
+    official_stage = OfficialStage.query.filter_by(stage_type = 'group', tournament = 'Qatar 2022').order_by(OfficialStage.name).all()
+    stage_results = zip(prediction_results, official_stage)
+
     return render_template('index.html', title='Mis Predicciones', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS,
                            has_rd16_predictions = has_rd16_predictions, rd16_stage_predictions = rd16_stage_predictions,quarters_stage_predictions = quarters_stage_predictions,semis_stage_predictions = semis_stage_predictions,final_stage_predictions = final_stage_predictions,)
 
@@ -174,10 +177,11 @@ def admin():
         
     points = Points.query.order_by(Points.points.desc()).all()
     games = get_next_games(days_back = 0, days_ahead = 0)
+    official_stages = OfficialStage.query.filter_by(tournament = "Qatar 2022").order_by(OfficialStage.stage_id).all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
                            title = 'admin',
-                           points = points, zip = zip, games = games, dt = dt, flags = FLAGS)
+                           points = points, zip = zip, games = games, dt = dt, flags = FLAGS, GROUPS = GROUPS, official_stages = official_stages)
 
 @app.route('/calculate_points', methods = ['GET', 'POST'])
 @login_required
@@ -218,7 +222,11 @@ def user_profile(user_id):
     user = User.query.filter_by(user_id = user_id).first()
     ranking = user.points.first().get_ranking()
     points = Points.query.filter_by(user_id = user_id).first().points
-    stage_results = user.stages.order_by(Stage.name).all()
+    
+    prediction_results = user.stages.order_by(Stage.name).all()
+    official_stage = OfficialStage.query.filter_by(stage_type = 'group', tournament = 'Qatar 2022').order_by(OfficialStage.name).all()
+    stage_results = zip(prediction_results, official_stage)
+    
     goleador = user.goleador.first()
     
     group_official = Game.query.filter_by(stage = "group").order_by(Game.game_id).all()
@@ -240,6 +248,7 @@ def user_profile(user_id):
     final_official = Game.query.filter(Game.game_id > 62).order_by(Game.game_id).all()
     final_predictions = Prediction.query.filter(Prediction.game_id > 62).filter_by(user_id = user.user_id).order_by(Prediction.game_id).all()
     final_stage_predictions = zip(final_predictions, final_official)
+    
     add_event("view_results", current_user)
 
     is_other_user_profile = True
@@ -287,3 +296,31 @@ def event_count():
         d[e] = {k: v for k, v in sorted(d[e].items(), key=lambda item: item[1], reverse=True)}
     
     return d
+
+@app.route('/save_official_score', methods = ['POST'])
+@login_required
+def save_official_score():
+    f = request.form
+    stage_id = f.get('btn_stage_id')
+    official_stage = OfficialStage.query.get(stage_id)
+    form_type = f.get('form_type')
+    winner = f.get('winner')
+    official_stage.winner = winner
+    if form_type == 'stage_winners':
+        runner_up = f.get('runnerup')
+        official_stage.runner_up = runner_up
+        
+    description = f"{official_stage.stage_type}: {official_stage.name}"
+    try:
+        db.session.commit()
+        print(f'{description} update was successful')
+        flash(f'{description} update was successful', 'info')
+    except:
+        db.session.rollback()
+        print(f'{description} update was NOT successful')
+        flash(f'{description} update was NOT successful', 'danger')
+        return
+    
+    calulate_stage_points()
+
+    return redirect(url_for('admin'))

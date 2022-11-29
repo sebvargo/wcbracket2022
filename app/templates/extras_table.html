@@ -40,15 +40,37 @@
                 </tr>
               </thead>
               <tbody>
-                  {% for s in stage_results %}
+                  {% for s, official in stage_results %}
                       <tr>
                           <th scope="row">{{ s.name }}</th>
                           <td>{% with team = s.winner, w=24, h=24, align="top", game_id = 0 %}{% include "flag.html" %}{% endwith %} {{ s.winner }}</td>
                           <td>{% with team = s.runner_up, w=24, h=24, align="top", game_id = 0 %}{% include "flag.html" %}{% endwith %} {{ s.runner_up }}</td>
-                          <td>-</td>
-                          <td>-</td>
-                          <td>-</td>
-                          <td>-</td>
+                          <td>
+                            {% if official.winner != none %}
+                              {% with team = official.winner, w=24, h=24, align="top", game_id = 0 %}
+                                {% include "flag.html" %}
+                              {% endwith %} 
+                              {{ official.winner }}
+                            {% else %}
+                              {% with team = "tbd", w=24, h=24, align="top", game_id = 0 %}
+                                {% include "flag.html" %}
+                              {% endwith %}
+                            {% endif %}
+                          </td>
+                          <td>
+                            {% if official.runner_up != none %}
+                            {% with team = official.runner_up, w=24, h=24, align="top", game_id = 0 %}
+                              {% include "flag.html" %}
+                            {% endwith %} 
+                            {{ official.runner_up }}
+                          {% else %}
+                            {% with team = "tbd", w=24, h=24, align="top", game_id = 0 %}
+                              {% include "flag.html" %}
+                            {% endwith %}
+                          {% endif %}
+                          </td>
+                          <td>{{s.pts_winner_outcome}}</td>
+                          <td>{{s.pts_runner_score}}</td>
                       </tr>
                   {% endfor %}
                
