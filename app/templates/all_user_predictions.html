@@ -47,13 +47,17 @@
                                 {% elif p.goals2 > p.goals1 %}{% with team = p.team2, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team2 }} win
                                 {% else %} <h4>=</h4>  {% endif %}
                             </td>
-                            {% if official[0] is not none %}
-                                <td><span class="badge bg-success mb-2">{{ official[0] }}-{{ official[1] }}</span><br></td>
+                            {% if game.official_goals1 is not none %}
+                                <td>
+                                    {% with team = game.team1, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %}
+                                    &nbsp;<span class="badge bg-success mb-2">{{game.official_goals1}} - {{game.official_goals2}}</span>&nbsp;
+                                    {% with team = game.team2, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %}
+                                </td>
                             {% else %}
                                 <td> - </td>
                             {% endif %}
-                            <td>{{ p.points_outcome }}</td>
-                            <td>{{ p.points_score }}</td>
+                            <td>{% if p.points_outcome is not none %}{{ p.points_outcome }}{%else%}-{%endif%}</td>
+                            <td>{% if p.points_score is not none %}{{ p.points_score }}{%else%}-{%endif%}</td>
                           </tr>
                       {% endfor %}
                   

@@ -13,8 +13,9 @@ import datetime as dt
 @app.route('/round2', methods = ['GET', 'POST'])
 @login_required
 def round2():  
-
+    add_event("Rd2-view", current_user)
     if request.method == 'POST': 
+        add_event("Rd2-submit", current_user)
         for stage, game_ids in second_round_games.items():
             msg, msg_type = add_round_two_game(game_ids, stage, request.form, current_user.user_id)
             flash(msg, msg_type)
@@ -44,12 +45,32 @@ def round2():
 @login_required
 def index():    
     ranking = current_user.points.first().get_ranking()
-    official_games = Game.query.order_by(Game.game_id).all()
-    predictions = Prediction.query.filter_by(user_id = current_user.user_id).order_by(Prediction.game_id).all()
-    group_stage_predictions = zip(predictions, official_games)
+    group_official = Game.query.filter_by(stage = "group").order_by(Game.game_id).all()
+    group_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = "group").order_by(Prediction.game_id).all()
+    group_stage_predictions = zip(group_predictions, group_official)
+    
+    rd16_official = Game.query.filter_by(stage = "rd16").order_by(Game.game_id).all()
+    rd16_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").order_by(Prediction.game_id).all()
+    rd16_stage_predictions = zip(rd16_predictions, rd16_official)
+    has_rd16_predictions = True if len(rd16_predictions) > 0 else False
+    quarters_official = Game.query.filter_by(stage = "quarters").order_by(Game.game_id).all()
+    quarters_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = "quarters").order_by(Prediction.game_id).all()
+    quarters_stage_predictions = zip(quarters_predictions, quarters_official)
+    
+    semis_official = Game.query.filter_by(stage = "semis").order_by(Game.game_id).all()
+    semis_predictions = Prediction.query.filter_by(user_id = current_user.user_id, stage = "semis").order_by(Prediction.game_id).all()
+    semis_stage_predictions = zip(semis_predictions, semis_official)
+    
+    final_official = Game.query.filter(Game.game_id > 62).order_by(Game.game_id).all()
+    final_predictions = Prediction.query.filter(Prediction.game_id > 62).filter_by(user_id = current_user.user_id).order_by(Prediction.game_id).all()
+    final_stage_predictions = zip(final_predictions, final_official)
+    
+
+    
     goleador = Goleador.query.filter_by(user_id = current_user.user_id).first()
     stage_results = current_user.stages.order_by(Stage.name).all()
-    return render_template('index.html', title='Mis Predicciones', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS)
+    return render_template('index.html', title='Mis Predicciones', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS,
+                           has_rd16_predictions = has_rd16_predictions, rd16_stage_predictions = rd16_stage_predictions,quarters_stage_predictions = quarters_stage_predictions,semis_stage_predictions = semis_stage_predictions,final_stage_predictions = final_stage_predictions,)
 
 
 @app.route('/login', methods = ['GET', 'POST'])
@@ -200,12 +221,31 @@ def user_profile(user_id):
     stage_results = user.stages.order_by(Stage.name).all()
     goleador = user.goleador.first()
     
-    official_games = Game.query.order_by(Game.game_id).all()
-    predictions = Prediction.query.filter_by(user_id = user.user_id, stage = 'group').order_by(Prediction.game_id).all()
-    group_stage_predictions = zip(predictions, official_games)
+    group_official = Game.query.filter_by(stage = "group").order_by(Game.game_id).all()
+    group_predictions = Prediction.query.filter_by(user_id = user.user_id, stage = "group").order_by(Prediction.game_id).all()
+    group_stage_predictions = zip(group_predictions, group_official)
+    
+    rd16_official = Game.query.filter_by(stage = "rd16").order_by(Game.game_id).all()
+    rd16_predictions = Prediction.query.filter_by(user_id = user.user_id, stage = "rd16").order_by(Prediction.game_id).all()
+    rd16_stage_predictions = zip(rd16_predictions, rd16_official)
+    has_rd16_predictions = True if len(rd16_predictions) > 0 else False
+    quarters_official = Game.query.filter_by(stage = "quarters").order_by(Game.game_id).all()
+    quarters_predictions = Prediction.query.filter_by(user_id = user.user_id, stage = "quarters").order_by(Prediction.game_id).all()
+    quarters_stage_predictions = zip(quarters_predictions, quarters_official)
+    
+    semis_official = Game.query.filter_by(stage = "semis").order_by(Game.game_id).all()
+    semis_predictions = Prediction.query.filter_by(user_id = user.user_id, stage = "semis").order_by(Prediction.game_id).all()
+    semis_stage_predictions = zip(semis_predictions, semis_official)
+    
+    final_official = Game.query.filter(Game.game_id > 62).order_by(Game.game_id).all()
+    final_predictions = Prediction.query.filter(Prediction.game_id > 62).filter_by(user_id = user.user_id).order_by(Prediction.game_id).all()
+    final_stage_predictions = zip(final_predictions, final_official)
     add_event("view_results", current_user)
+
+    is_other_user_profile = True
     return render_template('user_profile.html', title = f'Profile: {user.username}', ranking = ranking, user = user, group_stage_predictions = group_stage_predictions, flags = FLAGS,
-                            stage_results = stage_results, goleador = goleador, points = points)
+                            stage_results = stage_results, goleador = goleador, points = points, 
+                            has_rd16_predictions = has_rd16_predictions, rd16_stage_predictions = rd16_stage_predictions,quarters_stage_predictions = quarters_stage_predictions,semis_stage_predictions = semis_stage_predictions,final_stage_predictions = final_stage_predictions,is_other_user_profile=is_other_user_profile)
     
 @app.route('/rollback', methods = ['GET', 'POST'])
 @login_required
