@@ -36,14 +36,22 @@ class User(UserMixin, db.Model):
         pred_points= Prediction.query.filter_by(user_id = self.user_id)
         pred_points = np.array([p.points_outcome + p.points_score if p.points_outcome is not None else 0 for p in self.predictions])
         pred_sum = pred_points.sum()
-        print(pred_points)
+        print('pred_sum',type(pred_sum))
+        
         goleador_points = self.goleador.first().goleador_points if self.goleador.first().goleador_points is not None else 0
         print(goleador_points)
+        
         stage_points = np.array([p.pts_winner_outcome  + p.pts_runner_score if p.pts_winner_outcome is not None else 0 for p in self.stages])
         stage_sum = stage_points.sum()
-        print(stage_sum)
+        print('stage_sum', type(np.uint32(stage_sum).item()))
+        
         total_points = np.sum([pred_sum, goleador_points, stage_sum])
-        points = Points(user_id = self.user_id, points = int(total_points), event_description = event_description)
+        points = Points(user_id = self.user_id, 
+                        points = int(total_points), 
+                        event_description = event_description,
+                        prediction_points = np.uint32(pred_sum).item(),
+                        stage_points = np.uint32(stage_sum).item(),
+                        goleador_points = goleador_points)
         db.session.add(points)
         
         try:
@@ -54,6 +62,7 @@ class User(UserMixin, db.Model):
         except Exception as e:
             db.session.rollback()
             print(f'{self.username} - POINTS update was NOT successful: {e}')
+            flash(f'{self.username} - POINTS update was NOT successful: {e}', 'danger')
             return False
         
     
@@ -97,13 +106,6 @@ class Game(db.Model):
             if prediction is None:
                 continue
             
-            # if teams match proceed to calculated points, else don't
-            if self.game_id > 57:
-                print()
-                print(f'Game \t{self.game_id}\t{self.team1}-{self.official_goals1}\t{self.official_goals2}-{self.team2}')
-                print(f'Pred \t{prediction.game_id}\t{prediction.team1}-{prediction.goals1}\t{prediction.goals2}-{prediction.team2} ')
-                print(f'{self.team1 == prediction.team1} - {self.team1 == prediction.team1} ')
-                print()
             if self.team1 == prediction.team1 and self.team2 == prediction.team2:
                 # check if score matches
                 print(f'Official ({u.username}): {self.official_goals1}-{self.official_goals2} | Prediction: {prediction.goals1}-{prediction.goals2}')
@@ -235,6 +237,10 @@ class Points(UserMixin, db.Model):
     event_description = db.Column(db.String(1024))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     points = db.Column(db.Integer)
+    prediction_points = db.Column(db.Integer)
+    stage_points = db.Column(db.Integer)
+    goleador_points = db.Column(db.Integer)
+    
     
     def get_ranking(self):
         ordered_point_obs = Points.query.order_by(Points.points.desc()).all()
