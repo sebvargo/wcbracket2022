@@ -1,16 +1,33 @@
 <!-- Calculate points -->
 <div class="row g-2 mb-3">
-    <div class = "col">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Calculate Points</h5>
-          <p class="card-text">Calcula el numero total de puntos para cada usuario, llamando a User.calculate points. </p>
-          <a href="{{ url_for('calculate_points') }}" class="btn btn-primary">Calcular</a>
-        </div>
+  <div class = "col">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Calculate Points</h5>
+        <p class="card-text">Calcula el numero total de puntos para cada usuario, llamando a User.calculate points. </p>
+        <a href="{{ url_for('calculate_points') }}" class="btn btn-primary">Calcular</a>
       </div>
     </div>
+  </div>
+
+<!-- User Events -->
+  <div class = "col">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">API</h5>
+        <h6 class="card-subtitle text-muted">Eventos</h6>
+        <p class="card-text">Obtener informacion de eventos por usuario o por evento. </p>
+        <div class="col">
+          <a href="{{ url_for('get_user_events') }}" class="btn btn-primary">Por Usuario</a>
+          <a href="{{ url_for('event_count') }}" class="btn btn-primary">Por Evento</a>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 </div>
 <hr>
+<!-- Resultados Oficiales -->
 <h2>Resultados Oficiales</h2>
 <div class="row g-2 mb-3">
         {% for game in games %}
@@ -24,11 +41,11 @@
                             <div class="row">
                                 <div class="col">
                                     <label for="goals1" class="form-label">{% with team = game.team1, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team1 }}</label>
-                                    <input type="text" class="form-control" name="goals1" id="goals1" aria-describedby="basic-addon1">
+                                    <input required type="text" class="form-control" name="goals1" id="goals1" aria-describedby="basic-addon1">
                                 </div>
                                 <div class="col">
                                     <label for="goals2" class="form-label">{% with team = game.team2, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team2 }}</label>
-                                    <input type="text" class="form-control" name="goals2" id="goals2" aria-describedby="basic-addon2">
+                                    <input required type="text" class="form-control" name="goals2" id="goals2" aria-describedby="basic-addon2">
                                 </div>
                             </div> 
                             <button type="submit" class="btn btn-primary mt-3" name= "btn_submit" value = {{game.game_id}}>Marcar</button>

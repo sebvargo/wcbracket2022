@@ -223,3 +223,27 @@ def predictions(game_id):
     official = [game.official_goals1, game.official_goals2]
     return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, dt = dt)
 
+@app.route('/api/user_events', methods = ['GET'])
+@login_required
+def get_user_events():
+    d={}
+    for u, e in db.session.query(User, EventTracker).filter(User.user_id == EventTracker.user_id).order_by(User.username).all():
+        if u.username not in d.keys():
+            d[u.username] = {}
+        d[u.username][e.description] = e.count
+    return d
+
+
+@app.route('/api/event_count', methods = ['GET'])
+@login_required
+def event_count():
+    d={}
+    for u, e in db.session.query(User, EventTracker).filter(User.user_id == EventTracker.user_id).order_by(User.username, EventTracker.description).all():
+        if e.description not in d.keys():
+            d[e.description] = {}
+        d[e.description][u.username] = e.count
+
+    for e in d.keys():
+        d[e] = {k: v for k, v in sorted(d[e].items(), key=lambda item: item[1], reverse=True)}
+    
+    return d
