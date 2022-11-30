@@ -252,4 +252,21 @@ def calulate_stage_points():
         # flash(f'{description} update was NOT successful', 'danger')
         return
             
-            
+def get_predictions_group_winners():
+    group_runnerups = {
+        k1: {v2:0 for v2 in v1} for k1, v1 in  GROUPS.items()
+    }
+    group_winners = {
+        k1: {v2:0 for v2 in v1} for k1, v1 in  GROUPS.items()
+    }
+
+    for user in User.query.all():
+        for stage in user.stages.all():
+            group_winners[stage.name][stage.winner] += 1
+            group_runnerups[stage.name][stage.runner_up] += 1
+
+    for group in GROUPS.keys():
+        group_winners[group] = {k: v for k, v in sorted(group_winners[group].items(), reverse = True, key=lambda item: item[1])}
+        group_runnerups[group] = {k: v for k, v in sorted(group_runnerups[group].items(), reverse = True, key=lambda item: item[1])}
+    
+    return group_winners, group_runnerups

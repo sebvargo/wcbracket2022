@@ -18,6 +18,42 @@
               <a href="{{ url_for('predictions', game_id = game.game_id ) }}" class="card-link">Vea las predicciones</a>
               <a href="{{ url_for('predictions', game_id = game.game_id ) }}" class="card-link">See picks</a>
             </div>
+            <ul class="list-group list-group-flush">
+
+              <li class="list-group-item">
+              <div class="row">
+                <div class="col">
+                  <h5 class="card-title">
+                    Group Predictions
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-muted"># de predicciones 1ero y 2ndo</h6>
+                </div>
+              </div>
+              <div class="row mb-2">
+                <div class="col">
+                  1st &nbsp;&emsp;
+                  {% for country_code, count in group_winners[game.group].items() %}
+                    {% with team = country_code, w=24, h=24, align="top", game_id = game.game_id %}
+                      {% include "flag.html" %}
+                    {% endwith %}{{count}}&nbsp;
+                  {% endfor %}
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col">
+                  2nd&emsp;
+                  {% for country_code, count in group_runnerups[game.group].items() %}
+                  {% with team = country_code, w=24, h=24, align="top", game_id = game.game_id %}
+                    {% include "flag.html" %}
+                  {% endwith %}{{count}}&nbsp;
+                {% endfor %}
+                </div>
+              </div>
+
+              </li>
+            </ul>
+
           </div>
         </div>
     {% endfor %}

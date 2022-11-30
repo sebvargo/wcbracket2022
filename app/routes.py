@@ -1,7 +1,7 @@
 from app import app, db
 from flask import render_template, redirect, flash, url_for, request, session
 from app.models import User, Prediction, Goleador, Stage, EventTracker, Game, Points, OfficialStage, GROUPS
-from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, calulate_stage_points, add_event, get_next_games, get_rankings, second_round_games, add_round_two_game
+from app.utility_functions import FLAGS, read_group_stage_bracket, read_goleador, calculate_group_results, calulate_stage_points, add_event, get_next_games, get_rankings, second_round_games, add_round_two_game, get_predictions_group_winners
 from flask_login import current_user, login_user, logout_user, login_required
 from app.forms import LoginForm, RegistrationForm, QuinielaForm, MoroccoForm, OfficialScoreForm
 from werkzeug.urls import url_parse
@@ -208,13 +208,17 @@ def results():
     ordered_point_obs = Points.query.order_by(Points.points.desc()).all()
     rankings, points = get_rankings(ordered_point_obs=ordered_point_obs)
     rankings_and_points = zip(rankings, ordered_point_obs)
+    group_winners, group_runnerups = get_predictions_group_winners()
     games = get_next_games(days_back =0, days_ahead = 0)
     avg_goals = []
     for g in games:
         avg_goals.append(g.get_average_goal_prediction())
     games = zip(games, avg_goals)
     add_event("view_results", current_user)
-    return render_template('results.html', title = 'Resultados/Results', rankings_and_points = rankings_and_points, current_user_rank = current_user_rank, flags = FLAGS, games = games, dt = dt)
+    return render_template('results.html', title = 'Resultados/Results', 
+                           rankings_and_points = rankings_and_points, current_user_rank = current_user_rank, 
+                           flags = FLAGS, games = games, dt = dt, 
+                           group_winners = group_winners, group_runnerups = group_runnerups)
 
 @app.route('/user_profile/<int:user_id>', methods = ['GET', 'POST'])
 @login_required
@@ -270,7 +274,11 @@ def predictions(game_id):
     avg_goals_tuple = game.get_average_goal_prediction()
     predictions = Prediction.query.filter_by(game_id = game_id)
     official = [game.official_goals1, game.official_goals2]
-    return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, dt = dt)
+    group_winners, group_runnerups = get_predictions_group_winners()
+
+    return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, 
+                           avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, 
+                           dt = dt, group_winners = group_winners, group_runnerups = group_runnerups)
 
 @app.route('/api/user_events', methods = ['GET'])
 @login_required
