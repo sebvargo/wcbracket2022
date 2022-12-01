@@ -11,15 +11,16 @@
     <title>Bienvenido a la Quiniela 2022</title>
     {% endif %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Google -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9457139556880187"
-     crossorigin="anonymous"></script>
-    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel= "stylesheet"> -->
-    <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel= "stylesheet">
+    crossorigin="anonymous"></script>
+    <script src></script>
 
+    <!-- Datatables -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css" rel= "stylesheet">
     
     <!-- Bootstrap CSS -->
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
     <!-- <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" -->
     
@@ -71,33 +72,11 @@
         
     </div>
 
+    <!-- Datatables -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#example').DataTable();});
-        $(document).ready(function () {
-            $('#rankings-table').DataTable();});
-            $('#rankings-table').dataTable( {
-                  "lengthChange": false
-            } );
-        $(document).ready(function () {
-            $('#predictions-table').DataTable();});
-            $('#predictions-table').dataTable( {
-                  "lengthChange": false
-            } );
-        $(document).ready(function () {
-            $('#calendar-table').DataTable();});
-            $('#calendar-table').dataTable( {
-                  "lengthChange": false,
-                "ordering": false
-            } );
-        $(document).ready(function () {
-            $('#allpredictions-table').DataTable();});
-            $('#allpredictions-table').dataTable( {
-                  "lengthChange": false
-            } );
-    </script>
+    <script src="{{ url_for('static', filename='js/datatables.js') }}"></script>
+
 </body>
 </html>
