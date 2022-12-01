@@ -91,11 +91,12 @@ def login():
         login_user(user, remember=form.remember_me.data)
         add_event(description = 'login', user = current_user, init_value = 1)
         session['user_id'] = user.user_id
-        return redirect(url_for('results'))    
-        # next_page = request.args.get('next')
-        # if not next_page or url_parse(next_page).netloc != '':
-        #     next_page = url_for('index')
-        # return redirect(next_page) 
+
+        next_page = request.args.get('next')
+        if not next_page or url_parse(next_page).netloc != '':
+            return redirect(url_for('results'))  
+        return redirect(next_page) 
+
     return render_template('login.html', title = 'Login', form = form, hide_links = True)
 
 @app.route('/upload', methods = ['GET', 'POST'])
