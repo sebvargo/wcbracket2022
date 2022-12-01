@@ -71,6 +71,7 @@ def index():
     prediction_results = current_user.stages.order_by(Stage.name).all()
     official_stage = OfficialStage.query.filter_by(stage_type = 'group', tournament = 'Qatar 2022').order_by(OfficialStage.name).all()
     stage_results = zip(prediction_results, official_stage)
+    add_event("my_profile", current_user)
 
     return render_template('index.html', title='Mis Predicciones', group_stage_predictions = group_stage_predictions, ranking = ranking, goleador = goleador, stage_results = stage_results, flags = FLAGS,
                            has_rd16_predictions = has_rd16_predictions, rd16_stage_predictions = rd16_stage_predictions,quarters_stage_predictions = quarters_stage_predictions,semis_stage_predictions = semis_stage_predictions,final_stage_predictions = final_stage_predictions,)
@@ -254,7 +255,7 @@ def user_profile(user_id):
     final_predictions = Prediction.query.filter(Prediction.game_id > 62).filter_by(user_id = user.user_id).order_by(Prediction.game_id).all()
     final_stage_predictions = zip(final_predictions, final_official)
     
-    add_event("view_results", current_user)
+    add_event("user_profile", current_user)
 
     is_other_user_profile = True
     return render_template('user_profile.html', title = f'Profile: {user.username}', ranking = ranking, user = user, group_stage_predictions = group_stage_predictions, flags = FLAGS,
@@ -276,7 +277,7 @@ def predictions(game_id):
     predictions = Prediction.query.filter_by(game_id = game_id)
     official = [game.official_goals1, game.official_goals2]
     group_winners, group_runnerups = get_predictions_group_winners()
-
+    add_event("all_user_predictions", current_user)
     return render_template('all_user_predictions.html', title = 'Posiciones/Rankings', official = official, game = game, 
                            avg_goals_tuple = avg_goals_tuple, flags = FLAGS, predictions = predictions, 
                            dt = dt, group_winners = group_winners, group_runnerups = group_runnerups)
