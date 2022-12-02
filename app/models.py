@@ -80,6 +80,8 @@ class Game(db.Model):
     stage = db.Column(db.String(16))
     official_goals1 = db.Column(db.Integer)
     official_goals2 = db.Column(db.Integer)
+    official_winner = db.Column(db.String(64))
+    official_runnerup = db.Column(db.String(64))
     round_order = db.Column(db.Integer)
     
     def __repr__(self) -> str:
