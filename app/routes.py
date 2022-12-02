@@ -149,6 +149,11 @@ def admin():
             game_to_edit = Game.query.filter_by(game_id = game_id).first()
             game_to_edit.official_goals1 = goals1
             game_to_edit.official_goals2 = goals2
+            if game_to_edit.stage != 'group':
+                winner = request.form.get("winner")
+                runner_up = request.form.get("runner_up")
+                game_to_edit.winner = winner
+                game_to_edit.runner_up = runner_up
             game_to_edit.calculate_user_points()
             
             # compare official result to predictions

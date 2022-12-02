@@ -93,12 +93,20 @@ class Game(db.Model):
         goals2_avg = np.float128(db.session.query(func.avg(Prediction.goals2).label('average')).filter(Prediction.game_id == self.game_id).first()[0])
         return goals1_avg, goals2_avg 
     
-    def get_winner(self):
-        if self.official_goals1 > self.official_goals2: return self.team1
-        elif self.official_goals1 < self.official_goals2: return self.team2
-        else: return 'tie'  
+    def get_winner(self, official_winner = None):
+        if self.official_goals1 > self.official_goals2: 
+            self.official_winner = self.team1
+            self.official_runnerup = self.team2
+        elif self.official_goals1 < self.official_goals2: 
+            self.official_winner = self.team2
+            self.official_runnerup = self.team1
+        else: 
+            if self.stage == 'group':
+                self.official_winner = 'tie'
+            else:
+                self.official_winner = official_winner
         
-    def calculate_user_points(self, user_id=None):
+    def calculate_user_points(self, user_id=None, official_winner = None):
         '''
         Assigns points to based on official result. 
         The points are added to each user's Prediction objects.
@@ -106,7 +114,7 @@ class Game(db.Model):
         if user_id is None: users = User.query.all()
         else: users = User.query.filter_by(user_id = user_id).all()
         
-        official_winner = self.get_winner()
+        self.official_winner = self.get_winner()
         
         for u in users:
             prediction = u.predictions.filter_by(game_id = self.game_id).first()
@@ -133,11 +141,11 @@ class Game(db.Model):
                             prediction.winner = prediction.team2 
                         else: prediction.winner = 'tie'
                 
-                    if prediction.winner == official_winner: 
+                    if prediction.winner == self.official_winner: 
                         prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
                     else: prediction.points_outcome = 0
                     
-            elif prediction.winner == official_winner:
+            elif prediction.winner == self.official_winner:
                 prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
                 prediction.points_score = 0
                 
