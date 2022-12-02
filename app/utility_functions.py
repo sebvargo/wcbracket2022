@@ -17,6 +17,25 @@ second_round_games = {
     'final'     : [64],
  }
 
+ROUND_ORDER = {
+    49:1,
+    50:2,
+    51:5,
+    52:6,
+    53:3,
+    54:4,
+    55:7,
+    56:8,
+    57:1,
+    58:2,
+    59:3,
+    60:4,
+    61:1,
+    62:2,
+    63:2,
+    64:1,
+   }
+
 def add_games_to_db(filename = 'Quiniela Fixed.xlsx'):
 
     import datetime as dt
@@ -113,6 +132,7 @@ def add_round_two_game(game_ids, stage, form, user_id):
             goals2 = form.get(f'input-2-{game_id}'),
             winner = form.get(f'winner-{game_id}'),
             user_id = user_id,
+            round_order = ROUND_ORDER[game_id],
             stage = stage,)
         db.session.add(g)
     try:
