@@ -150,6 +150,7 @@ def admin():
             game_to_edit.official_goals1 = goals1
             game_to_edit.official_goals2 = goals2
             game_to_edit.calculate_user_points()
+            
             # compare official result to predictions
             description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
             try:
