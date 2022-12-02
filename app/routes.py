@@ -24,7 +24,7 @@ def round2():
     if Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").first() is not None:
         load_data = True
         games = {}
-        games['rd16'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").order_by(Prediction.game_id).all()
+        games['rd16'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "rd16").order_by(Prediction.round_order, Prediction.game_id).all()
         games['quarters'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "quarters").order_by(Prediction.game_id).all()
         games['semis'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "semis").order_by(Prediction.game_id).all()
         games['third'] = Prediction.query.filter_by(user_id = current_user.user_id, stage = "third").order_by(Prediction.game_id).first()

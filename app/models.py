@@ -147,6 +147,8 @@ class Prediction(db.Model):
     points_outcome = db.Column(db.Integer)
     points_score = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
+    round_order = db.Column(db.Integer)
+
     
     def __repr__(self) -> str:
         return f'<Game {self.game_id} Prediction: {self.team1} {self.goals1} - {self.goals2} {self.team2}, {self.winner} wins>'
