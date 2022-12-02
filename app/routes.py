@@ -34,7 +34,7 @@ def round2():
     else:
         load_data = False
         games = {
-        'rd16': Game.query.filter(Game.stage == 'rd16').order_by(Game.game_id).all(),
+        'rd16': Game.query.filter(Game.stage == 'rd16').order_by(Game.round_order, Game.game_id).all(),
         'quarters': Game.query.filter(Game.stage == 'quarters').order_by(Game.game_id).all(),
         'semis': Game.query.filter(Game.stage == 'semis').order_by(Game.game_id).all(),
         'finals': Game.query.filter(Game.game_id > 62).order_by(Game.game_id.desc()).all()

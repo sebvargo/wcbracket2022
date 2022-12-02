@@ -80,6 +80,7 @@ class Game(db.Model):
     stage = db.Column(db.String(16))
     official_goals1 = db.Column(db.Integer)
     official_goals2 = db.Column(db.Integer)
+    round_order = db.Column(db.Integer)
     
     def __repr__(self) -> str:
         return f'< {self.game_id}: {self.team1} v. {self.team2} | {self.local_time}>'
