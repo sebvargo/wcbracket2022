@@ -21,3 +21,12 @@ $(document).ready(function () {
     $('#allpredictions-table').dataTable( {
           "lengthChange": false
     } );
+
+$(document).ready(function () {
+    $('#table_round2_stats').DataTable();});
+    $('#table_round2_stats').dataTable( {
+        "lengthChange": false,
+        "searching": false, 
+        "paging": false, 
+        "info": false
+    } );

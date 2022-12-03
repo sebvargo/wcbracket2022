@@ -14,5 +14,3 @@ class Config(object):
         or 'postgresql://postgres:memes@localhost:5432/quiniela-dev' #or 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
-    # if os.environ.get('DATABASE_TYPE') == 'postgres':
-    #     SQLALCHEMY_DATABASE_URI = f'postgresql://{db_user}:{db_user}@localhost/{db_name}?host=/cloudsql/{db_instance}'res

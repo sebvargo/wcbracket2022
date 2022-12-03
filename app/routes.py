@@ -184,7 +184,7 @@ def admin():
             return
         
     points = Points.query.order_by(Points.points.desc()).all()
-    games = get_next_games(days_back = 0, days_ahead = 0)
+    games, _ = get_next_games(days_back = 0, days_ahead = 0)
     official_stages = OfficialStage.query.filter_by(tournament = "Qatar 2022").order_by(OfficialStage.stage_id).all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
@@ -217,11 +217,11 @@ def results():
     rankings, points = get_rankings(ordered_point_obs=ordered_point_obs)
     rankings_and_points = zip(rankings, ordered_point_obs)
     group_winners, group_runnerups = get_predictions_group_winners()
-    games = get_next_games(days_back =0, days_ahead = 0)
+    games, game_prediction_stats = get_next_games(days_back =0, days_ahead = 0)
     avg_goals = []
     for g in games:
         avg_goals.append(g.get_average_goal_prediction())
-    games = zip(games, avg_goals)
+    games = zip(games, avg_goals, game_prediction_stats)
     add_event("view_results", current_user)
     return render_template('results.html', title = 'Resultados/Results', 
                            rankings_and_points = rankings_and_points, current_user_rank = current_user_rank, 
