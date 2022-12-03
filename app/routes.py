@@ -141,7 +141,6 @@ def admin():
     if request.method == 'POST':
         try:
             game_id = request.form['btn_submit'] 
-            return request.form
             goals1 = request.form.get("goals1")
             goals2 = request.form.get("goals2")
             if goals1 is None or goals2 is None: 
@@ -151,13 +150,10 @@ def admin():
             game_to_edit = Game.query.filter_by(game_id = game_id).first()
             game_to_edit.official_goals1 = goals1
             game_to_edit.official_goals2 = goals2
+            flash(f'{game_to_edit.stage}', 'info')
             if game_to_edit.stage != 'group':
-                # return request.form.get(f'radios-{game_id}')
                 winner = request.form.get("winner")
-                runner_up = request.form.get("runner_up")
-                game_to_edit.winner = winner
-                game_to_edit.runner_up = runner_up
-            game_to_edit.calculate_user_points()
+                game_to_edit.official_winner = winner
             
             # compare official result to predictions
             description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
@@ -176,6 +172,7 @@ def admin():
         
         # Calculate points
         game_to_edit.calculate_user_points()
+        description = f'Game {game_id} | User Points Calculated'
         try:
             db.session.commit()
             print(f'{description} update was successful')

@@ -18,7 +18,7 @@
           <span class="badge bg-warning mb-2">Promedio/Average</span><br>
         {% endif %}
       </div>
-      
+      {% if game.stage == 'group' %}
       <ul class="list-group list-group-flush">
 
         <li class="list-group-item">
@@ -54,6 +54,7 @@
 
         </li>
       </ul>
+      {% endif %}
     </div>
   </div>
 </div>
