@@ -22,11 +22,15 @@ $(document).ready(function () {
           "lengthChange": false
     } );
 
+
+for (const game_id of Array(65).keys()) {
 $(document).ready(function () {
-    $('#table_round2_stats').DataTable();});
-    $('#table_round2_stats').dataTable( {
+    $(`#table_round2_stats_${game_id}`).DataTable();});
+    $(`#table_round2_stats_${game_id}`).dataTable( {
         "lengthChange": false,
         "searching": false, 
         "paging": false, 
-        "info": false
+        "info": false,
+        "order": [[0, 'desc']],
     } );
+}
