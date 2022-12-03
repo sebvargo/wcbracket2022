@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if 1==1 %}
+    Las predicciones se mostraran luego de las 9am.
+    <br>
+    Predictions will be here after 9am EST.
+{% else %}
     <div class="row mb-3">
         <div class="col">
             <h2> Prediccion Promedio / Average Prediction </h2>
@@ -66,6 +71,6 @@
               </div>
         </div>
     </div>
-
+{% endif %}
 {% endblock %}
 

@@ -8,6 +8,12 @@
         {% include "prediction_table.html" %}
       {% endwith %}
 
+{% if 1==1 %}
+      Las predicciones finales de segunda ronda se mostraran luego de las 9am.
+      <br>
+      Second round predictions will be here after 9am EST.
+{% else %}
+
       {% if has_rd16_predictions%}
         {% with acc_id = 2, game = game, predictions = rd16_stage_predictions, stage_name = "Octavos de final / Eigths finals" %}
           {% include "prediction_table.html" %}
@@ -25,6 +31,7 @@
         {% with acc_id = 5, game = game, predictions = final_stage_predictions, stage_name = "Finales / Finals" %}
           {% include "prediction_table.html" %}
         {% endwith %}
+
       
       {% elif is_other_user_profile %}
       <div class="accordion-item">
@@ -54,6 +61,6 @@
       </div>
  
       {% endif %}
-
+{% endif %}
     </div>
 
