@@ -80,6 +80,8 @@ class Game(db.Model):
     stage = db.Column(db.String(16))
     official_goals1 = db.Column(db.Integer)
     official_goals2 = db.Column(db.Integer)
+    official_winner = db.Column(db.String(64))
+    official_runnerup = db.Column(db.String(64))
     round_order = db.Column(db.Integer)
     
     def __repr__(self) -> str:
@@ -92,42 +94,62 @@ class Game(db.Model):
         return goals1_avg, goals2_avg 
     
     def get_winner(self):
-        if self.official_goals1 > self.official_goals2: return self.team1
-        elif self.official_goals1 < self.official_goals2: return self.team2
-        else: return 'tie'  
+        if self.official_goals1 > self.official_goals2: 
+            self.official_winner = self.team1
+            self.official_runnerup = self.team2
+        elif self.official_goals1 < self.official_goals2: 
+            self.official_winner = self.team2
+            self.official_runnerup = self.team1
+        else: 
+            if self.stage == 'group':
+                self.official_winner = 'tie' # only group stages have ties. 
+            
+
         
-    def calculate_user_points(self, user_id=None):
+    def calculate_user_points(self, user_id=None, official_winner = None):
+        '''
+        Assigns points to based on official result. 
+        The points are added to each user's Prediction objects.
+        '''
         if user_id is None: users = User.query.all()
         else: users = User.query.filter_by(user_id = user_id).all()
         
-        official_winner = self.get_winner()
+        if self.stage == 'group':
+            self.get_winner()
         
         for u in users:
             prediction = u.predictions.filter_by(game_id = self.game_id).first()
             if prediction is None:
                 continue
             
+            # check that teams match the official game (self)
             if self.team1 == prediction.team1 and self.team2 == prediction.team2:
                 # check if score matches
                 print(f'Official ({u.username}): {self.official_goals1}-{self.official_goals2} | Prediction: {prediction.goals1}-{prediction.goals2}')
                 if self.official_goals1 == prediction.goals1:
                     if self.official_goals2 == prediction.goals2:
-                        
                         prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
                         prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
                 else:
                     prediction.points_score = 0
-                    # check if outcome matches
-                    if   prediction.goals1 > prediction.goals2: # team 1 wins
-                        prediction.winner = prediction.team1 
-                    elif prediction.goals1 < prediction.goals2: # team 2 wins
-                        prediction.winner = prediction.team2 
-                    else: prediction.winner = 'tie'
-                    
-                    if prediction.winner == official_winner: 
+                    if self.stage == 'group':
+                    # Round 2 games are submitted with a winner prediction, so nothing else to do
+                        # check if outcome matches
+                        if   prediction.goals1 > prediction.goals2: # team 1 wins
+                            prediction.winner = prediction.team1 
+                        elif prediction.goals1 < prediction.goals2: # team 2 wins
+                            prediction.winner = prediction.team2 
+                        else: prediction.winner = 'tie'
+                
+                    if prediction.winner == self.official_winner: 
                         prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
                     else: prediction.points_outcome = 0
-            else:
+                    
+            elif prediction.winner == self.official_winner:
+                prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                prediction.points_score = 0
+                
+            else: 
                 prediction.points_score = 0
                 prediction.points_outcome = 0
                 

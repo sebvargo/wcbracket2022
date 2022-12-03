@@ -145,11 +145,16 @@ def admin():
             goals2 = request.form.get("goals2")
             if goals1 is None or goals2 is None: 
                 flash('Please add scores', 'danger')
-                return
+                print("_____________________here")
+                return request.form
             game_to_edit = Game.query.filter_by(game_id = game_id).first()
             game_to_edit.official_goals1 = goals1
             game_to_edit.official_goals2 = goals2
-            game_to_edit.calculate_user_points()
+            flash(f'{game_to_edit.stage}', 'info')
+            if game_to_edit.stage != 'group':
+                winner = request.form.get("winner")
+                game_to_edit.official_winner = winner
+            
             # compare official result to predictions
             description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
             try:
@@ -167,6 +172,7 @@ def admin():
         
         # Calculate points
         game_to_edit.calculate_user_points()
+        description = f'Game {game_id} | User Points Calculated'
         try:
             db.session.commit()
             print(f'{description} update was successful')
@@ -178,7 +184,7 @@ def admin():
             return
         
     points = Points.query.order_by(Points.points.desc()).all()
-    games = get_next_games(days_back = 0, days_ahead = 0)
+    games = get_next_games(days_back = 0, days_ahead = 10)
     official_stages = OfficialStage.query.filter_by(tournament = "Qatar 2022").order_by(OfficialStage.stage_id).all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
