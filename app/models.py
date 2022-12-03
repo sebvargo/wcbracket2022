@@ -122,6 +122,7 @@ class Game(db.Model):
             if prediction is None:
                 continue
             
+            flash(f'WINNER: {self.official_winner}', 'success')
             # check that teams match the official game (self)
             if self.team1 == prediction.team1 and self.team2 == prediction.team2:
                 # check if score matches
