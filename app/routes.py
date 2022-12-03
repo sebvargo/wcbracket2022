@@ -15,6 +15,8 @@ import datetime as dt
 def round2():  
     add_event("Rd2-view", current_user)
     if request.method == 'POST': 
+        flash("El deadline para mandar tus resultados ya paso.\nYou are past the submission deadline.", 'danger')
+        return redirect(url_for('index'))
         add_event("Rd2-submit", current_user)
         for stage, game_ids in second_round_games.items():
             msg, msg_type = add_round_two_game(game_ids, stage, request.form, current_user.user_id)
