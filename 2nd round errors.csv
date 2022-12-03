@@ -1,0 +1,122 @@
+,u.user_id,u.username,p.stage,p.game_id,p.team1,p.team2,p.goals1,p.goals2,p.winner
+0,1,sebvargas,rd16,49,NED,USA,0,1,NED
+1,1,sebvargas,quarters,58,JPN,BRA,0,2,JPN
+2,1,sebvargas,quarters,60,MAR,POR,1,2,MAR
+3,4,CDEVIS,rd16,56,POR,SUI,1,2,POR
+4,4,CDEVIS,quarters,58,JPN,BRA,1,2,JPN
+5,6,Mauricio Duque,rd16,53,JPN,CRO,0,1,JPN
+6,6,Mauricio Duque,rd16,55,MAR,ESP,1,3,MAR
+7,6,Mauricio Duque,rd16,56,POR,SUI,1,2,POR
+8,6,Mauricio Duque,quarters,57,NED,ARG,0,2,NED
+9,6,Mauricio Duque,quarters,58,CRO,BRA,0,2,CRO
+10,6,Mauricio Duque,quarters,59,ENG,FRA,1,2,ENG
+11,7,Marieladecastro,rd16,49,NED,USA,1,2,NED
+12,7,Marieladecastro,rd16,55,MAR,ESP,0,3,MAR
+13,7,Marieladecastro,quarters,57,USA,ARG,1,2,USA
+14,7,Marieladecastro,quarters,58,JPN,BRA,1,2,JPN
+15,7,Marieladecastro,quarters,59,ENG,FRA,0,2,ENG
+16,7,Marieladecastro,semis,61,ARG,BRA,1,3,ARG
+17,7,Marieladecastro,semis,62,FRA,ESP,0,2,FRA
+18,7,Marieladecastro,third,63,ARG,FRA,1,2,ARG
+19,11,meme,quarters,57,NED,ARG,0,2,NED
+20,11,meme,quarters,58,CRO,BRA,1,2,CRO
+21,16,yoshi,quarters,58,JPN,BRA,0,1,JPN
+22,16,yoshi,quarters,59,ENG,FRA,1,2,ENG
+23,16,yoshi,third,63,ARG,ESP,0,1,ARG
+24,17,nicolasferrin,rd16,55,MAR,ESP,1,2,MAR
+25,17,nicolasferrin,quarters,57,NED,ARG,1,2,NED
+26,17,nicolasferrin,quarters,58,CRO,BRA,0,2,CRO
+27,17,nicolasferrin,quarters,59,ENG,FRA,1,2,ENG
+28,19,cobannon,rd16,55,MAR,ESP,1,2,MAR
+29,19,cobannon,quarters,57,USA,ARG,1,2,USA
+30,19,cobannon,quarters,58,JPN,1G,1,2,JPN
+31,19,cobannon,quarters,59,ENG,FRA,1,3,ENG
+32,19,cobannon,third,63,1G,POR,1,2,1G
+33,26,EduardoDMoreno,rd16,49,NED,USA,0,1,NED
+34,26,EduardoDMoreno,quarters,57,USA,ARG,0,3,USA
+35,26,EduardoDMoreno,quarters,58,JPN,BRA,0,2,JPN
+36,26,EduardoDMoreno,quarters,59,ENG,FRA,1,2,ENG
+37,26,EduardoDMoreno,quarters,60,MAR,POR,1,2,MAR
+38,26,EduardoDMoreno,semis,61,ARG,BRA,1,2,ARG
+39,26,EduardoDMoreno,final,64,BRA,FRA,1,2,BRA
+40,27,MartinaMoreno,rd16,49,NED,USA,1,2,NED
+41,27,MartinaMoreno,rd16,55,MAR,ESP,2,3,MAR
+42,27,MartinaMoreno,rd16,56,POR,SUI,2,3,POR
+43,27,MartinaMoreno,quarters,57,USA,ARG,1,2,USA
+44,37,Candresh,rd16,55,MAR,ESP,0,2,MAR
+45,37,Candresh,quarters,57,NED,ARG,0,1,NED
+46,37,Candresh,quarters,58,JPN,BRA,0,2,JPN
+47,37,Candresh,quarters,59,ENG,FRA,0,2,ENG
+48,37,Candresh,semis,61,ARG,BRA,1,2,ARG
+49,38,michael.kahn24,rd16,49,NED,USA,1,2,NED
+50,38,michael.kahn24,rd16,55,MAR,ESP,0,1,MAR
+51,38,michael.kahn24,quarters,57,USA,ARG,0,2,USA
+52,38,michael.kahn24,quarters,58,JPN,BRA,0,2,JPN
+53,38,michael.kahn24,semis,61,ARG,BRA,1,2,ARG
+54,38,michael.kahn24,semis,62,ENG,ESP,1,2,ENG
+55,39,oscar.pedraza@symrise.com,rd16,55,MAR,ESP,1,3,MAR
+56,39,oscar.pedraza@symrise.com,quarters,58,CRO,BRA,1,2,CRO
+57,39,oscar.pedraza@symrise.com,quarters,59,ENG,FRA,0,1,ENG
+58,39,oscar.pedraza@symrise.com,semis,61,ARG,BRA,0,1,ARG
+59,42,Anacooo,quarters,59,ENG,FRA,1,2,ENG
+60,42,Anacooo,rd16,55,MAR,ESP,0,2,MAR
+61,42,Anacooo,semis,62,FRA,ESP,1,2,FRA
+62,80,olaris100,rd16,53,JPN,CRO,0,1,JPN
+63,80,olaris100,rd16,55,MAR,ESP,0,2,MAR
+64,80,olaris100,quarters,57,NED,ARG,0,1,NED
+65,80,olaris100,quarters,58,CRO,BRA,0,1,CRO
+66,80,olaris100,quarters,59,ENG,FRA,0,1,ENG
+67,80,olaris100,quarters,60,ESP,POR,0,1,ESP
+68,82,Natalia Martinez,rd16,55,MAR,ESP,1,2,MAR
+69,82,Natalia Martinez,quarters,57,NED,ARG,1,2,NED
+70,82,Natalia Martinez,quarters,58,JPN,BRA,1,2,JPN
+71,82,Natalia Martinez,quarters,59,ENG,FRA,2,3,ENG
+72,82,Natalia Martinez,semis,62,FRA,ESP,1,2,FRA
+73,82,Natalia Martinez,final,64,BRA,ESP,1,2,BRA
+74,36,alejobarm,rd16,55,MAR,ESP,1,2,MAR
+75,36,alejobarm,quarters,57,NED,ARG,1,2,NED
+76,36,alejobarm,final,64,ARG,FRA,1,3,ARG
+77,88,JENNY MORALES,rd16,53,JPN,CRO,1,2,JPN
+78,88,JENNY MORALES,rd16,55,MAR,ESP,1,2,MAR
+79,88,JENNY MORALES,quarters,57,NED,ARG,1,2,NED
+80,88,JENNY MORALES,quarters,58,CRO,BRA,1,2,CRO
+81,88,JENNY MORALES,quarters,59,ENG,FRA,2,3,ENG
+82,88,JENNY MORALES,semis,61,ARG,BRA,1,3,ARG
+83,90,manuelmejia85,rd16,49,NED,USA,0,1,NED
+84,90,manuelmejia85,rd16,55,MAR,ESP,0,3,MAR
+85,90,manuelmejia85,rd16,56,POR,SUI,1,2,POR
+86,90,manuelmejia85,quarters,57,USA,ARG,0,2,USA
+87,90,manuelmejia85,quarters,58,JPN,BRA,0,1,JPN
+88,90,manuelmejia85,quarters,59,ENG,FRA,1,2,ENG
+89,90,manuelmejia85,semis,61,ARG,BRA,0,2,ARG
+90,94,fedelau87,rd16,53,JPN,CRO,1,2,JPN
+91,94,fedelau87,rd16,55,MAR,ESP,0,2,MAR
+92,94,fedelau87,quarters,57,NED,ARG,0,1,NED
+93,94,fedelau87,quarters,58,CRO,BRA,1,2,CRO
+94,94,fedelau87,quarters,59,ENG,FRA,0,2,ENG
+95,94,fedelau87,semis,61,ARG,BRA,0,1,ARG
+96,94,fedelau87,third,63,ARG,ESP,0,1,ARG
+97,95,carol.ocampo,rd16,55,MAR,ESP,0,2,MAR
+98,95,carol.ocampo,quarters,58,JPN,BRA,1,3,JPN
+99,95,carol.ocampo,semis,61,NED,BRA,1,2,NED
+100,95,carol.ocampo,third,63,NED,ESP,1,3,NED
+101,96,emilio santos,rd16,55,MAR,ESP,0,5,MAR
+102,96,emilio santos,quarters,58,JPN,BRA,2,4,JPN
+103,99,Lucky,rd16,55,MAR,ESP,1,2,MAR
+104,99,Lucky,quarters,57,NED,ARG,0,2,NED
+105,99,Lucky,quarters,58,JPN,BRA,0,2,JPN
+106,99,Lucky,quarters,59,ENG,FRA,1,2,ENG
+107,108,jorge.salguero,rd16,53,JPN,CRO,1,2,JPN
+108,108,jorge.salguero,rd16,55,MAR,ESP,1,2,MAR
+109,108,jorge.salguero,rd16,56,POR,SUI,1,2,POR
+110,108,jorge.salguero,quarters,57,NED,ARG,1,2,NED
+111,108,jorge.salguero,quarters,58,CRO,BRA,0,2,CRO
+112,108,jorge.salguero,quarters,59,ENG,FRA,1,2,ENG
+113,108,jorge.salguero,quarters,60,ESP,SUI,1,2,ESP
+114,108,jorge.salguero,semis,61,ARG,BRA,0,1,ARG
+115,109,guillermo.romero,rd16,55,MAR,ESP,0,2,MAR
+116,109,guillermo.romero,quarters,58,JPN,BRA,1,2,JPN
+117,109,guillermo.romero,quarters,59,SEN,FRA,1,3,SEN
+118,109,guillermo.romero,semis,61,NED,BRA,2,3,NED
+119,109,guillermo.romero,third,63,NED,POR,0,2,NED
+120,109,guillermo.romero,final,64,BRA,FRA,1,2,BRA
