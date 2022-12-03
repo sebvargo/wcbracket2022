@@ -95,7 +95,7 @@ def login():
 
         next_page = request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
-            return redirect(url_for('results'))  
+            return redirect(url_for('round2'))  
         return redirect(next_page) 
 
     return render_template('login.html', title = 'Login', form = form, hide_links = True)
