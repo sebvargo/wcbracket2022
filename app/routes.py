@@ -141,15 +141,18 @@ def admin():
     if request.method == 'POST':
         try:
             game_id = request.form['btn_submit'] 
+            return request.form
             goals1 = request.form.get("goals1")
             goals2 = request.form.get("goals2")
             if goals1 is None or goals2 is None: 
                 flash('Please add scores', 'danger')
-                return
+                print("_____________________here")
+                return request.form
             game_to_edit = Game.query.filter_by(game_id = game_id).first()
             game_to_edit.official_goals1 = goals1
             game_to_edit.official_goals2 = goals2
             if game_to_edit.stage != 'group':
+                # return request.form.get(f'radios-{game_id}')
                 winner = request.form.get("winner")
                 runner_up = request.form.get("runner_up")
                 game_to_edit.winner = winner

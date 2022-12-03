@@ -21,13 +21,21 @@ function update_admin_radios(game_id) {
         radio1.disabled = true;
         radio2.disabled = true;
         if (goals1 > goals2) { //team1 wins
+            radio1.disabled = false;
+            radio2.disabled = false;
             radio1.checked = true;
             radio2.checked = false;
-            console.log(`goals1: ${goals1} - ${goals2}`)
+            radio1.disabled = true;
+            radio2.disabled = true;
+            console.log(`goals1: ${radio1.value}${goals1} - ${radio2.value} ${goals2}`)
         } else if (goals1 < goals2) { //team2 wins
+            radio1.disabled = false;
+            radio2.disabled = false;
             radio1.checked = false;
             radio2.checked = true;
-            console.log(`goals1: ${goals1} - ${goals2}`)
+            radio1.disabled = true;
+            radio2.disabled = true;
+            console.log(`goals1: ${radio1.value}${goals1} - ${radio2.value} ${goals2}`)
         } else { //tie
             radio1.disabled = false;
             radio2.disabled = false;
@@ -36,8 +44,5 @@ function update_admin_radios(game_id) {
     } else {
         radio1.disabled = true;
         radio2.disabled = true;
-        radio1.checked = false;
-        radio2.checked = false;
-
     }
 }
