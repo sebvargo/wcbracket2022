@@ -1,23 +1,27 @@
 
-    {% for game, avg_goals_tuple in games %}
+    {% for game, avg_goals_tuple, stats_df in games %}
     <div class="col">
-      <div class="card" style="width: 18rem;">
+      <div class="card {% if game.stage != 'group' %}text-center{% endif %}" style="width: {% if game.stage == 'group' %}18rem;{% elif game.stage != 'group' %}{% endif %}">
         <div class="card-body">
           <h5 class="card-title">
             {% with team = game.team1, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team1 }} v.
             {% with team = game.team2, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team2 }}
           </h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{(game.local_time - dt.timedelta(hours=11)).strftime("%a, %b %d | %H:%M")}} PST </h6>
+          <h6 class="card-subtitle mb-2 text-muted">{{(game.local_time - dt.timedelta(hours=11)).strftime("%a, %b %d | %H:%M")}} PST | {{(game.local_time - dt.timedelta(hours=8)).strftime("%H:%M")}} Bogotá EST </h6>
           {% if game.official_goals1 is not none %}
-          <h1 class="display-6">{{ game.official_goals1 }} - {{ game.official_goals2 }}</h1>
-          <span class="badge bg-success mb-2">Oficial/Official</span><br>
+            <h1 class="display-6">{{ game.official_goals1 }} - {{ game.official_goals2 }}</h1>
+            <span class="badge bg-success mb-2">Oficial/Official</span><br>
+          {% elif game.stage != 'group' %}
+            <h1 class="display-6">0 - 0</h1>
+            <span class="badge bg-info mb-2">{{(game.local_time - dt.timedelta(hours=8)).strftime("%H:%M")}} EST / {{(game.local_time - dt.timedelta(hours=11)).strftime("%H:%M")}} PST</span><br>
           {% else %}
-          <h1 class="display-6">{{avg_goals_tuple[0]|round(1, 'floor')}} - {{avg_goals_tuple[1]|round(1, 'floor')}}</h1>
-          <span class="badge bg-warning mb-2">Promedio/Average</span><br>
+            <h1 class="display-6">{{avg_goals_tuple[0]|round(1, 'floor')}} - {{avg_goals_tuple[1]|round(1, 'floor')}}</h1>
+            <span class="badge bg-warning mb-2">Promedio/Average</span><br>
           {% endif %}
           <a href="{{ url_for('predictions', game_id = game.game_id ) }}" class="card-link">Vea las predicciones</a>
           <a href="{{ url_for('predictions', game_id = game.game_id ) }}" class="card-link">See picks</a>
         </div>
+        
         {% if game.stage == 'group' %}
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
@@ -53,6 +57,26 @@
 
             </li>
           </ul>
+
+        {% elif game.stage != 'group' %}
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+            <div class="row">
+              <div class="col">
+                <h5 class="card-title">
+                  Predicciones / Predictions
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">Partidos y Resultados Pronosticados / Predicted Games and Results</h6>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col">
+                {%include "table_round2_stats.html" %}
+              </div>
+            </div>
+            </li>
+          </ul>
+        {% else%}
         {% endif %}
 
       </div>

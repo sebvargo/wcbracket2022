@@ -4,6 +4,7 @@ from flask import flash
 from flask_login  import UserMixin
 import numpy as np
 from sqlalchemy.sql import func
+import pandas as pd
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key = True)
@@ -153,6 +154,19 @@ class Game(db.Model):
             else: 
                 prediction.points_score = 0
                 prediction.points_outcome = 0
+                
+    def get_prediction_stats_df(self):
+        '''
+        Returns DataFrame with stats for this Game predictions.
+         - df columns = game_id,team1,team2,winner,avg_goals1,avg_goals2,count
+        '''
+        predictions = [(p.game_id, p.team1, p.team2, p.goals1, p.goals2, p.winner) for p in Prediction.query.filter_by(game_id = self.game_id).all()]
+        df = pd.DataFrame(predictions, columns=['game_id', 'team1', 'team2', 'goals1', 'goals2', 'winner'])
+        avg_goals = df.groupby(['game_id', 'team1', 'team2', 'winner']).mean(numeric_only=True).reset_index().rename(columns={'goals1': 'avg_goals1', 'goals2':'avg_goals2'})
+        count = df.groupby(['game_id', 'team1', 'team2', 'winner']).count().reset_index().rename(columns={'goals1': 'count'})
+        df = avg_goals.merge(count, on=['game_id', 'team1', 'team2', 'winner']).sort_values(by=['count'], ascending=False).reset_index()
+        df = df.drop(['index','goals2'], axis =1 )
+        return df
                 
                 
                     

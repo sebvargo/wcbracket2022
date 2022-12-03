@@ -218,7 +218,8 @@ def get_next_games(days_back =1, days_ahead = 1):
     yesterday = dt.date.today() - dt.timedelta(days=days_back)
     tomorrow = dt.date.today() + dt.timedelta(days=days_ahead)
     games = Game.query.filter(Game.local_time >= yesterday, Game.local_time <= tomorrow + dt.timedelta(days=1)).order_by(Game.local_time).all()
-    return games
+    game_prediction_stats = [g.get_prediction_stats_df() for g in games]
+    return games, game_prediction_stats
     
 def get_rankings(ordered_point_obs):
     position = 1
