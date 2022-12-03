@@ -39,6 +39,8 @@
                         <p class="card-text">{{(game.local_time - dt.timedelta(hours=11)).strftime("%a, %b %d | %H:%M")}} PST </p>
                         
                         <form action="" method="post" class ="mb-3" validate>
+                          <input type="text" hidden name='winner' id="winner-{{game.game_id}}" value={% if game.official_winner == game.team1 %}{{game.team1}}{% elif game.official_winner == game.team2 %}{{game.team2}}{%else%}{% endif %}>
+
                           <div class="row">
                             <div class="col">
                                 <label for="goals1" class="form-label">{% with team = game.team1, w=24, h=24, align="top", game_id = game.game_id %}{% include "flag.html" %}{% endwith %} {{ game.team1 }}</label>
@@ -63,7 +65,7 @@
                                   <div class="input-group">
                                     <input {%if game.official_goals2 is not none%}value="{{game.official_goals2}}"{%else%} value="" {% endif %}
                                           required type="number" class="form-control" name="goals2" id="input-2-{{game.game_id}}" aria-describedby="basic-addon1">
-                                    <div class="input-group-text">
+                                          <div class="input-group-text">
                                       <input type="radio" name="radios-{{game.game_id}}" {% if game.official_winner == game.team2 %}checked="checked"{% endif %} id="radio-2-{{game.game_id}}" value="{{game.team2}}" disabled>
                                     </div>
                                   </div>
