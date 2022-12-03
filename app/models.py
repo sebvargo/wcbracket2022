@@ -117,13 +117,14 @@ class Game(db.Model):
         
         if self.stage == 'group':
             self.get_winner()
+        flash(f'WINNER: {self.official_winner}', 'success')
         
         for u in users:
             prediction = u.predictions.filter_by(game_id = self.game_id).first()
             if prediction is None:
                 continue
             
-            flash(f'WINNER: {self.official_winner}', 'success')
+            
             # check that teams match the official game (self)
             if self.team1 == prediction.team1 and self.team2 == prediction.team2:
                 # check if score matches
