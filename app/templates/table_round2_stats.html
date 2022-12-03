@@ -2,7 +2,7 @@
     <table id="table_round2_stats_{{game.game_id}}" class="table">
         <thead>
         <tr>
-            <th class="text-center" scope="col">Personas</th>
+            <th class="text-center" scope="col">% (Personas)</th>
             <th class="text-center" scope="col">Equipo</th>
             <th class="text-center" scope="col">Resultado</th>
             <th class="text-center" scope="col">Equipo</th>
@@ -15,7 +15,7 @@
             {% for idx in stats_df.index %}
                 {% with stat = stats_df.iloc[idx] %}
                 <tr>
-                    <td class="text-center">{{100*stat["count"]/stats_df['count'].sum()|round(1, 'floor')}}% ({{stat["count"]}})</td>
+                    <td class="text-center">{{100*stat["count"]/stats_df['count'].sum().round(1) | round(1, 'floor')}}% ({{stat["count"]}})</td>
                     <td class="text-center {%if game.team1 == stat["team1"] %}table-success{% endif %}">{% with team = stat["team1"], w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ stat["team1"] }}</td>
                     <td class="text-center">{{stat["avg_goals1"] |round(1, 'floor')}} - {{stat["avg_goals2"]|round(1, 'floor')}}</td>
                     <td class="text-center {%if game.team2 == stat["team2"] %}table-success{% endif %}">{% with team = stat["team2"], w=24, h=24, align="top" %}{% include "flag.html" %}{% endwith %} {{ stat["team2"] }}</td>
