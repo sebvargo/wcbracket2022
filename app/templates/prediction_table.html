@@ -30,9 +30,17 @@
                         <td>{{ p.goals2 }}</td>
                         <td>{% with team = p.team2, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team2 }}</td>
                         <td>
+                          {% if p.stage == 'group'%}
                           {% if p.goals1 > p.goals2 %} {% with team = p.team1, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team1 }} win
                           {% elif p.goals2 > p.goals1 %}{% with team = p.team2, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %} {{ p.team2 }} win
-                          {% else %} <h4>=</h4>  {% endif %}
+                          {% else %}
+                              <h4>=</h4>  
+                          {% endif %}
+                      {% else %}
+                          {% with team = p.winner, w=24, h=24, align="top", game_id = p.game_id %}{% include "flag.html" %}{% endwith %}
+                          &nbsp;<i class="bi bi-check2-circle"></i>
+
+                      {% endif %}
                         </td>
                         {% if official.official_goals1 is not none %}
                           <td>
