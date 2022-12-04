@@ -1,9 +1,19 @@
-const stages = [49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64]
+
+function* range(start, end, step) {
+    while (start < end) {
+      yield start;
+      start += step;
+    }
+  }
 
 document.addEventListener('DOMContentLoaded', function() 
 {
-    stages.forEach(function (game_id, idx) 
+    const first_game_id = parseInt(document.getElementById('first_game_id').value)
+    const last_game_id = parseInt(document.getElementById('last_game_id').value) + 1
+    let game_ids_to_edit = Array.from(range(first_game_id,last_game_id,1));
+    game_ids_to_edit.forEach(function (game_id, idx) 
     {
+
         document.getElementById(`input-1-${game_id}`).oninput = function() {update_admin_radios(game_id)};
         document.getElementById(`input-2-${game_id}`).oninput = function() {update_admin_radios(game_id)};
         document.getElementById(`radio-1-${game_id}`).onchange   = function() {update_winner(game_id)};

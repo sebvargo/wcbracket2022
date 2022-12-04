@@ -1,12 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
-  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
   {% if current_user.username == 'sebvargas' or current_user.username == 'hernando' %}  
     <div class="container">
       <h1 class = "h1 mb-3">Admin: {{ current_user.username }} </h1>
       {% include "admin_buttons.html"  %}
       <hr>
   {% endif %}
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+
 {% endblock content %}
 
 
