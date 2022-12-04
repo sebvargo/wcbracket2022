@@ -29,44 +29,86 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
     
-    def calculate_points(self, event_description = '2022_quiniela_qatar'):
-        # get points from Predictions
-        if Points.query.filter_by(user_id = self.user_id).first() is not None:
-            Points.query.filter_by(user_id = self.user_id).delete()
-            
-        pred_points= Prediction.query.filter_by(user_id = self.user_id)
-        pred_points = np.array([p.points_outcome + p.points_score if p.points_outcome is not None else 0 for p in self.predictions])
-        pred_sum = pred_points.sum()
-        print('pred_sum',type(pred_sum))
+    def add_and_save_points(self, stage_types = ['group','rd16','quarters','semis','third','final'], event_description = '2022_quiniela_qatar', save_to_points_table = True):
         
+        p = {
+            'points':0,
+            'prediction_points':0,
+            'stage_points': 0,
+            'goleador_points': 0,
+            'group_points':0,
+            'rd16_points':0,
+            'quarters_points':0,
+            'semis_points':0,
+            'finals_points':0,
+        }
+        
+        # GOLEADOR
         goleador_points = self.goleador.first().goleador_points if self.goleador.first().goleador_points is not None else 0
-        print(goleador_points)
         
-        stage_points = np.array([p.pts_winner_outcome  + p.pts_runner_score if p.pts_winner_outcome is not None else 0 for p in self.stages])
-        stage_sum = stage_points.sum()
-        print('stage_sum', type(np.uint32(stage_sum).item()))
+        # GROUP STAGE 1st and 2nd
+        pts_winner_outcome = np.float128(db.session.query(func.sum(Stage.pts_winner_outcome)).filter(Stage.user_id == self.user_id, Stage.stage_type == 'group').all())[0][0]
+        pts_runner_score = np.float128(db.session.query(func.sum(Stage.pts_runner_score)).filter(Stage.user_id == self.user_id, Stage.stage_type == 'group').all())[0][0]
         
-        total_points = np.sum([pred_sum, goleador_points, stage_sum])
-        points = Points(user_id = self.user_id, 
-                        points = int(total_points), 
-                        event_description = event_description,
-                        prediction_points = np.uint32(pred_sum).item(),
-                        stage_points = np.uint32(stage_sum).item(),
-                        goleador_points = goleador_points)
-        db.session.add(points)
+        # PREDICTION POINTS
+        for stage_type in stage_types:
+            # add points in Prediction table
+            outcome_points = np.float128(db.session.query(func.sum(Prediction.points_outcome)).filter(Prediction.user_id == self.user_id, Prediction.stage == stage_type).all())[0][0]
+            score_points = np.float128(db.session.query(func.sum(Prediction.points_score)).filter(Prediction.user_id == self.user_id, Prediction.stage == stage_type).all())[0][0]
+            
+            if stage_type =='group':
+                p['group_points'] += outcome_points + score_points
+            elif stage_type =='rd16':
+                p['rd16_points'] += outcome_points + score_points
+            elif stage_type =='quarters':
+                p['quarters_points'] += outcome_points + score_points
+            elif stage_type =='semis':
+                p['semis_points'] += outcome_points + score_points
+            elif stage_type =='third':
+                p['finals_points'] += outcome_points + score_points
+            elif stage_type =='final':
+                p['finals_points'] += outcome_points + score_points
         
-        try:
-            db.session.commit()
-            print(f'{self.username} - POINTS update was successful')
-            return True
-        
-        except Exception as e:
-            db.session.rollback()
-            print(f'{self.username} - POINTS update was NOT successful: {e}')
-            flash(f'{self.username} - POINTS update was NOT successful: {e}', 'danger')
-            return False
-        
+        # ADD ALL POINTS
+        p['goleador_points'] = np.nansum([goleador_points])
+        p['stage_points'] = np.nansum([pts_winner_outcome, pts_runner_score])
+        p['prediction_points'] = np.nansum([ p['group_points'], p['rd16_points'], p['quarters_points'], p['semis_points'], p['finals_points']])
+        p['points'] = np.nansum([p['prediction_points'], p['stage_points'], p['goleador_points']])
+
+        if save_to_points_table:
+            
+            # get points from Predictions
+            if Points.query.filter_by(user_id = self.user_id).first() is not None:
+                Points.query.filter_by(user_id = self.user_id).delete()
+                
+            points = Points(user_id = self.user_id, 
+                points = np.uint32(p['points']).item(),
+                event_description = event_description,
+                prediction_points = np.uint32(p['prediction_points']).item(),
+                stage_points = np.uint32(p['stage_points']).item(),
+                goleador_points = np.uint32(p['goleador_points']).item(),
+                group_points = np.uint32(p['group_points']).item(),
+                rd16_points = np.uint32(p['rd16_points']).item(),
+                quarters_points = np.uint32(p['quarters_points']).item(),
+                semis_points = np.uint32(p['semis_points']).item(),
+                finals_points = np.uint32(p['finals_points']).item(),
+            )
+            db.session.add(points)
+            description = f'{self.user_id} Points saved'
+            try:
+                db.session.commit()
+                print(f'{description} update was successful')
+                # flash(f'{description} update was successful', 'success')
+                return p, True
     
+            except Exception as e:
+                db.session.rollback()
+                print(f'{description} update was NOT successful: {e}')
+                # flash(f'{description} update was NOT successful', 'danger')
+                return p, False
+        return p, True
+    
+
 @login.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -278,9 +320,19 @@ class Points(UserMixin, db.Model):
     event_description = db.Column(db.String(1024))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     points = db.Column(db.Integer)
+    # total prediction points
     prediction_points = db.Column(db.Integer)
+    # group stage winner points
     stage_points = db.Column(db.Integer)
+    #goleador points
     goleador_points = db.Column(db.Integer)
+    # prediction point by stage
+    group_points = db.Column(db.Integer)
+    rd16_points = db.Column(db.Integer)
+    quarters_points = db.Column(db.Integer)
+    semis_points = db.Column(db.Integer)
+    finals_points = db.Column(db.Integer)
+
     
     
     def get_ranking(self):

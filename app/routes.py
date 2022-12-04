@@ -199,7 +199,7 @@ def calculate_points():
     users = User.query.all()
     check = []
     for user in users: 
-        calc = user.calculate_points(event_description = '2022_quiniela_qatar')
+        _, calc = user.add_and_save_points(event_description = '2022_quiniela_qatar')
         check.append(calc)
     flash(f'{sum(check)}/{len(check)} points calculated succesfully', 'success')
     return redirect(url_for('admin'))
