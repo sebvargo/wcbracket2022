@@ -157,7 +157,7 @@ def admin():
                 winner = request.form.get("winner")
                 game_to_edit.official_winner = winner
             
-            # compare official result to predictions
+ 
             description = f'Game {game_id} | {game_to_edit.team1} {goals1} - {goals2} {game_to_edit.team2}'
             try:
                 db.session.commit()
@@ -173,6 +173,7 @@ def admin():
             flash(Exception, 'danger')
         
         # Calculate points
+        # compare official result to predictions
         game_to_edit.calculate_user_points()
         description = f'Game {game_id} | User Points Calculated'
         try:

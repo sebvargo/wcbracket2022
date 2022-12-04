@@ -160,7 +160,7 @@ class Game(db.Model):
         if self.stage == 'group':
             self.get_winner()
         flash(f'WINNER: {self.official_winner}', 'success')
-        
+        score_matches = []
         for u in users:
             prediction = u.predictions.filter_by(game_id = self.game_id).first()
             if prediction is None:
@@ -170,11 +170,11 @@ class Game(db.Model):
             # check that teams match the official game (self)
             if self.team1 == prediction.team1 and self.team2 == prediction.team2:
                 # check if score matches
-                print(f'Official ({u.username}): {self.official_goals1}-{self.official_goals2} | Prediction: {prediction.goals1}-{prediction.goals2}')
-                if self.official_goals1 == prediction.goals1:
-                    if self.official_goals2 == prediction.goals2:
-                        prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
-                        prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                
+                if prediction.goals1 == self.official_goals1 and prediction.goals2 == self.official_goals2:
+                    score_matches.append(f'Official {self.official_goals1}-{self.official_goals2} | ({u.username}) {prediction.goals1}-{prediction.goals2}')
+                    prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
+                    prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
                 else:
                     prediction.points_score = 0
                     if self.stage == 'group':
@@ -197,7 +197,9 @@ class Game(db.Model):
             else: 
                 prediction.points_score = 0
                 prediction.points_outcome = 0
-                
+        
+        flash('\n'.join(score_matches), 'info')  
+        
     def get_prediction_stats_df(self):
         '''
         Returns DataFrame with stats for this Game predictions.
