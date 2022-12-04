@@ -238,9 +238,11 @@ class Goleador(db.Model):
     prediction = db.Column(db.String(120))
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'), unique=True)
     goleador_points = db.Column(db.Integer)
+    standard_name = db.Column(db.String(120))
     
     def __repr__(self) -> str:
         return f'{self.prediction}'
+
     
 class Stage(db.Model):
     stage_id = db.Column(db.Integer, primary_key = True, autoincrement=True)
