@@ -174,7 +174,13 @@ class Game(db.Model):
                 if prediction.goals1 == self.official_goals1 and prediction.goals2 == self.official_goals2:
                     score_matches.append(f'Official {self.official_goals1}-{self.official_goals2} | ({u.username}) {prediction.goals1}-{prediction.goals2}')
                     prediction.points_score = POINT_SYSTEM[self.stage]['match_score']
-                    prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                    if self.stage == 'group':
+                        prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                    elif prediction.winner == self.official_winner:
+                        prediction.points_outcome = POINT_SYSTEM[self.stage]['outcome']
+                    else:
+                        prediction.points_outcome = 0
+                            
                 else:
                     prediction.points_score = 0
                     if self.stage == 'group':
