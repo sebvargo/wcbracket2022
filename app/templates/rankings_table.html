@@ -22,8 +22,6 @@
             {% elif rank == 3 %}<tr class="table-primary">
             {% else %} <tr>
             {% endif %}
-
-              
                   <td class="text-center">{{rank}}</td>
                   <td class="text-center"><a href="{{ url_for('user_profile', user_id = p.user.user_id ) }}" class="link-primary">{{p.user.username}}</a></td>
                   <td class="table-active text-center fw-bold">{{p.points}}</td>
