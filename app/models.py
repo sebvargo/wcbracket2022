@@ -57,18 +57,17 @@ class User(UserMixin, db.Model):
             score_points = np.float128(db.session.query(func.sum(Prediction.points_score)).filter(Prediction.user_id == self.user_id, Prediction.stage == stage_type).all())[0][0]
             
             if stage_type =='group':
-                p['group_points'] += outcome_points + score_points
+                p['group_points'] += np.nansum([outcome_points, score_points])
             elif stage_type =='rd16':
-                p['rd16_points'] += outcome_points + score_points
+                p['rd16_points'] += np.nansum([outcome_points, score_points])
             elif stage_type =='quarters':
-                p['quarters_points'] += outcome_points + score_points
+                p['quarters_points'] += np.nansum([outcome_points, score_points])
             elif stage_type =='semis':
-                p['semis_points'] += outcome_points + score_points
+                p['semis_points'] += np.nansum([outcome_points, score_points])
             elif stage_type =='third':
-                pass
-                # p['finals_points'] += outcome_points + score_points
+                p['finals_points'] += np.nansum([outcome_points, score_points])
             elif stage_type =='final':
-                p['finals_points'] += outcome_points + score_points
+                p['finals_points'] += np.nansum([outcome_points, score_points])
         
         # ADD ALL POINTS
         p['goleador_points'] = np.nansum([goleador_points])
