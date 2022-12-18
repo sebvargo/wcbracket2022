@@ -65,7 +65,8 @@ class User(UserMixin, db.Model):
             elif stage_type =='semis':
                 p['semis_points'] += outcome_points + score_points
             elif stage_type =='third':
-                p['finals_points'] += outcome_points + score_points
+                pass
+                # p['finals_points'] += outcome_points + score_points
             elif stage_type =='final':
                 p['finals_points'] += outcome_points + score_points
         
