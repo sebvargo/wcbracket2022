@@ -194,6 +194,9 @@ def admin():
     if len(games)>0:
         first_game_id = min([g.game_id for g in games])
         last_game_id = max([g.game_id for g in games])
+    else: 
+        first_game_id = 64
+        last_game_id = 64
     official_stages = OfficialStage.query.filter_by(tournament = "Qatar 2022").order_by(OfficialStage.stage_id).all()
     add_event("view_admin", current_user)
     return render_template('admin.html', 
