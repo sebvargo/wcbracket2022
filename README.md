@@ -1,3 +1,6 @@
+Heroku Dyno Command:  
+web flask db upgrade; gunicorn quiniela:app --preload --workers=3 --threads=8 --worker-class=gthread 
+
 #Known Errors
 ###1st Round Errors
 
