@@ -2,7 +2,7 @@ Heroku Dyno Command:
 web flask db upgrade; gunicorn quiniela:app --preload --workers=3 --threads=8 --worker-class=gthread 
 
 # Known Errors
-##1st Round Errors
+## 1st Round Errors
 
 ### Error 1
 - Description: In cases were teams in a group tie in Points, Goal difference and goals scored, the tie breaker is alphabetical. 
